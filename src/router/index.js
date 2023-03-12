@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import getPageTitle from '@/util/get-page-title'
+import store from "@/store";
 
 Vue.use(VueRouter)
 
@@ -25,13 +26,13 @@ const routes = [
 				path: '/archives',
 				name: 'archives',
 				component: () => import('@/views/archives/Archives'),
-				meta: {title: '归档'}
+				meta: {title: '日志',needLogin: true}
 			},
 			{
 				path: '/blog/:id',
 				name: 'blog',
 				component: () => import('@/views/blog/Blog'),
-				meta: {title: '博客'}
+				meta: {title: '动态',needLogin: true}
 			},
 			{
 				path: '/tag/:name',
@@ -51,17 +52,17 @@ const routes = [
 				component: () => import('@/views/moments/Moments'),
 				meta: {title: '动态'}
 			},
-			{
-				path: '/friends',
-				name: 'friends',
-				component: () => import('@/views/friends/Friends'),
-				meta: {title: '友人帐'}
-			},
+			// {
+			// 	path: '/friends',
+			// 	name: 'friends',
+			// 	component: () => import('@/views/friends/Friends'),
+			// 	meta: {title: '友人帐'}
+			// },
 			{
 				path: '/about',
 				name: 'about',
 				component: () => import('@/views/about/About'),
-				meta: {title: '关于我'}
+				meta: {title: '关于我们'}
 			}
 		]
 	}
@@ -70,11 +71,27 @@ const routes = [
 const router = new VueRouter({
 	mode: 'history',
 	base: process.env.BASE_URL,
-	routes
+	routes,
+	store
 })
 
 //挂载路由守卫
 router.beforeEach((to, from, next) => {
+	if (to.needLogin){
+		if (window.localStorage.getItem('token')){
+			next()
+		}else{
+			next('/login')
+		}
+	}else if (to.path === '/home'){
+		if (window.localStorage.getItem('userInfo')){
+			// 将window.localStorage.getItem('userInfo')转换为JSON对象传给store
+			this.$store.commit('user', JSON.parse(window.localStorage.getItem('userInfo')))
+			next()
+		}else{
+			next()
+		}
+	}
 	document.title = getPageTitle(to.meta.title)
 	next()
 })

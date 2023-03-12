@@ -40,5 +40,15 @@ export default {
 	clientSize: {
 		clientHeight: 0,
 		clientWidth: 1080
+	},
+	// userInfo
+	user:{
+		id:'',
+		username:'',
+		nickname:'',
+		password:'',
+		avatar: '',
+		role: '',
+		email: ''
 	}
 }

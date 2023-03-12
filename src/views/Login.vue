@@ -24,14 +24,15 @@
 
 <script>
 	import {login} from "@/api/login";
+  import {mapState} from 'vuex'
 
 	export default {
 		name: "Login",
 		data() {
 			return {
 				loginForm: {
-					username: 'Naccl',
-					password: '11'
+					username: 'admin',
+					password: '123456'
 				},
 				loginFormRules: {
 					username: [
@@ -43,7 +44,10 @@
 				}
 			}
 		},
-		methods: {
+    computed: {
+    ...mapState(['user'])
+  },
+    methods: {
 			resetLoginForm() {
 				this.$refs.loginFormRef.resetFields();
 			},
@@ -53,9 +57,11 @@
 						login(this.loginForm).then(res => {
 							if (res.code === 200) {
 								this.msgSuccess(res.msg)
+                window.localStorage.setItem('userInfo', res.data.user)
 								window.localStorage.setItem('adminToken', res.data.token)
-								this.$router.push('/home')
-							} else {
+                this.$store.commit('user', res.data.user)
+                this.$router.push('/home')
+              } else {
 								this.msgError(res.msg)
 							}
 						}).catch(() => {

@@ -14,6 +14,7 @@ import {
 	SET_FOCUS_MODE,
 	SET_IS_BLOG_TO_HOME,
 	SAVE_CLIENT_SIZE,
+	SAVE_USER
 } from "./mutations-types";
 
 export default {
@@ -78,4 +79,7 @@ export default {
 	[SAVE_CLIENT_SIZE](state, clientSize) {
 		state.clientSize = clientSize
 	},
+	[SAVE_USER](state, user) {
+		state.user = user
+	}
 }
