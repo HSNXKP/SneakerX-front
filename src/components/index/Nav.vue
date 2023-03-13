@@ -1,28 +1,31 @@
 <template>
   <div ref="nav" class="ui fixed inverted stackable pointing menu"
-       :class="{'transparent':$route.name==='home' && clientSize.clientWidth>768}">
+    :class="{ 'transparent': $route.name === 'home' && clientSize.clientWidth > 768 }">
     <div class="ui container">
       <router-link to="/">
         <h3 class="ui header item m-blue">{{ blogName }}</h3>
       </router-link>
-      <router-link to="/home" class="item" :class="{'m-mobile-hide': mobileHide,'active':$route.name==='home'}">
+      <router-link to="/home" class="item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'home' }">
         <i class="home icon"></i>首页
       </router-link>
+      <!-- 分类 -->
       <el-dropdown trigger="click" @command="categoryRoute">
-				<span class="el-dropdown-link item" :class="{'m-mobile-hide': mobileHide,'active':$route.name==='category'}">
-					<i class="idea icon"></i>分类<i class="caret down icon"></i>
-				</span>
+        <span class="el-dropdown-link item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'category' }">
+          <i class="idea icon"></i>分类<i class="caret down icon"></i>
+        </span>
+
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item :command="category.name" v-for="(category,index) in categoryList" :key="index">
+          <el-dropdown-item :command="category.name" v-for="(category, index) in categoryList" :key="index">
             {{ category.name }}
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      <router-link to="/archives" class="item" :class="{'m-mobile-hide': mobileHide,'active':$route.name==='archives'}">
+
+      <router-link to="/archives" class="item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'archives' }">
         <i class="clone icon"></i>日志
       </router-link>
 
-      <router-link to="/moments" class="item" :class="{'m-mobile-hide': mobileHide,'active':$route.name==='moments'}">
+      <router-link to="/moments" class="item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'moments' }">
         <i class="comment alternate outline icon"></i>动态
       </router-link>
 
@@ -30,33 +33,33 @@
       <!--        <i class="users icon"></i>友人帐-->
       <!--      </router-link>-->
 
-      <router-link to="/about" class="item" :class="{'m-mobile-hide': mobileHide,'active':$route.name==='about'}">
+      <router-link to="/about" class="item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'about' }">
         <i class="info icon"></i>关于我们
       </router-link>
       <!--      搜索框-->
       <el-autocomplete v-model="queryString" :fetch-suggestions="debounceQuery" placeholder=" Search...."
-                       class="right item m-search" :class="{'m-mobile-hide': mobileHide}"
-                       popper-class="m-search-item" @select="handleSelect">
+        class="right item m-search" :class="{ 'm-mobile-hide': mobileHide }" popper-class="m-search-item"
+        @select="handleSelect">
         <i class="search icon el-input__icon" style="margin-left: 5px" slot="prefix"></i>
         <template slot-scope="{ item }">
           <div class="title">{{ item.title }}</div>
           <span class="content">{{ item.content }}</span>
         </template>
       </el-autocomplete>
+
       <!--      登录按钮-->
-      <el-dropdown class=" item m-avatar"
-                   :class="{'m-mobile-hide': mobileHide,'active':$route.name==='about'}"
-                   :disabled="!user ==null?true:false" >
+      <el-dropdown class="item m-avatar" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'about' }"
+        :disabled="!user == null ? true : false">
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>个人中心</el-dropdown-item>
           <el-dropdown-item>修改密码</el-dropdown-item>
           <el-dropdown-item @click.native="toLogOut">退出登录</el-dropdown-item>
         </el-dropdown-menu>
-        <a class=" right item" v-if="!user== ''">
-          <img src="http://localhost/QQ20221014224335.jpg" >
+        <a class=" right item " v-if="!user == ''">
+          <img src="http://localhost/QQ20221014224335.jpg">
         </a>
         <!--        未登录状态-->
-        <el-button type="text" style="margin-left: 10px" @click="toLogin" v-else>
+        <el-button class="right item m-blue-dark" type="text" style="margin-left: 10px" @click="toLogin" v-else >
           <i class="user icon"></i>Log in
         </el-button>
       </el-dropdown>
@@ -70,9 +73,11 @@
 </template>
 
 <script>
-import {getSearchBlogList} from "@/api/blog";
-import {logOut} from "@/api/login";
-import {mapState} from 'vuex'
+import { getSearchBlogList } from "@/api/blog";
+import { logOut } from "@/api/login";
+import { mapState } from 'vuex'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 
 export default {
   name: "Nav",
@@ -138,20 +143,20 @@ export default {
     },
     querySearchAsync(queryString, callback) {
       if (queryString == null
-          || queryString.trim() === ''
-          || queryString.indexOf('%') !== -1
-          || queryString.indexOf('_') !== -1
-          || queryString.indexOf('[') !== -1
-          || queryString.indexOf('#') !== -1
-          || queryString.indexOf('*') !== -1
-          || queryString.trim().length > 20) {
+        || queryString.trim() === ''
+        || queryString.indexOf('%') !== -1
+        || queryString.indexOf('_') !== -1
+        || queryString.indexOf('[') !== -1
+        || queryString.indexOf('#') !== -1
+        || queryString.indexOf('*') !== -1
+        || queryString.trim().length > 20) {
         return
       }
       getSearchBlogList(queryString).then(res => {
         if (res.code === 200) {
           this.queryResult = res.data
           if (this.queryResult.length === 0) {
-            this.queryResult.push({title: '无相关搜索结果'})
+            this.queryResult.push({ title: '无相关搜索结果' })
           }
           callback(this.queryResult)
         }
@@ -165,15 +170,23 @@ export default {
       }
     },
     toLogOut() {
-      logOut().then(res =>{
+      logOut().then(res => {
         if (res.code === 200) {
           this.$store.commit('user', '')
-          this.$router.push('/home')
+          this.$router.push('home')
         }
       }).catch(() => {
         this.msgError("请求失败")
       })
     },
+    toLogin() {
+      NProgress.start()
+      // 延长0.5秒，防止进度条闪烁
+      setTimeout(() => {
+        this.$router.push('/login')
+        NProgress.done()
+      }, 500)
+    }
   }
 }
 </script>
@@ -250,7 +263,8 @@ export default {
 }
 
 .m-search input {
-  color: rgba(255, 255, 255, .9);;
+  color: rgba(255, 255, 255, .9);
+  ;
   border: 0px !important;
   background-color: inherit;
   padding: .67857143em 2.1em .67857143em 1em;

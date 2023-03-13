@@ -226,6 +226,10 @@ footer {
     color: #48dbfb !important;
 }
 
+.m-blue-dark {
+    color: #1e90ff !important;
+}
+
 .m-scaleup {
     transition: .3s ease !important;
 }
