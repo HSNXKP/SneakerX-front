@@ -30,9 +30,13 @@
 
 <script>
 	import {getArchives} from "@/api/archives";
+	import {mapState} from "vuex";
 
 	export default {
 		name: "Archives",
+		computed: {
+			...mapState(['user'])
+		},
 		data() {
 			return {
 				blogMap: {},
@@ -51,7 +55,9 @@
 		},
 		methods: {
 			getArchives() {
-				getArchives().then(res => {
+				const token =window.localStorage.getItem('adminToken')
+				var id= this.user.id
+				getArchives(token,id).then(res => {
 					if (res.code === 200) {
 						this.blogMap = res.data.blogMap
 						this.count = res.data.count

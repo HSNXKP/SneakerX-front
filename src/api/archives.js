@@ -1,8 +1,14 @@
 import axios from '@/plugins/axios'
 
-export function getArchives() {
+export function getArchives(token,id) {
 	return axios({
 		url: 'archives',
-		method: 'GET'
+		method: 'GET',
+		headers: {
+			Authorization: token,
+		},
+		params: {
+			id
+		}
 	})
 }
