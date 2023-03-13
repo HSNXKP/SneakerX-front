@@ -81,8 +81,9 @@ router.beforeEach((to, from, next) => {
 		if (window.localStorage.getItem('token')){
 			next()
 		}else{
+			// 未登录，跳转到登录页面
 			next('/login')
-		}
+				}
 	}else if (to.path === '/home'){
 		if (!window.localStorage.getItem('userInfo') == null){
 			// 将window.localStorage.getItem('userInfo')转换为JSON对象传给store

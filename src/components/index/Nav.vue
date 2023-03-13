@@ -56,7 +56,7 @@
           <el-dropdown-item @click.native="toLogOut">退出登录</el-dropdown-item>
         </el-dropdown-menu>
         <a class=" right item " v-if="!user == ''">
-          <img src="http://localhost/QQ20221014224335.jpg">
+          <img :src="user.avatar">
         </a>
         <!--        未登录状态-->
         <el-button class="right item m-blue-dark" type="text" style="margin-left: 10px" @click="toLogin" v-else >
@@ -173,7 +173,12 @@ export default {
       logOut().then(res => {
         if (res.code === 200) {
           this.$store.commit('user', '')
+          window.localStorage.removeItem('user')
+          window.localStorage.removeItem('token')
+          // 如果不是在首页，跳转到首页
+          if (!this.$route.name === 'home') {
           this.$router.push('home')
+          }
         }
       }).catch(() => {
         this.msgError("请求失败")
