@@ -44,18 +44,19 @@
         </template>
       </el-autocomplete>
       <!--      登录按钮-->
-      <el-dropdown class="right item m-avatar"
+      <el-dropdown class=" item m-avatar"
                    :class="{'m-mobile-hide': mobileHide,'active':$route.name==='about'}"
-                    >
+                   :disabled="!user ==null?true:false" >
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>个人中心</el-dropdown-item>
           <el-dropdown-item>修改密码</el-dropdown-item>
-          <el-dropdown-item>退出登录</el-dropdown-item>
+          <el-dropdown-item @click.native="toLogOut">退出登录</el-dropdown-item>
         </el-dropdown-menu>
-        <a src="http://localhost/QQ20221014224335.jpg" >
+        <a class=" right item" v-if="!user== ''">
+          <img src="http://localhost/QQ20221014224335.jpg" >
         </a>
         <!--        未登录状态-->
-        <el-button type="text" style="margin-left: 10px" @click="toLogin">
+        <el-button type="text" style="margin-left: 10px" @click="toLogin" v-else>
           <i class="user icon"></i>Log in
         </el-button>
       </el-dropdown>
@@ -70,6 +71,7 @@
 
 <script>
 import {getSearchBlogList} from "@/api/blog";
+import {logOut} from "@/api/login";
 import {mapState} from 'vuex'
 
 export default {
@@ -93,7 +95,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['clientSize'])
+    ...mapState(['clientSize', 'user'])
   },
   watch: {
     //路由改变时，收起导航栏
@@ -161,7 +163,17 @@ export default {
       if (item.id) {
         this.$router.push(`/blog/${item.id}`)
       }
-    }
+    },
+    toLogOut() {
+      logOut().then(res =>{
+        if (res.code === 200) {
+          this.$store.commit('user', '')
+          this.$router.push('/home')
+        }
+      }).catch(() => {
+        this.msgError("请求失败")
+      })
+    },
   }
 }
 </script>
@@ -226,11 +238,10 @@ export default {
   padding: 0 !important;
 }
 
-.m-avatar.img {
-  width: 40px;
-  height: 40px;
+.m-avatar img {
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
-  margin-right: 10px;
 }
 
 .m-search {

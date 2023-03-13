@@ -9,3 +9,10 @@ export function login(loginForm) {
 		}
 	})
 }
+
+export function logOut() {
+	return axios({
+		url: 'logOut',
+		method: 'POST'
+	})
+}

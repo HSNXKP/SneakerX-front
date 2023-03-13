@@ -57,12 +57,11 @@ export default {
 				if (valid) {
 					login(this.loginForm).then(res => {
 						if (res.code === 200) {
-							this.msgSuccess(res.msg)
+							this.msgSuccess(res.msg)	
+							console.log(res.data.user)
 							window.localStorage.setItem('userInfo', res.data.user)
 							window.localStorage.setItem('adminToken', res.data.token)
 							this.$store.commit('user', res.data.user)
-							this.$router.push('/home')
-							this.$router.push('/home')
 							this.$router.push('/home')
 						} else {
 							this.msgError(res.msg)

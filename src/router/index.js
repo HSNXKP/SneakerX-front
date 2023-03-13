@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import getPageTitle from '@/util/get-page-title'
-import store from "@/store";
+import store from '@/store'
 
 Vue.use(VueRouter)
 
@@ -84,9 +84,9 @@ router.beforeEach((to, from, next) => {
 			next('/login')
 		}
 	}else if (to.path === '/home'){
-		if (window.localStorage.getItem('userInfo')){
+		if (!window.localStorage.getItem('userInfo') == null){
 			// 将window.localStorage.getItem('userInfo')转换为JSON对象传给store
-			this.$store.commit('user', JSON.parse(window.localStorage.getItem('userInfo')))
+			store.commit('user', JSON.parse(window.localStorage.getItem('userInfo')))
 			next()
 		}else{
 			next()
