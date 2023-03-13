@@ -6,15 +6,26 @@
 		<div class="ui attached segment m-padding-bottom-large">
 			<div class="moments">
 				<div class="moment" v-for="(moment,index) in momentList" :key="index">
+					<!-- 头像 -->
 					<div class="avatar">
-						<img :src="$store.state.introduction.avatar">
+						<img :src="user.avatar">
 					</div>
 					<div class="ui card">
+						<!-- 名字 -->
 						<div class="content m-top">
-							<span style="font-weight: 700">{{ $store.state.introduction.name }}</span>
-							<span class="right floated">{{ moment.createTime | dateFromNow }}</span>
+							<!-- 用户名称 -->
+							<span style="font-weight: 700">{{ user.nickname }}</span>
+							<!-- 时间格式转换 -->
+							<span class="right floated" style="margin-right: 10px;">{{ moment.createTime | dateFromNow }}</span>
+							<!-- 不公开的情况下加锁 -->
+							<span class="ui mini red right corner label" v-if="!moment.published">
+								<i class="arrow alternate lock icon"></i>
+							</span>
 						</div>
-						<div class="content typo" :class="{'privacy':!moment.published}" v-viewer v-html="moment.content"></div>
+						<!-- 内容标题 点击进行编辑 -->
+						<a class="content typo" >{{ moment.title}}</a>
+						<!-- 点赞 -->
+						<!-- 点击like，传入当前的blogId，后端进行点赞校验，进行前端的点赞校验，监听当前的点赞BlogId 暂存到window.localStore中 -->
 						<div class="extra content">
 							<a class="left floated" @click="like(moment.id)">
 								<i class="heart icon" :class="isLike(moment.id)?'like-color':'outline'"></i>{{ moment.likes }}
@@ -23,7 +34,7 @@
 					</div>
 				</div>
 			</div>
-
+			<!-- 分页 -->
 			<el-pagination @current-change="handleCurrentChange" :current-page="pageNum" :page-count="totalPage"
 			               layout="prev, pager, next" background hide-on-single-page class="pagination">
 			</el-pagination>
@@ -33,6 +44,7 @@
 
 <script>
 	import {getMomentListByPageNum, likeMoment} from "@/api/moment";
+	import {mapState} from "vuex";
 
 	export default {
 		name: "Moments",
@@ -53,7 +65,8 @@
 				return function (id) {
 					return this.likeMomentIds.indexOf(id) > -1
 				}
-			}
+			},
+			...mapState(['user'])
 		},
 		watch: {
 			likeMomentIds(newValue) {
@@ -66,7 +79,9 @@
 				//如果有则发送博主身份Token
 				const adminToken = window.localStorage.getItem('adminToken')
 				const token = adminToken ? adminToken : ''
-				getMomentListByPageNum(token, this.pageNum).then(res => {
+				var id = this.user.id
+				console.log(this.pageNum)
+				getMomentListByPageNum(token,id, this.pageNum).then(res => {
 					if (res.code === 200) {
 						this.momentList = res.data.list
 						this.totalPage = res.data.totalPage

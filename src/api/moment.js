@@ -1,21 +1,36 @@
 import axios from '@/plugins/axios'
 
-export function getMomentListByPageNum(token, pageNum) {
+export function getMomentListByPageNum(token, id,pageNum) {
 	return axios({
-		url: 'moments',
+		url: 'bolgTitleById',
 		method: 'GET',
 		headers: {
 			Authorization: token,
 		},
 		params: {
-			pageNum
+			id,
+			pageNum,
 		}
 	})
 }
 
 export function likeMoment(id) {
 	return axios({
-		url: `moment/like/${id}`,
+		url: `moment/likeMoment/${id}`,
 		method: 'POST',
+	})
+}
+
+export function getBlogTitleByUserId(token,pageNum,id) {
+	return axios({
+		url:'bolgTitleById',
+		method: 'GET',
+		headers: {
+			Authorization: token,
+		},
+		params: {
+			pageNum,
+			id
+		}
 	})
 }
