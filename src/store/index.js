@@ -15,7 +15,12 @@ export default new Vuex.Store({
 	getters,
 	plugins: [
 		vuexPersistedstate({
-			storage: window.localStorage
+			storage: window.localStorage,
+			reducer(val) {
+				return {
+					user: val.user
+				}
+			}
 		})
 	],
 })

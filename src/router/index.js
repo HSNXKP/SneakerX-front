@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import getPageTitle from '@/util/get-page-title'
 import store from '@/store'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 
 Vue.use(VueRouter)
 
@@ -32,7 +34,7 @@ const routes = [
 				path: '/blog/:id',
 				name: 'blog',
 				component: () => import('@/views/blog/Blog'),
-				meta: {title: '动态',needLogin: true}
+				meta: {title: '动态'}
 			},
 			{
 				path: '/tag/:name',
@@ -50,7 +52,7 @@ const routes = [
 				path: '/moments',
 				name: 'moments',
 				component: () => import('@/views/moments/Moments'),
-				meta: {title: '动态'}
+				meta: {title: '动态',needLogin: true}
 			},
 			// {
 			// 	path: '/friends',
@@ -77,21 +79,18 @@ const router = new VueRouter({
 
 //挂载路由守卫
 router.beforeEach((to, from, next) => {
-	if (to.needLogin){
-		if (window.localStorage.getItem('token')){
+	if (to.meta.needLogin){
+		if (window.localStorage.getItem('adminToken') != null ){
 			next()
 		}else{
-			// 未登录，跳转到登录页面
-			next('/login')
+			// 延长当前跳转时间 防止页面闪烁
+			NProgress.start()
+			// 延长0.5秒，防止进度条闪烁
+			setTimeout(() => {
+			  next('/login')
+			  NProgress.done()
+			}, 500)
 				}
-	}else if (to.path === '/home'){
-		if (!window.localStorage.getItem('userInfo') == null){
-			// 将window.localStorage.getItem('userInfo')转换为JSON对象传给store
-			store.commit('user', JSON.parse(window.localStorage.getItem('userInfo')))
-			next()
-		}else{
-			next()
-		}
 	}
 	document.title = getPageTitle(to.meta.title)
 	next()

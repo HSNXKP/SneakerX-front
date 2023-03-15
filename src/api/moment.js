@@ -9,7 +9,7 @@ export function getMomentListByPageNum(token, id,pageNum) {
 		},
 		params: {
 			id,
-			pageNum,
+			pageNum
 		}
 	})
 }

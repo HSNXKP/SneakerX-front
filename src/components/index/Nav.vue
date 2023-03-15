@@ -48,20 +48,21 @@
       </el-autocomplete>
 
       <!--      登录按钮-->
-      <el-dropdown class="item m-avatar" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'about' }"
-        :disabled="!user == null ? true : false">
+      <el-dropdown class="item m-avatar" :class="{ 'm-mobile-hide': mobileHide }"
+        :disabled="user == '' ? true : false">
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>个人中心</el-dropdown-item>
           <el-dropdown-item>修改密码</el-dropdown-item>
           <el-dropdown-item @click.native="toLogOut">退出登录</el-dropdown-item>
         </el-dropdown-menu>
+        <!--        已登录状态-->
         <a class=" right item " v-if="!user == ''">
           <img :src="user.avatar">
         </a>
         <!--        未登录状态-->
-        <el-button class="right item m-blue-dark" type="text" style="margin-left: 10px" @click="toLogin" v-else >
-          <i class="user icon"></i>Log in
-        </el-button>
+        <a class="right item m-blue-dark"  @click="toLogin" v-else >
+          <i class="user icon "></i>Log in
+        </a>
       </el-dropdown>
 
       <!--      手机端按钮-->
@@ -100,7 +101,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['clientSize', 'user'])
+    ...mapState(['clientSize', 'user']),
   },
   watch: {
     //路由改变时，收起导航栏
@@ -109,6 +110,7 @@ export default {
     }
   },
   mounted() {
+    console.log(this.$store.state.user),
     //监听页面滚动位置，改变导航栏的显示
     window.addEventListener('scroll', () => {
       //首页且不是移动端
@@ -173,12 +175,10 @@ export default {
       logOut().then(res => {
         if (res.code === 200) {
           this.$store.commit('user', '')
-          window.localStorage.removeItem('user')
-          window.localStorage.removeItem('token')
+          window.localStorage.removeItem('userInfo')
+          window.localStorage.removeItem('adminToken')
           // 如果不是在首页，跳转到首页
-          if (!this.$route.name === 'home') {
-          this.$router.push('home')
-          }
+          this.$router.push('/home')
         }
       }).catch(() => {
         this.msgError("请求失败")
