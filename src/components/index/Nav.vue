@@ -33,6 +33,10 @@
       <!--        <i class="users icon"></i>友人帐-->
       <!--      </router-link>-->
 
+      <router-link to="/sneaker" class="item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'sneaker' }">
+        <i class="comment basketball ball icon"></i>球鞋
+      </router-link>
+
       <router-link to="/about" class="item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'about' }">
         <i class="info icon"></i>关于我们
       </router-link>

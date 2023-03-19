@@ -17,9 +17,12 @@ export function logOut() {
 	})
 }
 
-export function register() {
+export function register(registerForm) {
 	return axios({
 		url: 'register',
-		method: 'POST'
+		method: 'POST',
+		data: {
+			...registerForm
+		}
 	})
 }

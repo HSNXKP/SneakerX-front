@@ -72,10 +72,10 @@ export default {
 				password: ''
 			},
 			registerForm: {
-				username: '',
-				nickname: '',
-				email: '',
-				password: '',
+				username: 'user1',
+				nickname: 'user1',
+				email: '2979554858@qq.com',
+				password: '123456',
 			},
 			loginFormRules: {
 				username: [
@@ -139,8 +139,8 @@ export default {
 					register(this.registerForm).then(res =>{
 						if(res.code === 200){
 							this.msgSuccess(res.msg)
-							// 跳转到home页面
-							this.$router.push('/home')
+							// 跳转登录页面
+							this.toLogin()
 						}else{
 							this.msgError(res.msg)
 						}
