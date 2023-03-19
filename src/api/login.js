@@ -16,3 +16,10 @@ export function logOut() {
 		method: 'POST'
 	})
 }
+
+export function register() {
+	return axios({
+		url: 'register',
+		method: 'POST'
+	})
+}

@@ -54,12 +54,13 @@ const routes = [
 				component: () => import('@/views/moments/Moments'),
 				meta: {title: '动态',needLogin: true}
 			},
-			// {
-			// 	path: '/friends',
-			// 	name: 'friends',
-			// 	component: () => import('@/views/friends/Friends'),
-			// 	meta: {title: '友人帐'}
-			// },
+			{
+				path: '/sneaker',
+				name: 'sneaker',
+				component: () => import('@/views/sneaker/Sneaker'),
+				meta: {title: '球鞋'}
+
+			},
 			{
 				path: '/about',
 				name: 'about',
