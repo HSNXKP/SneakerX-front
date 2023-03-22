@@ -1,7 +1,8 @@
 <template>
 	<div>
 		<div class="ui top attached segment" style="text-align: center">
-			<h2 class="m-text-500">我的动态</h2>
+			<h2 class="m-text-500">我的动态 </h2>
+			
 		</div>
 		<div class="ui attached segment m-padding-bottom-large">
 			<div class="moments">
@@ -23,13 +24,18 @@
 							</span>
 						</div>
 						<!-- 内容标题 点击进行编辑 -->
-						<a class="content typo" >{{ moment.title}}</a>
+						<a class="content typo" >{{ moment.title}} </a>
 						<!-- 点赞 -->
 						<!-- 点击like，传入当前的blogId，后端进行点赞校验，进行前端的点赞校验，监听当前的点赞BlogId 暂存到window.localStore中 -->
 						<div class="extra content">
-							<a class="left floated" @click="like(moment.id)">
-								<i class="heart icon" :class="isLike(moment.id)?'like-color':'outline'"></i>{{ moment.likes }}
+							<a class="left floated">
+								<a  @click="like(moment.id)">
+								<i class="heart icon" :class="isLike(moment.id)?'like-color':'outline'"></i>{{ moment.likes }}</a>
+								<el-button type="text" size="mini"   icon="el-icon-edit"   circle></el-button>
 							</a>
+							
+								
+							
 						</div>
 					</div>
 				</div>

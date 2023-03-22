@@ -50,5 +50,13 @@ export default {
 		avatar: '',
 		role: '',
 		email: ''
+	},
+	// 修改密码框
+	updatePasswordDialogVisible:false,
+	updatePasswordForm:{
+		id:'',
+		oldPassword:'',
+		pass:'',
+		newPassword:''
 	}
 }

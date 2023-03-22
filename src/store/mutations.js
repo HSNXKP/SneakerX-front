@@ -14,7 +14,9 @@ import {
 	SET_FOCUS_MODE,
 	SET_IS_BLOG_TO_HOME,
 	SAVE_CLIENT_SIZE,
-	SAVE_USER
+	SAVE_USER,
+	UPDATE_PASSWORD_DIALOG_VISIBLE,
+	UPDATE_PASSWORD_FORM
 } from "./mutations-types";
 
 export default {
@@ -81,5 +83,8 @@ export default {
 	},
 	[SAVE_USER](state, user) {
 		state.user = user
+	},
+	[UPDATE_PASSWORD_DIALOG_VISIBLE](state,visible){
+		state.updatePasswordDialogVisible=visible
 	}
 }

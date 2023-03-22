@@ -2,6 +2,8 @@
 	<div class="site">
 		<!--顶部导航-->
 		<Nav :blogName="siteInfo.blogName" :categoryList="categoryList"/>
+		<!-- 点击修改密码框 -->
+		<UpdatePasswordDialog/>
 		<!--首页大图 只在首页且pc端时显示-->
 		<div class="m-mobile-hide">
 			<Header v-if="$route.name==='home'"/>
@@ -59,12 +61,13 @@
 	import RandomBlog from "@/components/sidebar/RandomBlog";
 	import Tocbot from "@/components/sidebar/Tocbot";
 	import BlogPasswordDialog from "@/components/index/BlogPasswordDialog";
+	import UpdatePasswordDialog from "@/components/index/UpdatePasswordDialog"
 	import {mapState} from 'vuex'
 	import {SAVE_CLIENT_SIZE, SAVE_INTRODUCTION, SAVE_SITE_INFO, RESTORE_COMMENT_FORM} from "@/store/mutations-types";
 
 	export default {
 		name: "Index",
-		components: {Header, BlogPasswordDialog, Tocbot, RandomBlog, Tags, Nav, Footer, Introduction},
+		components: {Header, BlogPasswordDialog, Tocbot, RandomBlog, Tags, Nav, Footer, Introduction,UpdatePasswordDialog},
 		data() {
 			return {
 				siteInfo: {

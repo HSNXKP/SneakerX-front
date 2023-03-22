@@ -60,6 +60,7 @@
 </template>
 
 <script>
+import {checkEmail} from "@/common/reg";
 import { login,register } from "@/api/login";
 import { mapState } from 'vuex'
 
@@ -68,8 +69,8 @@ export default {
 	data() {
 		return {
 			loginForm: {
-				username: '',
-				password: ''
+				username: 'admin',
+				password: '123456'
 			},
 			registerForm: {
 				username: 'user1',
@@ -94,6 +95,7 @@ export default {
 				],
 				email: [
 					{ required: true, message: '请输入邮箱', trigger: 'blur' },
+					{validator:checkEmail}
 				],
 				password: [
 					{ required: true, message: '请输入密码', trigger: 'blur' },

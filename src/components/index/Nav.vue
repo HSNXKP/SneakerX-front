@@ -29,9 +29,9 @@
         <i class="comment alternate outline icon"></i>动态
       </router-link>
 
-      <!--      <router-link to="/friends" class="item" :class="{'m-mobile-hide': mobileHide,'active':$route.name==='friends'}">-->
-      <!--        <i class="users icon"></i>友人帐-->
-      <!--      </router-link>-->
+           <!-- <router-link to="/friends" class="right item" :class="{'m-mobile-hide': mobileHide,'active':$route.name==='friends'}">
+             <i class="users icon"></i>友人帐
+           </router-link> -->
 
       <router-link to="/sneaker" class="item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'sneaker' }">
         <i class="comment basketball ball icon"></i>球鞋
@@ -56,7 +56,7 @@
         :disabled="user == '' ? true : false">
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>个人中心</el-dropdown-item>
-          <el-dropdown-item>修改密码</el-dropdown-item>
+          <el-dropdown-item @click.native="updatePassword">修改密码</el-dropdown-item>
           <el-dropdown-item @click.native="toLogOut">退出登录</el-dropdown-item>
         </el-dropdown-menu>
         <!--        已登录状态-->
@@ -105,7 +105,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['clientSize', 'user']),
+    ...mapState(['clientSize', 'user','updatePasswordDialogVisible']),
   },
   watch: {
     //路由改变时，收起导航栏
@@ -195,6 +195,9 @@ export default {
         this.$router.push('/login')
         NProgress.done()
       }, 500)
+    },
+    updatePassword(){
+      this.$store.commit('updatePasswordDialogVisible',true)
     }
   }
 }
