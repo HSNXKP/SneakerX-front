@@ -5,6 +5,7 @@
 			
 		</div>
 		<div class="ui attached segment m-padding-bottom-large">
+			<el-empty v-if="this.momentList.length == 0" description="暂无动态 快去发布吧！"></el-empty>
 			<div class="moments">
 				<div class="moment" v-for="(moment,index) in momentList" :key="index">
 					<!-- 头像 -->
@@ -91,6 +92,7 @@
 					if (res.code === 200) {
 						this.momentList = res.data.list
 						this.totalPage = res.data.totalPage
+						console.log(this.momentList)
 					} else {
 						this.msgError(res.msg)
 					}
