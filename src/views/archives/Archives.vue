@@ -1,10 +1,11 @@
 <template>
 	<div>
 		<div class="ui top attached segment" style="text-align: center">
-			<h2 class="m-text-500">动态归档</h2>
+			<h2 class="m-text-500">动态日志</h2>
 			<p>好! 目前共计 {{ count }} 篇动态。 继续努力。</p>
 		</div>
 		<div class="ui attached segment">
+			<el-empty v-if="this.count == 0" description="发布动态才有动态日志哦！"></el-empty>
 			<div class="timeline">
 				<div :class="colorObj[index%5]" v-for="(value,key,index) in blogMap" :key="index">
 					<div class="tl-header">
@@ -21,7 +22,7 @@
 				</div>
 
 				<div class="tl-header">
-					<a class="ui black large label m-text-500">Hello World!</a>
+					<a class="ui black large label m-text-500" v-if="!this.count== 0">All Moments!</a>
 				</div>
 			</div>
 		</div>

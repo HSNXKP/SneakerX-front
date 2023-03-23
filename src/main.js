@@ -13,6 +13,9 @@ import 'semantic-ui-css/semantic.min.css'
 //element-ui
 import Element from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+//mavonEditor
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
 //moment
 import './util/dateTimeFormatUtils.js'
 //v-viewer
@@ -28,6 +31,7 @@ console.log(
 	'background:transparent'
 )
 
+Vue.use(mavonEditor)
 Vue.use(Element)
 Vue.use(Viewer)
 
