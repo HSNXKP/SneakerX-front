@@ -110,6 +110,7 @@
 
 <script>
 import {mapState} from "vuex";
+import {getCategoryAndTag} from "@/api/user";
 
 export default {	
     name:'WriteMoment',
@@ -155,6 +156,7 @@ export default {
 		},
 		created() {
 			this.getData()
+			console.log(this.tagList)
 			if (this.$route.params.id) {
 				this.getBlog(this.$route.params.id)
 			}
@@ -164,7 +166,8 @@ export default {
 				this.$store.commit('addTagDialogVisible',true)
 			},
 			getData() {
-				getCategoryAndTag().then(res => {
+				const token = window.localStorage.getItem('adminToken')
+				getCategoryAndTag(token).then(res => {
 					this.categoryList = res.data.categories
 					this.tagList = res.data.tags
 				})

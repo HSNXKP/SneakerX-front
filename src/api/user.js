@@ -12,3 +12,14 @@ export function updatePassword(token,updatePasswordForm) {
 		}
 	})
 }
+
+
+export function getCategoryAndTag(token) {
+	return axios({
+		url: 'user/categoryAndTag',
+		method: 'GET',
+		headers: {
+			Authorization: token,
+		},
+	})
+}
