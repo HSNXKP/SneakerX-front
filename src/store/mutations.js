@@ -16,7 +16,7 @@ import {
 	SAVE_CLIENT_SIZE,
 	SAVE_USER,
 	UPDATE_PASSWORD_DIALOG_VISIBLE,
-	UPDATE_PASSWORD_FORM
+	ADD_TAG_DIALOG_VISIBLE
 } from "./mutations-types";
 
 export default {
@@ -86,5 +86,8 @@ export default {
 	},
 	[UPDATE_PASSWORD_DIALOG_VISIBLE](state,visible){
 		state.updatePasswordDialogVisible=visible
+	},
+	[ADD_TAG_DIALOG_VISIBLE](state,visible){
+		state.addTagDialogVisible=visible
 	}
 }

@@ -176,13 +176,17 @@ export default {
       }
     },
     toLogOut() {
-      logOut().then(res => {
+      const token = window.localStorage.getItem('adminToken')
+      logOut(token).then(res => {
         if (res.code === 200) {
+          this.msgSuccess(res.msg)
           this.$store.commit('user', '')
           window.localStorage.removeItem('userInfo')
           window.localStorage.removeItem('adminToken')
           // 如果不是在首页，跳转到首页
           this.$router.push('/home')
+        }else{
+          this.msgError(res.msg)
         }
       }).catch(() => {
         this.msgError("请求失败")

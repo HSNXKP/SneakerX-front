@@ -58,5 +58,13 @@ export default {
 		oldPassword:'',
 		pass:'',
 		newPassword:''
+	},
+	// 增加标签框
+	addTagDialogVisible: false,
+	// 增加标签的表单
+	addTagForm:{
+		id:'',
+		name: '',
+		color: ''
 	}
 }

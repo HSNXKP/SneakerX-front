@@ -1,23 +1,23 @@
 <template>
- <el-dialog title="修改密码" :visible.sync="updatePasswordDialogVisible" width="30%" :before-close="updatePasswordDialogClosed">
-            <div>
-              <el-form :model="updatePasswordForm" :rules="rules"  ref="ruleForm" label-width="100px">
-                <el-form-item label="输入旧密码" prop="oldPassword">
-                  <el-input type="password" v-model="updatePasswordForm.oldPassword" autocomplete="off"></el-input>
+			<el-dialog title="修改密码" width="50%" :visible.sync="updatePasswordDialogVisible" :before-close="updatePasswordDialogClosed">
+			<!--内容主体-->
+			<el-form :model="updatePasswordForm" :rules="rules" ref="ruleForm" label-width="80px">
+				<el-form-item label="旧密码" prop="oldPassword" >
+					<el-input type="password"  v-model="updatePasswordForm.oldPassword"></el-input>
+				</el-form-item>
+        <el-form-item label="新密码" prop="pass">
+         <el-input type="password" v-model="updatePasswordForm.pass" ></el-input>
                 </el-form-item>
-                <el-form-item label="输入新密码" prop="pass">
-                  <el-input type="password" v-model="updatePasswordForm.pass" autocomplete="off"></el-input>
+                <el-form-item label="新密码" prop="newPassword">
+                  <el-input type="password" v-model="updatePasswordForm.newPassword" ></el-input>
                 </el-form-item>
-                <el-form-item label="确认新密码" prop="newPassword">
-                  <el-input type="password" v-model="updatePasswordForm.newPassword" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item>
-                  <el-button type="primary" @click="submitPassword">修 改</el-button>
-                  <el-button @click="updatePasswordDialogClosed" >取 消</el-button>
-                </el-form-item>
-              </el-form>
-            </div>
-          </el-dialog>
+			</el-form>
+			<!--底部-->
+			<span slot="footer">
+				<el-button type="primary"  @click="submitPassword">修 改</el-button>
+        <el-button @click="updatePasswordDialogClosed" >取 消</el-button>
+			</span>
+		</el-dialog>
 </template>
 
 <script>
@@ -75,8 +75,10 @@ export default {
         this.updatePasswordForm.id=this.$store.state.user.id
         this.$refs.ruleForm.validate(valid => {
             if (valid) {
-                updatePassword(this.updatePasswordForm).then(res =>{
+              const token = window.localStorage.getItem('adminToken')
+                updatePassword(token,this.updatePasswordForm).then(res =>{
                     if (res.code === 200) {
+                        this.msgSuccess(res.msg)
                         this.updatePasswordDialogClosed()
                         this.$store.commit('user', '')
                         window.localStorage.removeItem('userInfo')

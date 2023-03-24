@@ -1,9 +1,12 @@
 import axios from '@/plugins/axios'
 
-export function updatePassword(updatePasswordForm) {
+export function updatePassword(token,updatePasswordForm) {
 	return axios({
-		url: 'updatePassword',
+		url: 'user/updatePassword',
 		method: 'POST',
+		headers: {
+			Authorization: token,
+		},
 		data: {
 			...updatePasswordForm
 		}
