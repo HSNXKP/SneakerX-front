@@ -34,3 +34,16 @@ export function getBlogTitleByUserId(token,pageNum,id) {
 		}
 	})
 }
+
+export function deleteBlogById(token,id){
+	return axios({
+		url:'user/deleteBlog',
+		method: 'GET',
+		headers: {
+			Authorization: token,
+		},
+		params: {
+			id
+		}
+	})
+}
