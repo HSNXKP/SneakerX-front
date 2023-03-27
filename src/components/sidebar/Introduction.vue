@@ -135,7 +135,7 @@
 	}
 </style>
 
-<style>
+<style scoped>
 	.el-collapse-item {
 		padding-left: 15px;
 		padding-right: 15px;

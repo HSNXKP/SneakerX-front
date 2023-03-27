@@ -1,106 +1,82 @@
 <template>
-	<div>
-    <div class="ui top segment" style="text-align: center">
+	<div >
+		<el-empty class="ui top segment" description="未登录 不能发布动态！"  v-if="this.user == '' " ></el-empty>
+    <div class="ui top segment" style="text-align: center" v-else> 
 		<h2 class="m-text-500">发布动态 </h2>
-      <el-form :model="form" :rules="formRules" ref="formRef" label-position="top">
+        <el-form :model="form" :rules="formRules" ref="formRef" label-position="top">
 			<el-row :gutter="10">
 				<el-col :span="12">
-					<el-form-item align="left"  label="文章标题" prop="title">
+					<!-- 动态标题 -->
+					<el-form-item align="left"  label="动态标题" prop="title">
 						<el-input v-model="form.title" placeholder="请输入标题"></el-input>
 					</el-form-item>
 				</el-col>
 				<el-col :span="12">
-					<el-form-item  align="left" label="文章首图URL" prop="firstPicture">
-						<el-input v-model="form.firstPicture" placeholder="文章首图，用于随机文章展示"></el-input>
+					<!--用于动态随机展示图片  -->
+					<el-form-item  align="left" label="用于动态随机展示图片" prop="firstPicture">
+						<el-input v-model="form.firstPicture" placeholder="请输入图片的URL"></el-input>
 					</el-form-item>
 				</el-col>
 			</el-row>
 
-			<el-form-item  align="left" label="文章描述" prop="description">
+			<!-- 动态描述 -->
+			<el-form-item  align="left" label="动态描述" prop="description">
 				<mavon-editor style="z-index :1" v-model="form.description"/>
 			</el-form-item>
 
-			<el-form-item align="left" label="文章正文" prop="content">
+			<!-- 动态正文 -->
+			<el-form-item align="left" label="动态正文" prop="content">
 				<mavon-editor style="z-index :1" v-model="form.content"/>
 			</el-form-item>
 
 			<el-row :gutter="20">
 				<el-col :span="12">
+					<!-- 球鞋分类 -->
 					<el-form-item align="left" label="球鞋分类" prop="cate">
-						<el-select v-model="form.cate" placeholder="请选择球鞋分类" :allow-create="true" :filterable="true" style="width: 100%;">
+						<el-select v-model="form.cate" placeholder="请选择球鞋的分类" :allow-create="true" :filterable="true"  style="width: 100%;">
 							<el-option :label="item.name" :value="item.id" v-for="item in categoryList" :key="item.id"></el-option>
 						</el-select>
 					</el-form-item>
 				</el-col>
-				<el-col :span="12">
-					<el-form-item  align="left" label="选择你的动态标签"   prop="tagList">
+				<el-col :span="12">	
+					<!--选择你的动态标签  -->
+					<el-form-item  align="left" label="请选择发布动态的标签"   prop="tagList">
 						<el-select v-model="form.tagList" placeholder="请选择动态标签" :allow-create="true" :filterable="true" :multiple="true" style="width: 100%;">
 							<el-option :label="item.name" :value="item.id" v-for="item in tagList" :key="item.id"></el-option>
 						</el-select>
-						
 					</el-form-item>
 				</el-col>
 			</el-row>
-<!-- 
-			<el-row :gutter="20">
-				<el-col :span="8">
-					<el-form-item label="字数" prop="words">
-						<el-input v-model="form.words" placeholder="请输入文章字数（自动计算阅读时长）" type="number"></el-input>
-					</el-form-item>
-				</el-col>
-				<el-col :span="8">
-					<el-form-item label="阅读时长(分钟)" prop="readTime">
-						<el-input v-model="form.readTime" placeholder="请输入阅读时长（可选）默认 Math.round(字数 / 200)" type="number"></el-input>
-					</el-form-item>
-				</el-col>
-				<el-col :span="8">
-					<el-form-item label="浏览次数" prop="views">
-						<el-input v-model="form.views" placeholder="请输入文章字数（可选）默认为 0" type="number"></el-input>
-					</el-form-item>
-				</el-col>
-			</el-row> -->
-
+		
 			<el-form-item style="text-align: right;">
+					<!-- 请选择可见范围 下拉框 -->
+				<el-select size="mini" style="margin-right: 10px;" v-model="radio" placeholder="请选择可见范围" >
+					<el-option label="所有人可见" :value="1" @click.native="dialogVisible=true"></el-option>
+					<el-option label="仅自己可见" :value="2"></el-option>
+					<el-option label="使用密码可见" :value="3"  @click.native="dialogVisible=true"></el-option>
+				</el-select>
+				<!-- 添加标签 -->
 				<el-button type="primary" size="mini" icon="el-icon-plus" @click="addTagDialog">添加标签</el-button>
-				<el-button type="primary" size="mini" @click="dialogVisible=true">保存</el-button>
+				<!-- 提交表单 -->
+				<el-button type="primary" size="mini" @click="submit">发布</el-button>
 			</el-form-item>
 		</el-form>
 
-		<!--编辑可见性状态对话框-->
-		<el-dialog title="博客可见性" width="30%" :visible.sync="dialogVisible">
+		<!--请输入动态的密码 对话框-->
+		<el-dialog :title="this.radio == 1 ?'评论功能':'设置密码' " width="50%" :visible.sync="dialogVisible" :before-close="dialogVisible">
 			<!--内容主体-->
-			<el-form label-width="50px" @submit.native.prevent>
-				<el-form-item>
-					<el-radio-group v-model="radio">
-						<el-radio :label="1">公开</el-radio>
-						<el-radio :label="2">私密</el-radio>
-						<el-radio :label="3">密码保护</el-radio>
-					</el-radio-group>
+			<el-form  label-width="80px">
+				<el-form-item label="密码" prop="password" v-if="this.radio==3">
+					<el-input type="password"  v-model="form.password"></el-input>
 				</el-form-item>
-				<el-form-item label="密码" v-if="radio===3">
-					<el-input v-model="form.password"></el-input>
-				</el-form-item>
-				<el-form-item v-if="radio!==2">
-					<el-row>
-						<el-col :span="6">
-							<el-switch v-model="form.appreciation" active-text="赞赏"></el-switch>
-						</el-col>
-						<el-col :span="6">
-							<el-switch v-model="form.recommend" active-text="推荐"></el-switch>
-						</el-col>
-						<el-col :span="6">
-							<el-switch v-model="form.commentEnabled" active-text="评论"></el-switch>
-						</el-col>
-						<el-col :span="6">
-							<el-switch v-model="form.top" active-text="置顶"></el-switch>
-						</el-col>
-					</el-row>
+				<el-form-item style="float: left;"  label="评论" >
+					<el-switch v-model="form.commentEnabled" ></el-switch>
 				</el-form-item>
 			</el-form>
 			<!--底部-->
 			<span slot="footer">
-				<el-button @click="dialogVisible=false">取 消</el-button>
-				<el-button type="primary" @click="submit">保存</el-button>
+				<el-button type="primary"  @click="blogStatus">确 定</el-button>
+        		<el-button @click="dialogVisible" >取 消</el-button>
 			</span>
 		</el-dialog>
     </div>
@@ -111,6 +87,7 @@
 <script>
 import {mapState} from "vuex";
 import {getCategoryAndTag} from "@/api/user";
+import {saveBlog} from "@/api/blog";
 
 export default {	
     name:'WriteMoment',
@@ -119,35 +96,35 @@ export default {
           categoryList: [],
 				tagList: [],
 				dialogVisible: false,
-				radio: 1,
+				radio: '',
 				form: {
+					id:'',
 					title: '',
 					firstPicture: '',
 					description: '',
 					content: '',
 					cate: null,
 					tagList: [],
-					words: null,
-					readTime: null,
+					words: 0,
+					readTime: 0,
 					views: 0,
 					appreciation: false,
 					recommend: false,
-					commentEnabled: false,
+					commentEnabled: true,
 					top: false,
 					published: false,
 					password: '',
 				},
 				formRules: {
-					title: [{required: true, message: '请输入标题', trigger: 'change'}],
-					firstPicture: [{required: true, message: '请输入首图链接', trigger: 'change'}],
-					cate: [{required: true, message: '请选择分类', trigger: 'change'}],
-					tagList: [{required: true, message: '请选择标签', trigger: 'change'}],
-					words: [{required: true, message: '请输入文章字数', trigger: 'change'}],
+					title: [{required: true, message: '请输入标题'}],
+					firstPicture: [{required: true, message: '请输入首图链接'}],
+					cate: [{required: true, message: '请选择分类'}],
+					tagList: [{required: true, message: '请选择标签'}],
 				},
         }
     },
 	computed: {
-    ...mapState(['addTagDialogVisible']),
+    ...mapState(['addTagDialogVisible','user']),
     },
     watch: {
 			'form.words'(newValue) {
@@ -156,7 +133,6 @@ export default {
 		},
 		created() {
 			this.getData()
-			console.log(this.tagList)
 			if (this.$route.params.id) {
 				this.getBlog(this.$route.params.id)
 			}
@@ -172,6 +148,7 @@ export default {
 					this.tagList = res.data.tags
 				})
 			},
+			// 获取博客进行编辑
 			getBlog(id) {
 				getBlogById(id).then(res => {
 					this.computeCategoryAndTag(res.data)
@@ -179,6 +156,7 @@ export default {
 					this.radio = this.form.published ? (this.form.password !== '' ? 3 : 1) : 2
 				})
 			},
+			// 将当前编辑的分类和标签的id存入blog对象中
 			computeCategoryAndTag(blog) {
 				blog.cate = blog.category.id
 				blog.tagList = []
@@ -186,39 +164,41 @@ export default {
 					blog.tagList.push(item.id)
 				})
 			},
-			submit() {
+			blogStatus(){
 				if (this.radio === 3 && (this.form.password === '' || this.form.password === null)) {
 					return this.msgError("密码保护模式必须填写密码！")
 				}
+				if(this.radio === 2 ){
+					this.form.published = false
+				}else {	
+					this.form.published = true
+				}
+				this.dialogVisible = false
+				this.msgSuccess("设置成功")
+			},
+			submit() {
 				this.$refs.formRef.validate(valid => {
 					if (valid) {
-						if (this.radio === 2) {
-							this.form.appreciation = false
-							this.form.recommend = false
-							this.form.commentEnabled = false
-							this.form.top = false
-							this.form.published = false
-						} else {
-							this.form.published = true
-						}
-						if (this.radio !== 3) {
-							this.form.password = ''
-						}
+						if(this.radio === ''){
+					     return this.msgError("请选择动态可见范围")
+				         }
 						if (this.$route.params.id) {
 							this.form.category = null
 							this.form.tags = null
 							updateBlog(this.form).then(res => {
 								this.msgSuccess(res.msg)
-								this.$router.push('/blog/list')
+								//this.$router.push('/blog/list')
 							})
 						} else {
-							saveBlog(this.form).then(res => {
+							this.form.id=this.user.id
+							const token = window.localStorage.getItem('adminToken')
+							saveBlog(token,this.form).then(res => {
 								this.msgSuccess(res.msg)
-								this.$router.push('/blog/list')
+								this.$refs.formRef.resetFields()
+								//this.$router.push('/blog/list')
 							})
 						}
 					} else {
-						this.dialogVisible = false
 						return this.msgError('请填写必要的表单项')
 					}
 				})
@@ -228,6 +208,6 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 </style>

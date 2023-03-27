@@ -10,13 +10,10 @@ export function login(loginForm) {
 	})
 }
 
-export function logOut(token) {
+export function logOut() {
 	return axios({
-		url: 'user/logOut',
+		url: 'logOut',
 		method: 'POST',
-		headers: {
-			Authorization: token,
-		},
 	})
 }
 

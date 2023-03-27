@@ -31,12 +31,11 @@
 						<div class="extra content">
 							<a class="left floated">
 								<a  @click="like(moment.id)">
-								<i class="heart icon" :class="isLike(moment.id)?'like-color':'outline'"></i>{{ moment.likes }}</a>
-								<el-button type="text" size="mini"   icon="el-icon-edit"   circle></el-button>
+								<i class="heart icon" :class="isLike(moment.id)?'like-color':'outline'" ></i>{{ moment.likes === 0?' ':moment.likes }}</a>
+								<el-button type="text" size="mini"   icon="el-icon-edit"  @click="editBlog" ></el-button>
+								<el-button type="text" size="mini"   icon="el-icon-delete" @click="deleteBlog"   ></el-button>								
 							</a>
-							
-								
-							
+
 						</div>
 					</div>
 				</div>
@@ -137,6 +136,40 @@
 						type: 'error'
 					})
 				})
+			},
+			deleteBlog(){
+				this.$confirm('此操作将永久删除该动态, 是否继续?', '提示', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+					type: 'warning'
+				}).then(() => {
+					this.$message({
+						type: 'success',
+						message: '删除成功!'
+					});
+				}).catch(() => {
+					this.$message({
+						type: 'info',
+						message: '已取消删除'
+					});
+				});
+			},
+			editBlog(){
+				this.$confirm('此操作修改该动态, 是否继续?', '提示', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+					type: 'warning'
+				}).then(() => {
+					this.$message({
+						type: 'success',
+						message: '修改成功!'
+					});
+				}).catch(() => {
+					this.$message({
+						type: 'info',
+						message: '已取消修改'
+					});
+				});
 			}
 		}
 	}
