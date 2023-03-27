@@ -33,15 +33,4 @@ export function getSearchBlogList(query) {
 	})
 }
 
-export function saveBlog(token,form) {
-	return axios({
-		url: 'user/blog',
-		method: 'POST',
-		headers: {
-			Authorization: token,
-		},
-		data: {
-			...form
-		}
-	})
-}
+

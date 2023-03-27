@@ -25,14 +25,14 @@
 							</span>
 						</div>
 						<!-- 内容标题 点击进行编辑 -->
-						<a class="content typo" >{{ moment.title}} </a>
+						<a class="content typo" @click="toBlog(moment.id)" >{{ moment.title}} </a>
 						<!-- 点赞 -->
 						<!-- 点击like，传入当前的blogId，后端进行点赞校验，进行前端的点赞校验，监听当前的点赞BlogId 暂存到window.localStore中 -->
 						<div class="extra content">
 							<a class="left floated">
 								<a  @click="like(moment.id)">
 								<i class="heart icon" :class="isLike(moment.id)?'like-color':'outline'" ></i>{{ moment.likes === 0?' ':moment.likes }}</a>
-								<el-button type="text" size="mini"   icon="el-icon-edit"  @click="editBlog" ></el-button>
+								<el-button type="text" size="mini"   icon="el-icon-edit"  @click="editBlog(moment.id)" ></el-button>
 								<el-button type="text" size="mini"   icon="el-icon-delete" @click="deleteBlog(moment.id)"   ></el-button>								
 							</a>
 
@@ -159,22 +159,22 @@
 					});
 				});
 			},
-			editBlog(){
+			editBlog(id){
 				this.$confirm('此操作修改该动态, 是否继续?', '提示', {
 					confirmButtonText: '确定',
 					cancelButtonText: '取消',
 					type: 'warning'
 				}).then(() => {
-					this.$message({
-						type: 'success',
-						message: '修改成功!'
-					});
+					this.$router.push(`/blog/edit/${id}`)
 				}).catch(() => {
 					this.$message({
 						type: 'info',
 						message: '已取消修改'
 					});
 				});
+			},
+			toBlog(id){
+				this.$router.push(`/blog/${id}`)
 			}
 		}
 	}

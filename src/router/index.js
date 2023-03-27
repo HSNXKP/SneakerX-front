@@ -72,7 +72,13 @@ const routes = [
 				name: 'writeMoment',
 				component: () => import('@/views/moments/WriteMoment'),
 				meta : {title: '写动态',needLogin:true}
-			}
+			},
+			{
+				path: '/blog/edit/:id',
+				name: 'editBlog',
+				component: () => import('@/views/moments/WriteMoment'),
+				meta: {title: '编辑动态', icon: 'el-icon-edit'},
+			},
 		]
 	}
 ]

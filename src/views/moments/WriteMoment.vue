@@ -52,7 +52,7 @@
 					<!-- 请选择可见范围 下拉框 -->
 				<el-select size="mini" style="margin-right: 10px;" v-model="radio" placeholder="请选择可见范围" >
 					<el-option label="所有人可见" :value="1" @click.native="dialogVisible=true"></el-option>
-					<el-option label="仅自己可见" :value="2"></el-option>
+					<el-option label="仅自己可见" :value="2" @click.native="blogStatus"></el-option>
 					<el-option label="使用密码可见" :value="3"  @click.native="dialogVisible=true"></el-option>
 				</el-select>
 				<!-- 添加标签 -->
@@ -87,7 +87,7 @@
 <script>
 import {mapState} from "vuex";
 import {getCategoryAndTag} from "@/api/user";
-import {saveBlog} from "@/api/blog";
+import {saveBlog,getBlogById,updateBlog} from "@/api/moment";
 
 export default {	
     name:'WriteMoment',
@@ -114,6 +114,7 @@ export default {
 					top: false,
 					published: false,
 					password: '',
+					likes:''
 				},
 				formRules: {
 					title: [{required: true, message: '请输入标题'}],
@@ -121,6 +122,7 @@ export default {
 					cate: [{required: true, message: '请选择分类'}],
 					tagList: [{required: true, message: '请选择标签'}],
 				},
+				token: window.localStorage.getItem('adminToken')
         }
     },
 	computed: {
@@ -142,15 +144,14 @@ export default {
 				this.$store.commit('addTagDialogVisible',true)
 			},
 			getData() {
-				const token = window.localStorage.getItem('adminToken')
-				getCategoryAndTag(token).then(res => {
+				getCategoryAndTag(this.token).then(res => {
 					this.categoryList = res.data.categories
 					this.tagList = res.data.tags
 				})
 			},
 			// 获取博客进行编辑
 			getBlog(id) {
-				getBlogById(id).then(res => {
+				getBlogById(this.token,id).then(res => {
 					this.computeCategoryAndTag(res.data)
 					this.form = res.data
 					this.radio = this.form.published ? (this.form.password !== '' ? 3 : 1) : 2
@@ -168,6 +169,8 @@ export default {
 				if (this.radio === 3 && (this.form.password === '' || this.form.password === null)) {
 					return this.msgError("密码保护模式必须填写密码！")
 				}
+				// 更新动态以后设置密码为0
+				this.form.password=''
 				if(this.radio === 2 ){
 					this.form.published = false
 				}else {	
@@ -185,17 +188,28 @@ export default {
 						if (this.$route.params.id) {
 							this.form.category = null
 							this.form.tags = null
-							updateBlog(this.form).then(res => {
+							this.form.id=this.$route.params.id
+							updateBlog(this.token,this.form).then(res => {
+								if(res.code === 200){
 								this.msgSuccess(res.msg)
+								this.$refs.formRef.resetFields()	
+								this.$router.push('/moments')
+								}else{
+									this.msgError(res.msg)
+								}	
 								//this.$router.push('/blog/list')
 							})
 						} else {
 							this.form.id=this.user.id
-							const token = window.localStorage.getItem('adminToken')
-							saveBlog(token,this.form).then(res => {
+							saveBlog(this.token,this.form).then(res => {
+								if(res.code === 200){
 								this.msgSuccess(res.msg)
 								this.$refs.formRef.resetFields()
-								//this.$router.push('/blog/list')
+								this.$router.push('/moments')
+								}else{
+									this.msgError(res.msg)
+								}
+								
 							})
 						}
 					} else {
