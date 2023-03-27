@@ -188,7 +188,6 @@ export default {
 						if (this.$route.params.id) {
 							this.form.category = null
 							this.form.tags = null
-							this.form.id=this.$route.params.id
 							updateBlog(this.token,this.form).then(res => {
 								if(res.code === 200){
 								this.msgSuccess(res.msg)
