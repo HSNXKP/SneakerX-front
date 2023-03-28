@@ -20,9 +20,14 @@
 							<!-- 时间格式转换 -->
 							<span class="right floated" style="margin-right: 10px;">{{ moment.createTime | dateFromNow }}</span>
 							<!-- 不公开的情况下加锁 -->
-							<span class="ui mini red right corner label" v-if="!moment.published">
+							<span class="ui mini red right corner label" v-if="!moment.isPublished">
 								<i class="arrow alternate lock icon"></i>
+							
 							</span>
+							<span class="ui mini red right corner label" v-if="moment.privacy">
+								<i class="arrow alternate edit icon"></i>
+							</span>
+							
 						</div>
 						<!-- 内容标题 点击进行编辑 -->
 						<a class="content typo" @click="toBlog(moment.id)" >{{ moment.title}} </a>

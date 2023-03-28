@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="ui top attached segment" style="text-align: center">
-			<h2 class="m-text-500">动态日志</h2>
+			<h2 class="m-text-500">动态日志 </h2>
 			<p>好! 目前共计 {{ count }} 篇动态。 继续努力。</p>
 		</div>
 		<div class="ui attached segment">
@@ -15,7 +15,11 @@
 						<div class="tl-wrap">
 							<span class="tl-date">{{ blog.day }}</span>
 							<a href="javascript:;" @click.prevent="toBlog(blog)">
-								<div class="ui left pointing label tl-title">{{ blog.title }}</div>
+								<div class="ui left pointing label tl-title">{{ blog.title }}
+									<!-- 不公开的情况下加锁 -->
+									<i class="arrow red mini  alternate lock icon" v-if="!blog.isPublished"></i>
+									<i class="arrow  red mini  alternate edit icon" v-if="blog.privacy"></i>
+							</div>
 							</a>
 						</div>
 					</div>
@@ -60,6 +64,7 @@
 				var id= this.user.id
 				getArchives(token,id).then(res => {
 					if (res.code === 200) {
+						console.log(res.data)
 						this.blogMap = res.data.blogMap
 						this.count = res.data.count
 					} else {

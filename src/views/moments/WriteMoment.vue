@@ -169,8 +169,6 @@ export default {
 				if (this.radio === 3 && (this.form.password === '' || this.form.password === null)) {
 					return this.msgError("密码保护模式必须填写密码！")
 				}
-				// 更新动态以后设置密码为0
-				this.form.password=''
 				if(this.radio === 2 ){
 					this.form.published = false
 				}else {	
@@ -178,6 +176,7 @@ export default {
 				}
 				this.dialogVisible = false
 				this.msgSuccess("设置成功")
+				console.log(this.form.password+1)
 			},
 			submit() {
 				this.$refs.formRef.validate(valid => {
