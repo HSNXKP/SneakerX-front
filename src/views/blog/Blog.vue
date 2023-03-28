@@ -147,7 +147,7 @@
 				const blogToken = window.localStorage.getItem(`blog${id}`)
 				//如果有则发送博主身份Token
 				const adminToken = window.localStorage.getItem('adminToken')
-				const token = adminToken ? adminToken : (blogToken ? blogToken : '')
+				const token = blogToken ? blogToken : (adminToken ? adminToken : '')
 				getBlogById(token, id).then(res => {
 					if (res.code === 200) {
 						this.blog = res.data
