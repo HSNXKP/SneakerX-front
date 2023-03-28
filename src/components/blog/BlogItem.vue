@@ -16,17 +16,25 @@
 					<div class="row m-padded-tb-small">
 						<div class="ui horizontal link list m-center">
 							<div class="item m-datetime">
-								<i class="small calendar icon"></i><span>{{ item.createTime | dateFormat('YYYY-MM-DD')}}</span>
+								<i class="small calendar alternate outline icon"></i><span>{{ item.createTime | dateFormat('YYYY-MM-DD')}}</span>
+							</div>
+							<div class="item m-common-black">
+								<i class="small  user  icon"></i><span>{{ item.user.username }}</span>
+							</div>
+							<div class="item m-common-red">
+								<i class="small  heart  icon"></i><span>{{ item.likes }}</span>
 							</div>
 							<div class="item m-views">
 								<i class="small eye icon"></i><span>{{ item.views }}</span>
 							</div>
+							<!-- 
 							<div class="item m-common-black">
 								<i class="small pencil alternate icon"></i><span>字数≈{{ item.words }}字</span>
 							</div>
 							<div class="item m-common-black">
 								<i class="small clock icon"></i><span>阅读时长≈{{ item.readTime }}分</span>
 							</div>
+							-->
 						</div>
 					</div>
 					<!--分类-->

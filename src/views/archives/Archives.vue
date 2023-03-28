@@ -14,7 +14,7 @@
 					<div class="tl-item" v-for="blog in value" :key="blog.id">
 						<div class="tl-wrap">
 							<span class="tl-date">{{ blog.day }}</span>
-							<a href="javascript:;" @click.prevent="toBlog(blog)">
+							<a href="javascript:;" @click.prevent="toBlog(blog.id)">
 								<div class="ui left pointing label tl-title">{{ blog.title }}
 									<!-- 不公开的情况下加锁 -->
 									<i class="arrow red mini  alternate lock icon" v-if="!blog.isPublished"></i>
@@ -74,8 +74,8 @@
 					this.msgError("请求失败");
 				})
 			},
-			toBlog(blog) {
-				this.$store.dispatch('goBlogPage', blog)
+			toBlog(id) {
+				this.$router.push(`/blog/${id}`)
 			}
 		}
 	}

@@ -152,9 +152,14 @@ export default {
 			// 获取博客进行编辑
 			getBlog(id) {
 				getBlogById(this.token,id).then(res => {
+					if(res.code === 200){
 					this.computeCategoryAndTag(res.data)
 					this.form = res.data
 					this.radio = this.form.published ? (this.form.password !== '' ? 3 : 1) : 2
+					}else{
+						this.msgError(res.msg)
+					}
+				
 				})
 			},
 			// 将当前编辑的分类和标签的id存入blog对象中

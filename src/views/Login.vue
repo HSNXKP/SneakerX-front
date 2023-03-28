@@ -30,7 +30,7 @@
 				<img src="/img/avatar.jpg" alt="">
 			</a>
 			<a class="ui large red right corner label"   @click="toLogin">
-				<i class="arrow alternate circle up icon"></i>
+				<i class="arrow alternate circle down icon"></i>
 			</a>
 			<!--注册表单-->
 			<el-form ref="registerFormRef" :model="registerForm" :rules="registerFormRules" class="register_form">
@@ -121,8 +121,7 @@ export default {
 					login(this.loginForm).then(res => {
 						if (res.code === 200) {
 							this.msgSuccess(res.msg)	
-							console.log(res.data.user)
-							window.localStorage.setItem('userInfo', res.data.user)
+							window.localStorage.setItem('userInfo', JSON.stringify(res.data.user))
 							window.localStorage.setItem('adminToken', res.data.token)
 							this.$store.commit('user', res.data.user)
 							this.$router.push('/home')

@@ -271,7 +271,7 @@ footer {
 }
 
 .m-common-black {
-    color: #000 !important;
+    color: green !important;
 }
 
 .m-common-black * {
@@ -285,6 +285,25 @@ footer {
 .m-common-black i {
     margin-right: 3px !important;
 }
+
+
+.m-common-red {
+    color: red   !important;
+}
+
+.m-common-red * {
+    vertical-align: middle !important;
+}
+
+.m-common-red * * {
+    vertical-align: middle !important;
+}
+
+.m-common-red i {
+    margin-right: 3px !important;
+}
+
+
 
 .m-big-fontsize p, .m-big-fontsize ul, .m-big-fontsize ol {
     font-size: 17px !important;
