@@ -6,8 +6,10 @@
 			<el-button class="m-small" size="mini" type="primary" @click="$store.commit(SET_PARENT_COMMENT_ID, -1)" v-show="parentCommentId!==-1">取消回复</el-button>
 		</h3>
 		<el-form :inline="true" :model="commentForm" :rules="formRules" ref="formRef" size="small">
+			<!-- 评论内容 -->
 			<el-input :class="'textarea'" type="textarea" :rows="5" v-model="commentForm.content" placeholder="评论千万条，友善第一条"
 			          maxlength="250" show-word-limit :validate-event="false"></el-input>
+					  <!-- emoji表情 -->
 			<div class="el-form-item el-form-item--small emoji">
 				<img src="https://cdn.naccl.top/blog/img/paopao/1.png" @click="showEmojiBox">
 				<div class="mask" v-show="emojiShow" @click="hideEmojiBox"></div>
@@ -43,18 +45,21 @@
 					</div>
 				</div>
 			</div>
+			<!-- 昵称 -->
 			<el-form-item prop="nickname">
-				<el-popover ref="nicknamePopover" placement="bottom" trigger="focus" content="输入QQ号将自动拉取昵称和头像"></el-popover>
+				<el-popover ref="nicknamePopover" placement="bottom" trigger="focus" content="输入昵称默认匿名头像"></el-popover>
 				<el-input v-model="commentForm.nickname" placeholder="昵称（必填）" :validate-event="false" v-popover:nicknamePopover>
 					<i slot="prefix" class="el-input__icon el-icon-user"></i>
 				</el-input>
 			</el-form-item>
+			<!-- 邮箱 -->
 			<el-form-item prop="email">
 				<el-popover ref="emailPopover" placement="bottom" trigger="focus" content="用于接收回复邮件"></el-popover>
 				<el-input v-model="commentForm.email" placeholder="邮箱（必填）" :validate-event="false" v-popover:emailPopover>
 					<i slot="prefix" class="el-input__icon el-icon-message"></i>
 				</el-input>
 			</el-form-item>
+			<!-- 网址 -->
 			<el-form-item prop="website">
 				<el-popover ref="websitePopover" placement="bottom" trigger="focus" content="可以让我参观一下吗😊"></el-popover>
 				<el-input v-model="commentForm.website" placeholder="https://（可选）" :validate-event="false" v-popover:websitePopover>

@@ -52,6 +52,7 @@ export default {
 					if (comment.content.indexOf('@[') != -1) {
 						convertEmoji(comment)
 					}
+					// 子评论
 					comment.replyComments.forEach(comment => {
 						//转义评论中的html
 						comment.content = sanitizeHtml(comment.content, sanitizeHtmlConfig)
@@ -67,6 +68,7 @@ export default {
 			Message.error("请求失败")
 		})
 	},
+	// 1.提交评论表单
 	submitCommentForm({rootState, dispatch, commit}, token) {
 		let form = {...rootState.commentForm}
 		form.page = rootState.commentQuery.page

@@ -49,7 +49,8 @@ export default {
 		password:'',
 		avatar: '',
 		role: '',
-		email: ''
+		email: '',
+		userFlag:''
 	},
 	// 修改密码框
 	updatePasswordDialogVisible:false,

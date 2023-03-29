@@ -35,9 +35,13 @@
 		methods: {
 			init() {
 				//重置评论表单位置
+				// 进入评论input的parentId为-1
 				this.$store.commit(SET_PARENT_COMMENT_ID, -1)
+				// page:0 为普通动态
 				this.$store.commit(SET_COMMENT_QUERY_PAGE, this.page)
+				// 跳转到blog的时候会携带Blogid
 				this.$store.commit(SET_COMMENT_QUERY_BLOG_ID, this.blogId)
+				// 当前页数：1
 				this.$store.commit(SET_COMMENT_QUERY_PAGE_NUM, 1)
 				this.$store.dispatch('getCommentList')
 			}
