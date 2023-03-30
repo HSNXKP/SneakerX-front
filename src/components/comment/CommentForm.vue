@@ -60,17 +60,17 @@
 				</el-input>
 			</el-form-item>
 			<!-- 网址 -->
-			<el-form-item prop="website">
+			<!-- <el-form-item prop="website">
 				<el-popover ref="websitePopover" placement="bottom" trigger="focus" content="可以让我参观一下吗😊"></el-popover>
 				<el-input v-model="commentForm.website" placeholder="https://（可选）" :validate-event="false" v-popover:websitePopover>
 					<i slot="prefix" class="el-input__icon el-icon-map-location"></i>
 				</el-input>
-			</el-form-item>
-			<el-form-item label="订阅回复">
+			</el-form-item> -->
+			<!-- <el-form-item label="订阅回复">
 				<el-switch v-model="commentForm.notice"></el-switch>
-			</el-form-item>
+			</el-form-item> -->
 			<el-form-item>
-				<el-button type="primary" size="medium" v-throttle="[postForm,`click`,3000]">发表评论</el-button>
+				<el-button type="primary" size="small" v-throttle="[postForm,`click`,3000]">发表评论</el-button>
 			</el-form-item>
 		</el-form>
 	</div>
@@ -106,10 +106,6 @@
 					email: [
 						{required: true, message: '请输入评论邮箱'},
 						{validator: checkEmail}
-					],
-					website: [
-						{required: false},
-						{validator: validateWebsite}
 					]
 				},
 				emojiShow: false,
@@ -155,6 +151,7 @@
 			},
 			postForm() {
 				const adminToken = window.localStorage.getItem('adminToken')
+				// 如果登录了并且已经通过第一次的密码校验了，就直接发送adminToken，不用再请求blogToken了。 后端无法做判断
 				if (adminToken) {
 					//博主登录后，localStorage中会存储token，在后端设置属性，可以不校验昵称、邮箱
 					if (this.commentForm.content === '' || this.commentForm.content.length > 250) {
@@ -167,6 +164,7 @@
 						return this.$store.dispatch('submitCommentForm', adminToken)
 					}
 				}
+				// 未登录请求的是blogToken 后端可以做判断
 				const blogToken = window.localStorage.getItem(`blog${this.commentQuery.blogId}`)
 				this.$refs.formRef.validate(valid => {
 					if (!valid || this.commentForm.content === '' || this.commentForm.content.length > 250) {

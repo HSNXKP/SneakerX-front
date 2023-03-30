@@ -64,7 +64,6 @@
 		methods: {
 			setReply(id) {
 				this.$store.commit(SET_PARENT_COMMENT_ID, id)
-				console.log(this.comments)
 			}
 		}
 	}

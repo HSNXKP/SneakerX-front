@@ -22,7 +22,7 @@ export default {
 		nickname: '',
 		email: '',
 		website: '',
-		notice: true
+		notice: false
 	},
 	//博客文章渲染完成的标记
 	isBlogRenderComplete: false,
