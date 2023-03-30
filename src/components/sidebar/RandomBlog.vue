@@ -28,6 +28,7 @@
 		methods: {
 			toBlog(blog) {
 				this.$store.dispatch('goBlogPage', blog)
+				console.log(this.randomBlogList)
 			}
 		}
 	}
