@@ -16,14 +16,21 @@
 							<div class="item m-datetime">
 								<i class="small calendar icon"></i><span>{{ blog.createTime | dateFormat('YYYY-MM-DD') }}</span>
 							</div>
+							<!-- user -->
+							<div class="item m-common-black">
+								<i class="small user icon"></i><span>{{ user.username }}</span>
+							</div>
+							<!-- 点赞 -->
+							<div class="item m-common-grey">
+								<i class="small like icon" v-if="blog.likes=== 0"></i>
+								<i class="small red like icon" v-else></i><span>{{ blog.likes === 0 ? '': blog.likes }}</span>
+							</div>
+							<!-- comments -->
+							<div class="item m-common-black" >
+								<i class="small comment alternate  icon"></i><span>{{ allComment === 0 ? '' : allComment }}</span>
+							</div>
 							<div class="item m-views">
 								<i class="small eye icon"></i><span>{{ blog.views }}</span>
-							</div>
-							<div class="item m-common-black">
-								<i class="small pencil alternate icon"></i><span>字数≈{{ blog.words }}字</span>
-							</div>
-							<div class="item m-common-black">
-								<i class="small clock icon"></i><span>阅读时长≈{{ blog.readTime }}分</span>
 							</div>
 							<a class="item m-common-black" @click.prevent="bigFontSize=!bigFontSize">
 								<div data-inverted="" data-tooltip="点击切换字体大小" data-position="top center">
@@ -97,6 +104,7 @@
 		data() {
 			return {
 				blog: {},
+				// 因为是层级关系，请求先相应的blog，user列表的username会报一个错误 如果不转换一下的话
 				user:{},
 				bigFontSize: false,
 			}
@@ -105,7 +113,7 @@
 			blogId() {
 				return parseInt(this.$route.params.id)
 			},
-			...mapState(['siteInfo', 'focusMode'])
+			...mapState(['siteInfo', 'focusMode','allComment'])
 		},
 		beforeRouteEnter(to, from, next) {
 			//路由到博客文章页面之前，应将文章的渲染完成状态置为 false
@@ -151,6 +159,7 @@
 				getBlogById(token, id).then(res => {
 					if (res.code === 200) {
 						this.blog = res.data
+						// 因为是层级关系，请求先相应的blog，还没有请求到数据的时候user.username会报一个错误 如果不转换一下的话
 						this.user =this.blog.user	
 						document.title = this.blog.title + this.siteInfo.webTitleSuffix
 						//v-html渲染完毕后，渲染代码块样式

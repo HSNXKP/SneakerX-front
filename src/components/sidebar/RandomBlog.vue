@@ -1,7 +1,11 @@
 <template>
 	<!--随机文章-->
 	<div class="ui segments m-box">
-		<div class="ui secondary segment"><i class="bookmark icon"></i>推荐文章</div>
+		<div class="ui secondary segment"><i class="bookmark red icon"></i>
+			<span style="color:red">
+				精彩推荐
+			</span>
+			</div>
 		<div class="ui yellow segment">
 			<div class="ui divided items">
 				<div class="m-item" v-for="blog in randomBlogList" :key="blog.id" @click.prevent="toBlog(blog)">

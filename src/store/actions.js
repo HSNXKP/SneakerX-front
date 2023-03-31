@@ -128,4 +128,6 @@ export default {
 			router.push(`/blog/${blog.id}`)
 		}
 	},
+
+
 }

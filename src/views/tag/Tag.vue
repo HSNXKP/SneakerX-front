@@ -1,9 +1,12 @@
 <template>
 	<div>
 		<div class="ui top segment" style="text-align: center">
-			<h2 class="m-text-500">标签 {{ tagName }} 下的文章</h2>
+			<h2 class="m-text-500">标签 {{ tagName }} 下的动态</h2>
+			
 		</div>
-		<BlogList :getBlogList="getBlogList" :blogList="blogList" :totalPage="totalPage"/>
+		<el-empty description="该标签下暂无动态 赶快去发布动态吧！" v-if="this.blogList.length === 0"></el-empty>
+		<BlogList :getBlogList="getBlogList" :blogList="blogList" :totalPage="totalPage" v-else/>
+		
 	</div>
 </template>
 
@@ -30,6 +33,7 @@
 		},
 		created() {
 			this.getBlogList()
+			console.log(this.blogList)
 		},
 		computed: {
 			tagName() {

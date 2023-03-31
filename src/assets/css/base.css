@@ -304,6 +304,23 @@ footer {
 }
 
 
+.m-common-grey {
+    color: grey  !important;
+}
+
+.m-common-grey * {
+    vertical-align: middle !important;
+}
+
+.m-common-grey * * {
+    vertical-align: middle !important;
+}
+
+.m-common-grey i {
+    margin-right: 3px !important;
+}
+
+
 
 .m-big-fontsize p, .m-big-fontsize ul, .m-big-fontsize ol {
     font-size: 17px !important;

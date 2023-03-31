@@ -21,8 +21,9 @@
 							<div class="item m-common-black">
 								<i class="small  user  icon"></i><span>{{ item.user.username }}</span>
 							</div>
-							<div class="item m-common-red">
-								<i class="small  heart  icon"></i><span>{{ item.likes }}</span>
+							<div class="item m-common-grey">
+								<i class="small  heart  icon" v-if="item.likes === 0 "></i>
+								<i class="small red heart  icon" v-else></i><span>{{ item.likes === 0 ? '' : item.likes }}</span>
 							</div>
 							<div class="item m-views">
 								<i class="small eye icon"></i><span>{{ item.views }}</span>
