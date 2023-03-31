@@ -9,6 +9,7 @@
 					<div class="info">
 						<div class="date">{{ blog.createTime | dateFormat('YYYY-MM-DD') }}</div>
 						<div class="title">{{ blog.title }}</div>
+						
 					</div>
 				</div>
 			</div>
@@ -28,7 +29,7 @@
 		methods: {
 			toBlog(blog) {
 				this.$store.dispatch('goBlogPage', blog)
-				console.log(this.randomBlogList)
+				console.log(this.randomBlogList[0].firstPicture)
 			}
 		}
 	}
