@@ -22,8 +22,7 @@
 								<i class="small  user  icon"></i><span>{{ item.user.username }}</span>
 							</div>
 							<div class="item m-common-grey">
-								<i class="small  heart  icon" v-if="item.likes === 0 "></i>
-								<i class="small red heart  icon" v-else></i><span>{{ item.likes === 0 ? '' : item.likes }}</span>
+								<i class="small red heart  icon" ></i><span>{{ item.likes === 0 ? '' : item.likes }}</span>
 							</div>
 							<div class="item m-views">
 								<i class="small eye icon"></i><span>{{ item.views }}</span>
@@ -53,7 +52,8 @@
 					<!--标签-->
 					<div class="row m-padded-tb-no">
 						<div class="column m-padding-left-no">
-							<router-link :to="`/tag/${tag.name}`" class="ui tag label m-text-500 m-margin-small" :class="tag.color" v-for="(tag,index) in item.tags" :key="index">{{ tag.name }}</router-link>
+							<!-- 标签前端做#处理 -->
+							<router-link :to="`/tag/${tag.name}`" class="ui tag label m-text-500 m-margin-small" :class="tag.color" v-for="(tag,index) in item.tags" :key="index">{{ '#'+tag.name }}</router-link>
 						</div>
 					</div>
 				</div>

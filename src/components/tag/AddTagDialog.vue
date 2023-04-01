@@ -70,6 +70,7 @@ export default {
                     if (res.code === 200) {
 						this.cancelDialogVisible()
 						this.msgSuccess(res.msg)
+						
                     }else{
                         this.msgError(res.msg)
                     }

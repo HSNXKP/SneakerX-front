@@ -11,7 +11,7 @@
       <!-- 分类 -->
       <el-dropdown trigger="click" @command="categoryRoute">
         <span class="el-dropdown-link item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'category' }">
-          <i class="idea icon"></i>分类<i class="caret down icon"></i>
+          <i class="paperclip icon"></i>频道<i class="caret down icon"></i>
         </span>
 
         <el-dropdown-menu slot="dropdown">
@@ -21,21 +21,22 @@
         </el-dropdown-menu>
       </el-dropdown>
 
+      <router-link to="/sneaker" class="item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'sneaker' }">
+        <i class="comment basketball ball icon"></i>球鞋
+      </router-link>
+
       <router-link to="/archives" class="item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'archives' }">
-        <i class="clone icon"></i>日志
+        <i class="calendar check icon"></i>日志
       </router-link>
 
       <router-link to="/moments" class="item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'moments' }">
-        <i class="comment alternate outline icon"></i>动态
+        <i class="comment alternate outline icon"></i>我的动态
       </router-link>
 
            <!-- <router-link to="/friends" class="right item" :class="{'m-mobile-hide': mobileHide,'active':$route.name==='friends'}">
              <i class="users icon"></i>友人帐
            </router-link> -->
 
-      <router-link to="/sneaker" class="item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'sneaker' }">
-        <i class="comment basketball ball icon"></i>球鞋
-      </router-link>
 
       <router-link to="/about" class="item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'about' }">
         <i class="info icon"></i>关于我们
@@ -115,7 +116,7 @@ export default {
   },
   mounted() {
     //监听页面滚动位置，改变导航栏的显示
-    if(this.$route.name != 'login'){
+    if(!this.$route.name === 'login'){
       window.addEventListener('scroll', () => {
       //首页且不是移动端
       if (this.$route.name === 'home' && this.clientSize.clientWidth > 768) {
@@ -186,7 +187,9 @@ export default {
           window.localStorage.removeItem('userInfo')
           window.localStorage.removeItem('adminToken')
           // 如果不是在首页，跳转到首页
-          this.$router.push('/home')
+          if (!this.$route.name === 'home') {
+            this.$router.push('/home')
+          }
         }else{
           this.msgError(res.msg)
         }

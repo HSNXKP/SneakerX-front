@@ -79,6 +79,24 @@ const routes = [
 				component: () => import('@/views/moments/WriteMoment'),
 				meta: {title: '编辑动态', icon: 'el-icon-edit'},
 			},
+			{
+				path: '/userInfo',
+				name: 'UserInfo',
+				component: () => import('@/views/user/UserInfo'),
+				meta : {title: '修改个人信息',needLogin:true}
+			},
+			{
+				path: '/cart',
+				name: 'Cart',
+				component: () => import('@/views/sneaker/Cart'),
+				meta : {title: '我的购物车',needLogin:true}
+			},
+			{
+				path: '/order',
+				name: 'Order',
+				component: () => import('@/views/sneaker/Order'),
+				meta : {title: '订单管理',needLogin:true}
+			},
 		]
 	}
 ]

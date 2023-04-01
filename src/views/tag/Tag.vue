@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="ui top segment" style="text-align: center">
-			<h2 class="m-text-500">标签 {{ tagName }} 下的动态</h2>
+			<h2 class="m-text-500">标签# {{ tagName }} 下的动态</h2>
 			
 		</div>
 		<el-empty description="该标签下暂无动态 赶快去发布动态吧！" v-if="this.blogList.length === 0"></el-empty>

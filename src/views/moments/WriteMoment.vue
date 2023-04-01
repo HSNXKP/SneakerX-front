@@ -42,7 +42,8 @@
 					<!--选择你的动态标签  -->
 					<el-form-item  align="left" label="请选择发布动态的标签"   prop="tagList">
 						<el-select v-model="form.tagList" placeholder="请选择动态标签" :allow-create="true" :filterable="true" :multiple="true" style="width: 100%;">
-							<el-option :label="item.name" :value="item.id" v-for="item in tagList" :key="item.id"></el-option>
+							<!-- 标签前端做#处理 -->
+							<el-option :label="'#'+item.name" :value="item.id" v-for="item in tagList" :key="item.id"></el-option>
 						</el-select>
 					</el-form-item>
 				</el-col>
@@ -63,7 +64,7 @@
 		</el-form>
 
 		<!--请输入动态的密码 对话框-->
-		<el-dialog :title="this.radio == 1 ?'评论功能':'设置密码' " width="50%" :visible.sync="dialogVisible" :before-close="dialogVisible">
+		<el-dialog :title="this.radio == 1 ?'评论功能':'设置密码' " width="50%" :visible.sync="dialogVisible" :before-close="dialogVisibleClosed">
 			<!--内容主体-->
 			<el-form  label-width="80px">
 				<el-form-item label="密码" prop="password" v-if="this.radio==3">
@@ -76,7 +77,7 @@
 			<!--底部-->
 			<span slot="footer">
 				<el-button type="primary"  @click="blogStatus">确 定</el-button>
-        		<el-button @click="dialogVisible" >取 消</el-button>
+        		<el-button @click="dialogVisibleClosed" >取 消</el-button>
 			</span>
 		</el-dialog>
     </div>
@@ -126,7 +127,7 @@ export default {
         }
     },
 	computed: {
-    ...mapState(['addTagDialogVisible','user']),
+    ...mapState(['addTagDialogVisible','user','form']),
     },
     watch: {
 			'form.words'(newValue) {
@@ -141,7 +142,11 @@ export default {
 		},
 		methods: {
 			addTagDialog(){
-				this.$store.commit('addTagDialogVisible',true)
+				this.$store.commit('addTagDialogVisible',true).then(res=>{
+					if(res){
+						this.getData()
+					}
+				})
 			},
 			getData() {
 				getCategoryAndTag(this.token).then(res => {
@@ -221,7 +226,10 @@ export default {
 						return this.msgError('请填写必要的表单项')
 					}
 				})
-			}
+			},
+			dialogVisibleClosed(){
+				this.dialogVisible = false
+			},
 		}
     
 }

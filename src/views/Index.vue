@@ -17,7 +17,8 @@
 					<div class="ui stackable grid">
 						<!--左侧-->
 						<div class="three wide column m-mobile-hide">
-							<!-- <Introduction :class="{'m-display-none':focusMode}"/> -->
+							<RandomSneaker :randomBlogList="randomBlogList" :class="{'m-display-none':focusMode}"/>
+							<Introduction :class="{'m-display-none':focusMode}"  v-if="user != '' "/> 
 						</div>
 						<!--中间-->
 						<div class="ten wide column">
@@ -65,12 +66,13 @@
 	import BlogPasswordDialog from "@/components/index/BlogPasswordDialog";
 	import UpdatePasswordDialog from "@/components/index/UpdatePasswordDialog"
 	import AddTagDialog from "@/components/tag/AddTagDialog"
+	import RandomSneaker from '../components/sidebar/RandomSneaker.vue'
 	import {mapState} from 'vuex'
 	import {SAVE_CLIENT_SIZE, SAVE_INTRODUCTION, SAVE_SITE_INFO, RESTORE_COMMENT_FORM} from "@/store/mutations-types";
 
 	export default {
 		name: "Index",
-		components: {Header, BlogPasswordDialog, Tocbot, RandomBlog, Tags, Nav, Footer, Introduction,UpdatePasswordDialog,AddTagDialog},
+		components: {Header, BlogPasswordDialog, Tocbot, RandomBlog, Tags, Nav, Footer, Introduction,UpdatePasswordDialog,AddTagDialog,RandomSneaker},
 		data() {
 			return {
 				siteInfo: {
@@ -88,7 +90,7 @@
 			}
 		},
 		computed: {
-			...mapState(['focusMode'])
+			...mapState(['focusMode','user'])
 		},
 		watch: {
 			//路由改变时，页面滚动至顶部

@@ -6,7 +6,7 @@
 				精彩推荐
 			</span>
 			</div>
-		<div class="ui yellow segment">
+		<div class="ui red segment">
 			<div class="ui divided items">
 				<div class="m-item" v-for="blog in randomBlogList" :key="blog.id" @click.prevent="toBlog(blog)">
 					<div class="img" :style="{'background-image':'url(' + blog.firstPicture + ')'}"></div>
