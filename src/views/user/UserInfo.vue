@@ -1,14 +1,16 @@
 <template>
    <div>
-    <div class="ui top attached segment login_container"  style="text-align: center">
+    <div class="ui top attached segment "  style="text-align: center">
 			<h2 class="m-text-500">个人信息修改</h2>
-		</div>
-    <div class="user_box" >
+			<div class="ui attached segment m-padding-bottom-large">
 			<!--头像-->
 			<a class="avatar_box" >
 				<img src="/img/avatar.jpg" alt="">		
 			</a>
-      </div>
+			</div>
+		
+		</div>
+ 
 		
   </div>
 </template>
@@ -27,19 +29,15 @@ export default {
 	background-color: #f2f3f5;
 }
 
-.user_box {
-	width: 450px;
-	height: 300px;
+.ui.top.attached.segment {
 	background-color: #fff;
-	border-radius: 3px;
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%, -50%);
+	border: 1px solid #eee;
+	border-radius: 0;
+	box-shadow: 0 0 10px #ddd;
 }
 
 
-.user_box .avatar_box {
+.avatar_box {
 	height: 130px;
 	width: 130px;
 	border: 1px solid #eee;
@@ -52,6 +50,13 @@ export default {
 	background-color: #fff;
 }
 
+
+ .avatar_box img {
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	background-color: #eee;
+}
 
 
 </style>

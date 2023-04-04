@@ -55,10 +55,10 @@ const routes = [
 				meta: {title: '动态',needLogin: true}
 			},
 			{
-				path: '/sneaker',
-				name: 'sneaker',
-				component: () => import('@/views/sneaker/Sneaker'),
-				meta: {title: '球鞋'}
+				path: '/product',
+				name: 'product',
+				component: () => import('@/views/product/Product'),
+				meta: {title: '商品'}
 
 			},
 			{
@@ -88,13 +88,13 @@ const routes = [
 			{
 				path: '/cart',
 				name: 'Cart',
-				component: () => import('@/views/sneaker/Cart'),
+				component: () => import('@/views/product/Cart'),
 				meta : {title: '我的购物车',needLogin:true}
 			},
 			{
 				path: '/order',
 				name: 'Order',
-				component: () => import('@/views/sneaker/Order'),
+				component: () => import('@/views/product/Order'),
 				meta : {title: '订单管理',needLogin:true}
 			},
 		]

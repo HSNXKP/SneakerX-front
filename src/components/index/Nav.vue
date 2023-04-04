@@ -9,9 +9,9 @@
         <i class="home icon"></i>首页
       </router-link>
       <!-- 分类 -->
-      <el-dropdown trigger="click" @command="categoryRoute">
+      <el-dropdown trigger="hover" @command="categoryRoute">
         <span class="el-dropdown-link item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'category' }">
-          <i class="paperclip icon"></i>频道<i class="caret down icon"></i>
+          <i class="paperclip icon"></i>频道
         </span>
 
         <el-dropdown-menu slot="dropdown">
@@ -21,9 +21,48 @@
         </el-dropdown-menu>
       </el-dropdown>
 
-      <router-link to="/sneaker" class="item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'sneaker' }">
+      <router-link to="/product" class="item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'product' }">
         <i class="comment basketball ball icon"></i>球鞋
       </router-link>
+
+      <!-- <el-cascader 
+       class="el-dropdown-link item m-cascader" size="mini" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'product' }"
+    :options="productCategoryList"
+    :props="props"
+    ></el-cascader> -->
+
+
+
+      <el-dropdown trigger="click"  >
+   <span class="el-dropdown-link item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'product' }">
+     球鞋<i class="el-icon-arrow-down el-icon--right"></i>
+   </span>
+   <el-dropdown-menu slot="dropdown" >
+     <el-dropdown-item  
+       v-for="(product, index) in productCategoryList" :key="index">
+             <!-- 手动控制hover显示，解决鼠标移入三级菜单时二级菜单消失问题 -->
+
+      <el-dropdown trigger="hover" placement="right-start" :show-timeout="0" ref="subDropdown"  @command="categoryRoute">
+        <span @mouseenter="() => {$refs.subDropdown.hide()}">{{ product.name }}</span>
+          <!-- 一级菜单 -->
+         <el-dropdown-menu slot="dropdown">
+           <el-dropdown-item  :command="item.name" v-for="(item, index) in product.children" :key="index" >
+
+            <!-- 二级菜单 -->
+           	<el-dropdown trigger="hover" :show-timeout="0" placement="right-start">
+            <span>{{ item.name }}</span>
+
+
+
+       		</el-dropdown>
+           </el-dropdown-item>
+         </el-dropdown-menu>
+       </el-dropdown>
+    </el-dropdown-item>
+   </el-dropdown-menu>
+</el-dropdown>
+
+
 
       <router-link to="/archives" class="item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'archives' }">
         <i class="calendar check icon"></i>日志
@@ -80,6 +119,7 @@
 
 <script>
 import { getSearchBlogList } from "@/api/blog";
+import { getProductCategories } from "@/api/productCategory";
 import { logOut } from "@/api/login";
 import { mapState } from 'vuex'
 import NProgress from 'nprogress'
@@ -102,7 +142,13 @@ export default {
       mobileHide: true,
       queryString: '',
       queryResult: [],
-      timer: null
+      timer: null,
+      productCategoryList: [],
+      props: {
+        expandTrigger: 'hover',
+        value: 'id',
+        label: 'name',
+      }
     }
   },
   computed: {
@@ -113,6 +159,9 @@ export default {
     '$route.path'() {
       this.mobileHide = true
     }
+  },
+  created() {
+    this.getProductCategories()
   },
   mounted() {
     //监听页面滚动位置，改变导航栏的显示
@@ -207,7 +256,28 @@ export default {
     },
     updatePassword(){
       this.$store.commit('updatePasswordDialogVisible',true)
-    }
+    },
+    getProductCategories() {
+      getProductCategories().then(res => {
+        if (res.code === 200) {
+          // 递归处理数据，将没有子节点的节点的children属性设置为undefined 否则级联会出问题
+          this.productCategoryList = this.formatData(res.data)
+        }
+      }).catch(() => {
+        this.msgError("请求失败")
+      })
+    },
+    // 递归处理数据，将没有子节点的节点的children属性设置为undefined 否则级联会出问题
+    formatData(data) {
+      for (var i = 0; i < data.length; i++) {
+        if (data[i].children.length < 1) {
+          data[i].children = undefined
+        } else {
+          this.formatData(data[i].children)
+        }
+      }
+      return data
+    },
   }
 }
 </script>
@@ -315,4 +385,6 @@ export default {
   font-size: 12px;
   color: rgba(0, 0, 0, .70);
 }
+
+
 </style>

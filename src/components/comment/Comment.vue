@@ -59,7 +59,7 @@
 			...mapState(['allComment', 'closeComment', 'comments', 'parentCommentId'])
 		},
 		created() {
-			
+			console.log(this.comments)
 		},
 		methods: {
 			setReply(id) {
