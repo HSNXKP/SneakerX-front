@@ -9,14 +9,15 @@
        <el-row :gutter="4">  
           <el-col class="productCart"  :span="item.price === undefined ?8: 6"   v-for="(item, index) in productCategoryListWithProduct" :key="index">
             <el-card :body-style="{ padding: '0px' }"  shadow="hover"  >
-              <!-- 异步处理 判断进入哪个router -->
-              <a @click="toProduct(item.id)">
+              <!-- 异步处理 判断进入哪个router  href="#" 表示不跳转页面 仍在在本页面请求-->
+              <a href="#" @click="toProduct(item.id,item.productCategoryId)">
                 <img :src="item.image" class="image">
               </a>
                <div style="padding: 14px;">
-                <span class="name">{{item.name}}</span>
+                <span class="nameProductCategory" v-if="item.price === undefined">{{item.name}}</span>
+                <span class="nameProduct" v-else>{{item.name}}</span>
                <div class="bottom clearfix">
-                <span class="description">{{item.description}}</span>
+                <span class="description">{{ item.price ? 'Last Sale:￥'+item.price:item.description }}</span>
               </div>
               </div>
             </el-card>
@@ -69,7 +70,15 @@ export default {
       }).catch(() => {
         this.msgError("请求失败")
       })
+    },
+    //  通过productCategoryId查询当前的是商品还是商品分类跳转到商品详情页面
+    toProduct(id,productCategoryId){
+      if(productCategoryId === undefined){
+        this.$router.push({path: '/product/' + id})
+    }else{
+      this.$router.push({path: '/productInfo/' + id})
     }
+  }
     }
 }
 </script>
@@ -98,62 +107,29 @@ export default {
 
 	}
 
-	.ui.divided.items .m-item .img {
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		object-fit: cover;
-		background-position-x: center;
-		background-position-y: center;
-		background-size: cover;
-	}
-
-	.ui.divided.items .m-item .info {
-		z-index: 1;
-		background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8));
-		position: absolute;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		padding: .5rem !important;
-		font-size: 12px;
-		color: white;
-	}
-
-	.ui.divided.items .m-item .info .title {
-		overflow: hidden;
-		text-overflow: ellipsis;
-		display: -webkit-box;
-		-webkit-box-orient: vertical;
-		-webkit-line-clamp: 1;
-		word-break: break-word;
-	}
-
-  .name {
+  .nameProductCategory {
     font-size: 14px;
-    color: #999;
+    color: #541010;
   } 
+
+  
+  .nameProduct {
+    font-size: 10px;
+    color: #541010;
+  } 
+
+
   .description {
     font-size: 10px;
     color: rgb(71, 62, 62);
   } 
 
-  .time {
-    font-size: 13px;
-    color: #999;
-  } 
   
   .bottom {
     margin-top: 13px;
     line-height: 12px;
   }
 
-  .button {
-    padding: 0;
-    float: right;
-  }
 
   .image {
     width: 100%;

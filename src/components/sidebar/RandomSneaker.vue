@@ -8,7 +8,7 @@
 			</div>
 		<div class="ui blue segment">
 			<div class="ui divided items">
-				<div class="m-item" v-for="product in randomProductList" :key="product.id" >
+				<div class="m-item" v-for="product in randomProductList" :key="product.id" @click.prevent="toProduct(product.id)">
 					<div class="img" :style="{'background-image':'url(' + product.image + ')'}"></div>
 					<div class="info">
 						<div class="date">{{ product.name }}</div>
@@ -31,8 +31,8 @@
 			},
 		},
 		methods: {
-			toBlog(product) {
-				this.$store.dispatch('goBlogPage', product)
+			toProduct(id) {
+				this.$router.push({path: '/productInfo/' + id})
 			}
 		}
 	}
