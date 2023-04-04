@@ -55,11 +55,18 @@ const routes = [
 				meta: {title: '动态',needLogin: true}
 			},
 			{
-				path: '/product',
+				path: '/product/:id',
 				name: 'product',
 				component: () => import('@/views/product/Product'),
-				meta: {title: '商品'}
+				meta: {title: '商品分类'}
 
+			},
+			{
+				path: '/productInfo/:id',
+				name: 'productInfo',
+				component: () => import('@/views/product/ProductInfo'),
+				meta: {title: '商品'}
+				
 			},
 			{
 				path: '/about',

@@ -8,11 +8,11 @@
 			</div>
 		<div class="ui blue segment">
 			<div class="ui divided items">
-				<div class="m-item" v-for="blog in randomBlogList" :key="blog.id" @click.prevent="toBlog(blog)">
-					<div class="img" :style="{'background-image':'url(' + blog.firstPicture + ')'}"></div>
+				<div class="m-item" v-for="product in randomProductList" :key="product.id" >
+					<div class="img" :style="{'background-image':'url(' + product.image + ')'}"></div>
 					<div class="info">
-						<div class="date">{{ blog.createTime | dateFormat('YYYY-MM-DD') }}</div>
-						<div class="title">{{ blog.title }}</div>
+						<div class="date">{{ product.name }}</div>
+						<div class="title">￥{{ product.price }}</div>
 						
 					</div>
 				</div>
@@ -25,15 +25,14 @@
 	export default {
 		name: "RandomSneaker",
 		props: {
-			randomBlogList: {
+			randomProductList: {
 				type: Array,
 				required: true
 			},
 		},
 		methods: {
-			toBlog(blog) {
-				this.$store.dispatch('goBlogPage', blog)
-				console.log(this.randomBlogList[0].firstPicture)
+			toBlog(product) {
+				this.$store.dispatch('goBlogPage', product)
 			}
 		}
 	}

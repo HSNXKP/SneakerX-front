@@ -7,3 +7,15 @@ export function getProductCategories() {
 		method: 'GET',
 	})
 }
+
+
+export function getProductCategory(id) {
+	return axios({
+		url: 'productCategory',
+		method: 'GET',
+		params: {
+			id
+		}
+	})
+}
+

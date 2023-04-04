@@ -9,9 +9,9 @@
         <i class="home icon"></i>首页
       </router-link>
       <!-- 分类 -->
-      <el-dropdown trigger="hover" @command="categoryRoute">
+      <el-dropdown trigger="click" @command="categoryRoute">
         <span class="el-dropdown-link item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'category' }">
-          <i class="paperclip icon"></i>频道
+          <i class="paperclip icon"></i>频道<i class="el-icon-arrow-down el-icon--right"></i>
         </span>
 
         <el-dropdown-menu slot="dropdown">
@@ -21,46 +21,44 @@
         </el-dropdown-menu>
       </el-dropdown>
 
-      <router-link to="/product" class="item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'product' }">
+      <!-- <router-link to="/product" class="item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'product' }">
         <i class="comment basketball ball icon"></i>球鞋
-      </router-link>
-
-      <!-- <el-cascader 
+      </router-link> -->
+<!-- 
+     <el-cascader 
        class="el-dropdown-link item m-cascader" size="mini" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'product' }"
     :options="productCategoryList"
     :props="props"
-    ></el-cascader> -->
+    ></el-cascader>  -->
 
-
-
-      <el-dropdown trigger="click"  >
-   <span class="el-dropdown-link item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'product' }">
-     球鞋<i class="el-icon-arrow-down el-icon--right"></i>
-   </span>
-   <el-dropdown-menu slot="dropdown" >
-     <el-dropdown-item  
-       v-for="(product, index) in productCategoryList" :key="index">
+    <!-- 选择productCateporyRoute 和 selectProductCatepory 本质一样 传id进入product路由-->
+      <el-dropdown trigger="click"  @command="productCateporyRoute" >
+              <span class="el-dropdown-link item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'product' }">
+                <i class="comment basketball ball icon"></i> 球鞋<i class="el-icon-arrow-down el-icon--right"></i>
+       </span>
+      <el-dropdown-menu slot="dropdown" >
+        <el-dropdown-item  :command="product.id" 
+          v-for="(product, index) in productCategoryList" :key="index">
              <!-- 手动控制hover显示，解决鼠标移入三级菜单时二级菜单消失问题 -->
-
-      <el-dropdown trigger="hover" placement="right-start" :show-timeout="0" ref="subDropdown"  @command="categoryRoute">
-        <span @mouseenter="() => {$refs.subDropdown.hide()}">{{ product.name }}</span>
+          <el-dropdown trigger="hover" placement="right-start" :show-timeout="0"  >
+           <span>{{ product.name }}</span>
           <!-- 一级菜单 -->
-         <el-dropdown-menu slot="dropdown">
-           <el-dropdown-item  :command="item.name" v-for="(item, index) in product.children" :key="index" >
-
-            <!-- 二级菜单 -->
-           	<el-dropdown trigger="hover" :show-timeout="0" placement="right-start">
-            <span>{{ item.name }}</span>
-
-
-
-       		</el-dropdown>
+               <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item  @click.native="selectProductCatepory(item.id)" v-for="(item, index) in product.children" :key="index" >
+                      <!-- 二级菜单 -->
+                    	<el-dropdown trigger="hover" :show-timeout="0" placement="right-start">
+                     <span>{{ item.name }}</span>
+                     <el-dropdown-menu>
+                      <el-dropdown-item>
+                      </el-dropdown-item>
+                     </el-dropdown-menu>
+       		        </el-dropdown>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+               </el-dropdown>
            </el-dropdown-item>
-         </el-dropdown-menu>
-       </el-dropdown>
-    </el-dropdown-item>
-   </el-dropdown-menu>
-</el-dropdown>
+          </el-dropdown-menu>
+        </el-dropdown>
 
 
 
@@ -194,6 +192,12 @@ export default {
     },
     categoryRoute(name) {
       this.$router.push(`/category/${name}`)
+    },
+    productCateporyRoute(id){
+      this.$router.push(`/product/${id}`)
+    },
+    selectProductCatepory(id){
+      this.$router.push(`/product/${id}`)
     },
     debounceQuery(queryString, callback) {
       this.timer && clearTimeout(this.timer)
@@ -385,6 +389,8 @@ export default {
   font-size: 12px;
   color: rgba(0, 0, 0, .70);
 }
+
+
 
 
 </style>

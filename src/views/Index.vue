@@ -15,18 +15,18 @@
 			<div class="m-padded-tb-big">
 				<div class="ui container">
 					<div class="ui stackable grid">
-						<!--左侧-->
+						<!--左侧随机推荐商品-->
 						<div class="three wide column m-mobile-hide">
-							<RandomSneaker :randomBlogList="randomBlogList" :class="{'m-display-none':focusMode}"/>
+							<RandomSneaker :randomProductList="randomProductList" :class="{'m-display-none':focusMode}"/>
 							<Introduction :class="{'m-display-none':focusMode}"  v-if="user != '' "/> 
 						</div>
-						<!--中间-->
+						<!--中间 主要路由-->
 						<div class="ten wide column">
 							<keep-alive include="Home">
 								<router-view/>
 							</keep-alive>
 						</div>
-						<!--右侧-->
+						<!--右侧 随机推荐动态 总标签-->
 						<div class="three wide column m-mobile-hide">
 							<RandomBlog :randomBlogList="randomBlogList" :class="{'m-display-none':focusMode}"/>
 							<Tags :tagList="tagList" :class="{'m-display-none':focusMode}"/>
@@ -84,6 +84,7 @@
 				categoryList: [],
 				tagList: [],
 				randomBlogList: [],
+				randomProductList:[],
 				badges: [],
 				newBlogList: [],
 				hitokoto: {},
@@ -121,6 +122,9 @@
 						this.categoryList = res.data.categoryList
 						this.tagList = res.data.tagList
 						this.randomBlogList = res.data.randomBlogList
+						this.randomProductList = res.data.randomProductList
+						console.log(this.randomProductList)
+						console.log(res.data.randomProductList)
 						this.$store.commit(SAVE_SITE_INFO, this.siteInfo)
 						this.$store.commit(SAVE_INTRODUCTION, res.data.introduction)
 						document.title = this.$route.meta.title + this.siteInfo.webTitleSuffix
