@@ -1,23 +1,24 @@
 <template>
   <div>
     <div class="ui top attached segment" style="text-align: center">
-			<h2 class="m-text-500">Please Git It</h2>
+			<h2 class="m-text-500">系列</h2>
 		</div>
 		<div class="ui attached segment m-padding-bottom-large">
 			<div class="ui divided items">
         <!-- 商品分类展示界面 两个卡片间隔为1 左右间隔加起来等于2 就是gutter    span一个卡片占8格子 一共24格子-->
        <el-row :gutter="4">  
-          <el-col class="productCart"  :span="item.price === undefined ?8: 6"   v-for="(item, index) in productCategoryListWithProduct" :key="index">
+          <el-col class="productMargin"  :span="item.price === undefined ?8: 6"   v-for="(item, index) in productCategoryListWithProduct" :key="index">
             <el-card :body-style="{ padding: '0px' }"  shadow="hover"  >
               <!-- 异步处理 判断进入哪个router  href="#" 表示不跳转页面 仍在在本页面请求-->
               <a href="#" @click="toProduct(item.id,item.productCategoryId)">
                 <img :src="item.image" class="image">
               </a>
-               <div style="padding: 14px;">
+               <div style="padding: 10px;">
                 <span class="nameProductCategory" v-if="item.price === undefined">{{item.name}}</span>
-                <span class="nameProduct" v-else>{{item.name}}</span>
+                <span class="nameProduct" v-else >{{item.name}}</span>
                <div class="bottom clearfix">
-                <span class="description">{{ item.price ? 'Last Sale:￥'+item.price:item.description }}</span>
+                <span class="description" v-if="item.price === undefined">{{ item.description }}</span>
+                <span class="price" v-else>{{ 'Last Sale:￥'+item.price }}</span>
               </div>
               </div>
             </el-card>
@@ -65,7 +66,9 @@ export default {
         if (res.code === 200) {
           // 递归处理数据，将没有子节点的节点的children属性设置为undefined 否则级联会出问题
           this.productCategoryListWithProduct = res.data
-          console.log(this.productCategoryListWithProduct[0].price)
+          console.log(this.productCategoryListWithProduct)
+        }else{
+          this.msgError(res.data)
         }
       }).catch(() => {
         this.msgError("请求失败")
@@ -84,12 +87,12 @@ export default {
 </script>
 
 <style scope>
-.productCart{
-  margin-bottom: 10px;
+.productMargin{
+  margin-bottom: 0.8rem;
 }
 
 .secondary.segment {
-		padding: 10px;
+		padding: 0.8rem;
 	}
 
 	.ui.divided.items .m-item:first-child {
@@ -108,20 +111,27 @@ export default {
 	}
 
   .nameProductCategory {
-    font-size: 14px;
+    font-size: 0.1rem;
     color: #541010;
   } 
 
   
   .nameProduct {
-    font-size: 10px;
+    font-size: 0.1rem;
     color: #541010;
   } 
 
 
   .description {
-    font-size: 10px;
-    color: rgb(71, 62, 62);
+    font-size: 0.1rem;
+    color: rgb(31, 11, 11);
+  } 
+
+
+  
+  .price {
+    font-size: 0.1rem;
+    color: red;
   } 
 
   

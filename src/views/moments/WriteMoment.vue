@@ -179,11 +179,12 @@ export default {
 				if (this.radio === 3 && (this.form.password === '' || this.form.password === null)) {
 					return this.msgError("密码保护模式必须填写密码！")
 				}else{
-					this.form.password=''
 					if(this.radio === 2 ){
 					this.form.published = false
-				}else {	
+					this.form.password=''			
+				}if(this.radio === 1){	
 					this.form.published = true
+					this.form.password=''
 				}
 				this.dialogVisible = false
 				this.msgSuccess("设置成功")
