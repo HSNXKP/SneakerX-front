@@ -12,7 +12,7 @@
 					<div class="img" :style="{'background-image':'url(' + product.image + ')'}"></div>
 					<div class="info">
 						<div class="date">{{ product.name }}</div>
-						<div class="title">￥{{ product.price }}</div>
+						<div class="title" style="color:red">￥{{ product.price }}</div>
 						
 					</div>
 				</div>
@@ -32,7 +32,7 @@
 		},
 		methods: {
 			toProduct(id) {
-				this.$router.push({path: '/productInfo/' + id})
+				this.$router.push(`/productInfo/${id}`)
 			}
 		}
 	}

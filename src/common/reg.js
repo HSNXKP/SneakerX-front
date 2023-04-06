@@ -13,3 +13,11 @@ export const checkUrl = (rule, value, callback) => {
 	}
 	callback(new Error('请输入合法的 URL'))
 }
+
+export function checkPhone(rule, value,callback) {
+	const reg =/^[1][3-9][0-9]{9}$/
+	if (reg.test(value)) {
+		return callback()
+	}
+	callback(new Error('请输入正确的电话号码'))
+  }

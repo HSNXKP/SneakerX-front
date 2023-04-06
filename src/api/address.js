@@ -11,7 +11,22 @@ export function saveAddress(token,form,id) {
 		data: {
 			...form
 		},
+		// Long 类型必须用params
         params: {
+            id
+        }
+	})
+}
+
+
+export function getAddressList(token,id) {
+	return axios({
+		url: 'user/getAddressList',
+		method: 'GET',
+		headers: {
+			Authorization: token,
+		},
+		params: {
             id
         }
 	})
