@@ -84,7 +84,7 @@ const routes = [
 				path: '/blog/edit/:id',
 				name: 'editBlog',
 				component: () => import('@/views/moments/WriteMoment'),
-				meta: {title: '编辑动态', icon: 'el-icon-edit'},
+				meta: {title: '编辑动态', icon: 'el-icon-edit',needLogin:true},
 			},
 			{
 				path: '/userInfo',
@@ -103,6 +103,12 @@ const routes = [
 				name: 'Order',
 				component: () => import('@/views/product/Order'),
 				meta : {title: '订单管理',needLogin:true}
+			},
+			{
+				path: '/pay/:orderNumber',
+				name: 'Pay',
+				component: () => import('@/views/product/Pay'),
+				meta : {title: 'SneakerX支付系统',needLogin:true}
 			},
 		]
 	}

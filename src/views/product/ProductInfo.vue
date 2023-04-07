@@ -6,13 +6,13 @@
     <div class="ui attached segment m-padding-bottom-large">
       <div class="ui divided items">
         <div class="imageInfo">
-          <!-- <img src="https://img.picgo.net/2023/04/04/Nike-SB-Dunk-Low-Supreme-Black-Product7bd22cfa854e06f9.webp" /> -->
           <img :src=this.product.image />
         </div>
         <div class="ui divider"></div>
         <el-card shadow="always" style="text-align: center;">当前最低售出价格: <strong style="color: red;">{{  '￥' + this.product.price }}</strong></el-card>
         <div class="ui divider"></div>
-        <el-form ref="orderForm" :model="orderForm" label-width="90px">
+         <!-- 订单表 -->
+        <el-form ref="orderFormRef" :model="orderForm"  label-width="90px">
           <el-form-item label="选择尺码">
             <el-select v-model="orderForm.sizeWithPrice" placeholder="请选择您的尺码">
               <el-option v-for="item in sizeWithPrice" :key="item.id" :label="item.name" :value="item.id">
@@ -24,17 +24,22 @@
 
           <el-form-item label="即时配送">
             <el-switch v-model="orderForm.delivery"></el-switch>
+            <span class="delivery">（开启后48小时内紧急发货）</span>
           </el-form-item>
 
           <el-form-item label="默认地址">
             <el-switch v-model="orderForm.isDefaultAddress"></el-switch>
+            <span class="address">（设置当前选择地址为默认地址）</span>
           </el-form-item>
 
           <el-form-item label="收货地址">
-            <el-select v-model="orderForm.address" placeholder="请选择收获地址">
+            <el-select v-model="orderForm.address" placeholder="请选择收获地址" >
               <el-option v-for="item in address" :key="item.id" :label="item.name + item.addressDetail" :value="item.id" >
                 <span style="float: left">{{ item.name + item.phone }}</span>
                 <span style="float: right; color: #8492a6; font-size: 13px">{{ item.addressDetail }}</span>
+              </el-option>
+              <el-option v-if="address.length == 0" :key="''" :label="没有收货地址" :value=" ''" >
+                <span style="float: left">没有收货地址</span>
               </el-option>
             </el-select>
             <el-button style="margin-left: 5px;" icon="el-icon-location-information" circle @click="addAddressDialg"></el-button>
@@ -69,26 +74,29 @@
           </el-dialog>
 
           <el-form-item label="支付方式">
-            <el-radio-group v-model="orderForm.radio">
+            <el-radio-group v-model="orderForm.payType">
               <el-radio label="1" size="mini" border>微信</el-radio>
               <el-radio label="2" size="mini" border>支付宝</el-radio>
             </el-radio-group>
           </el-form-item>
+          <el-form-item label="选择数量">
+            <el-input-number size="mini" v-model="orderForm.quantity"  :min="1" :max="5" ></el-input-number>
+            <span class="purchaseRestrictions">（该商品限购{{ this.product.purchaseRestrictions }}件）</span>
+           
+          </el-form-item>
           <el-form-item>
-            <el-button type="success" @click="onSubmit" size="medium">立即购买</el-button>
-            <el-button size="medium">立即求购</el-button>
+            <el-button type="success" @click="submitOrder" size="medium">立即购买</el-button>
+            <el-button size="medium" @click="addProductToCart">加入购物车</el-button>
           </el-form-item>
         </el-form>
-        <el-collapse v-model="activeNames" @change="handleChange">
+        <el-collapse v-model="activeNames">
           <el-collapse-item name="1">
             <template slot="title">
               <span class="productDescription">
                 <i class="icon  el-icon-sell"></i>
                 商品描述 Description </span>
             </template>
-            <div>
-              {{ this.product.description }}
-            </div>
+            <div v-html="this.product.description"></div>
           </el-collapse-item>
           <el-collapse-item name="3">
             <template slot="title">
@@ -139,6 +147,7 @@ import { getProductSizeWithPriceByProductId } from '@/api/productSize'
 import { mapState } from "vuex";
 import { checkPhone } from '@/common/reg';
 import { getProductById } from '@/api/product';
+import { order } from '@/api/order';
 
 export default {
   name: "ProductInfo",
@@ -146,12 +155,18 @@ export default {
     return {
       activeNames: ["1"],
       address: [],
+      // 用于展示当前userId的收获地址 和当前productId的商品信息
       sizeWithPrice:[],
       addAddressDialgVisible: false,
       orderForm: {
-        radio:'1',
+        userId: '',
+        productId: '',
+        payType:'2',
         sizeWithPrice:'',
-        address: ''
+        delivery:false,
+        isDefaultAddress:false,
+        address: '',
+        quantity: 1,
       },
       // 添加收货地址表单
       form:{
@@ -175,12 +190,14 @@ export default {
 					{ required: true, message: '请输入收货人详细地址', trigger: 'blur' },
 				]
 			},
-      product:{}
+      product:{},
     }
   },
   created(){
     this.getProductById()
-    this.getAddressList()
+    if(this.user){
+          this.getAddressList()
+        }
     this.getProductSizeWithPriceByProductId()
   },
 	computed: {
@@ -193,21 +210,54 @@ export default {
 			// 在路由 beforeRouteUpdate 中判断路径是否改变
 			// 如果跳转到其它页面，to.path!==from.path 就放行 next()
 			if (to.path !== from.path) {
-				 // this.$store.commit(SET_FOCUS_MODE, false)
+        // 请求商品详情
 				this.getProductById(to.params.id)
-         // 请求用户收货地址
-        this.getAddressList()
+         // 如果用户登录了 请求用户收货地址 
+         if(this.user){
+          this.getAddressList()
+         }
          // 请求当前的商品关联的价格尺码
         this.getProductSizeWithPriceByProductId(to.params.id)
 				next()
 			}
 		},
   methods: {
-    onSubmit() {
-      console.log("submit!");
+    submitOrder() {
+      this.orderForm.userId = this.user.id
+      this.orderForm.productId = this.productId
+      const token = window.localStorage.getItem('adminToken') 
+      console.log(this.orderForm)
+      if(this.orderForm.address == ''){
+          return  this.msgError('请选择收货地址')
+      }
+      if(this.orderForm.sizeWithPrice == ''){
+          return  this.msgError('请选择购买的商品尺码')
+      }
+      this.$refs.orderFormRef.validate((valid) => {
+        if (valid) {
+          order(token,this.orderForm).then(res=>{
+            if(res.code==200){
+            this.$refs.orderFormRef.resetFields();
+              this.$notify({
+							title: res.msg,
+							type: 'success'
+						})
+              this.$router.push({path: '/pay/' + res.data})
+              console.log(res.data)
+            // 清空表单
+            }else{
+              this.$notify({
+							title: res.msg,
+							type: 'warning'
+						})
+            }
+          })
+        } 
+      });
     },
-    handleChange(val) {
-      console.log(val);
+    addProductToCart() {
+      console.log("addProductToCart!");
+      console.log(this.orderForm);
     },
     addAddressDialg() {
       this.addAddressDialgVisible = true;
@@ -227,21 +277,25 @@ export default {
 	  },
     // 保存地址
     saveAddress(){
+      const token = window.localStorage.getItem('adminToken') 
       // 获得user的id
       const id = this.user.id
       // 转换成Long类型
-      saveAddress(this.token,this.form,id).then(res=>{
+      saveAddress(token,this.form,id).then(res=>{
         if(res.code==200){
           this.msgSuccess(res.msg)
           // 清空表单 因为没有ref 所以只能这样清空
           this.form = {}
           // 关闭弹窗
           this.dialogVisibleClosed()
+          // 更新收货地址
+          this.getAddressList()
         }else{
           this.msgError(res.msg)
         }
       })
     },
+    // 获取当前用户的收货地址
     getAddressList(id = this.user.id){
       const token = window.localStorage.getItem('adminToken') 
       getAddressList(token,id).then(res=>{
@@ -254,15 +308,16 @@ export default {
         }
       })
     },
-    // 将当前查询出来的收货地址放到默认的地址上面去
+    // 将当前登录的用户Id查询出来的收货地址放到默认的地址上面去
     formatData(data) {
       for (var i = 0; i < data.length; i++) {
         if (data[i].isDefaultAddress === true) {
-          this.orderForm.address = data[i].name + data[i].addressDetail
+          this.orderForm.address = data[i].id
         } 
       }
       return data
     },
+    // 获得当前商品的尺码和价格
     getProductSizeWithPriceByProductId(id = this.productId){
       getProductSizeWithPriceByProductId(id).then(res=>{
         if(res.code==200){
@@ -274,6 +329,7 @@ export default {
         }
       })
     },
+    // 获得当前商品的详情
     getProductById(id = this.productId){
       getProductById(id).then(res=>{
         if(res.code==200){
@@ -319,5 +375,21 @@ export default {
 .productDescription {
   font-size: 12px;
   color: blueviolet;
+}
+/* 限购 */
+.purchaseRestrictions{
+  font-size: 10px;
+  zoom: 0.8;
+  color: red;
+}
+.delivery{
+  font-size: 10px;
+  zoom: 0.8;
+  color: red;
+} 
+.address{
+  font-size: 10px;
+  zoom: 0.8;
+  color: red;
 }
 </style>

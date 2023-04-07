@@ -1,9 +1,11 @@
 <template>
   <div>
     <div class="ui top attached segment" style="text-align: center">
-			<h2 class="m-text-500">系列</h2>
+			<h2 class="m-text-500">{{ this.productCategoryName }} 系列</h2>
 		</div>
 		<div class="ui attached segment m-padding-bottom-large">
+      <el-empty v-if="productCategoryListWithProduct.length == 0" description="暂无商品 去别的地方看看吧！"></el-empty>
+
 			<div class="ui divided items">
         <!-- 商品分类展示界面 两个卡片间隔为1 左右间隔加起来等于2 就是gutter    span一个卡片占8格子 一共24格子-->
        <el-row :gutter="4">  
@@ -40,6 +42,7 @@ export default {
     data(){
         return{
           productCategoryListWithProduct: [],
+          productCategoryName: ''
         }
     },
     created() {
@@ -55,7 +58,6 @@ export default {
 			// 如果跳转到其它页面，to.path!==from.path 就放行 next()
 			if (to.path !== from.path) {
 				// this.$store.commit(SET_FOCUS_MODE, false)
-				//在当前组件内路由到其它博客文章时，要重新获取文章
 				this.getProductCategory(to.params.id)
 				next()
 			}
@@ -65,7 +67,8 @@ export default {
       getProductCategory(id).then(res => {
         if (res.code === 200) {
           // 递归处理数据，将没有子节点的节点的children属性设置为undefined 否则级联会出问题
-          this.productCategoryListWithProduct = res.data
+          this.productCategoryListWithProduct = res.data.productCategoryListWithProduct
+          this.productCategoryName = res.data.productCategoryName
           console.log(this.productCategoryListWithProduct)
         }else{
           this.msgError(res.data)

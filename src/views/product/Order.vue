@@ -5,13 +5,23 @@
 		</div>
 		<div class="ui attached segment m-padding-bottom-large">
             s s s 测试
-            </div>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
     name: "Order",
+    data(){
+        return{
+        }
+    },
+    created() {
+    },
+    computed: {
+    },
+    methods: {
+    }
 }
 </script>
 
