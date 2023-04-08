@@ -108,7 +108,7 @@ const routes = [
 				path: '/pay/:orderNumber',
 				name: 'Pay',
 				component: () => import('@/views/product/Pay'),
-				meta : {title: 'SneakerX支付系统',needLogin:true}
+				meta : {title: 'SneakerX支付系统'}
 			},
 		]
 	}

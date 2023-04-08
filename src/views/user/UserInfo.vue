@@ -1,23 +1,33 @@
 <template>
    <div>
-    <div class="ui top attached segment "  style="text-align: center">
-			<h2 class="m-text-500">个人信息修改</h2>
-			<div class="ui attached segment m-padding-bottom-large">
-			<!--头像-->
-			<a class="avatar_box" >
-				<img src="/img/avatar.jpg" alt="">		
-			</a>
+
+	<div class="ui top attached segment" style="text-align: center">
+      <h2 class="m-text-500">个人信息修改</h2>
+    </div>
+	<div class="ui attached segment m-padding-bottom-large">
+		<div class="avatar" >
+				<img :src="user.avatar" >		
 			</div>
-		
-		</div>
+	</div>
+
  
 		
   </div>
 </template>
 
 <script>
-export default {
+import { mapState } from 'vuex'
 
+
+export default {
+	name: 'UserInfo',
+	data() {
+	return{
+	  }
+	},
+	computed: {
+    ...mapState(['user']),
+  },
 }
 </script>
 
@@ -50,8 +60,13 @@ export default {
 	background-color: #fff;
 }
 
-
- .avatar_box img {
+.avatar{
+	height: 100px;
+	width: 100px;
+	
+	text-align: center;
+}
+ .avatar img {
 	width: 100%;
 	height: 100%;
 	border-radius: 50%;

@@ -75,14 +75,13 @@
 
           <el-form-item label="支付方式">
             <el-radio-group v-model="orderForm.payType">
-              <el-radio label="1" size="mini" border>微信</el-radio>
+              <el-radio label="1" size="mini" border disabled>微信</el-radio>
               <el-radio label="2" size="mini" border>支付宝</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="选择数量">
             <el-input-number size="mini" v-model="orderForm.quantity"  :min="1" :max="5" ></el-input-number>
             <span class="purchaseRestrictions">（该商品限购{{ this.product.purchaseRestrictions }}件）</span>
-           
           </el-form-item>
           <el-form-item>
             <el-button type="success" @click="submitOrder" size="medium">立即购买</el-button>
@@ -243,7 +242,6 @@ export default {
 							type: 'success'
 						})
               this.$router.push({path: '/pay/' + res.data})
-              console.log(res.data)
             // 清空表单
             }else{
               this.$notify({

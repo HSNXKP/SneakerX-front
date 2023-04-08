@@ -12,3 +12,16 @@ export function order(token, orderForm) {
 		}
 	})
 }
+
+export function getOrder(token, orderNumber) {
+	return axios({
+		url: `order/${orderNumber}`,
+		method: 'POST',
+		headers: {
+			Authorization: token,
+		},
+		params: {
+			orderNumber
+		}
+	})
+}
