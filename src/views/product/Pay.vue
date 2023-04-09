@@ -19,10 +19,10 @@
         <div class="orderInfo">
         </div>
         <div class="orderInfo">
-          购买商品尺码 : [{{ this.order.size }}]
+          商品尺码 : [{{ this.order.size }}]
         </div>
         <div class="orderInfo">
-          购买商品数量 : <el-input-number size="mini" v-model="this.order.quantity" disabled></el-input-number>
+          商品数量 : <el-input-number size="mini" v-model="this.order.quantity" disabled></el-input-number>
         </div>
         <div class="orderInfo">
           <span class="orderPrice">
@@ -33,6 +33,12 @@
         <div class="orderInfo">
           <span class="orderNumber">
             订单编号 : {{ this.order.orderNumber }}
+          </span>
+        </div>
+        
+        <div class="orderInfo">
+          <span class="orderNumber">
+            创建时间 : {{ this.order.createTime | dateFormat('YYYY-MM-DD HH:mm') }}（下单后30分钟内可支付）
           </span>
         </div>
           <el-input type="textarea" placeholder="订单备注:给个鞋包呗！(当然肯定不会给)" v-model="orderRemarks"></el-input>
@@ -63,13 +69,15 @@
 <script>
 
 import { payOrder } from '@/api/pay';
-import { getOrder } from '@/api/order';
+import { getOrder , cancelOrder } from '@/api/order';
 
 export default {
   name: "Pay",
   data() {
     return {
-      order: {},
+      order: {
+
+      },
       alipay: '',
       value: 1,
       orderRemarks: ''
@@ -88,6 +96,8 @@ export default {
     getOrder(orderNumber = this.orderNumber) {
       console.log(this.orderNumber)
       const token = window.localStorage.getItem('adminToken') 
+      console.log(token)
+      console.log(orderNumber)
       getOrder(token,orderNumber).then(res => {
         if (res.code === 200) {
           this.order = res.data
@@ -101,7 +111,35 @@ export default {
       this.payOrder()
     },
     cancelOrder() {
-      this.$router.push({path: '/productInfo/' + this.order.product.id})
+      // 二次确认
+      this.$confirm('此操作将取消该订单, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        const token = window.localStorage.getItem('adminToken')
+        const orderNumber = this.orderNumber
+        cancelOrder(token,orderNumber).then(res => {
+          if (res.code === 200) {
+            this.$notify({
+              title:  res.msg,
+              type: 'success',
+            });
+            this.getOrder()
+          }else{
+            this.$notify({
+							title: res.msg,
+							type: 'warning'
+						})
+          }
+        })
+      }).catch((e) => {
+        console.log(e)
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
     },
     payOrder(orderNumber = this.orderNumber) {
       const token = window.localStorage.getItem('adminToken')

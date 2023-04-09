@@ -13,6 +13,19 @@ export function order(token, orderForm) {
 	})
 }
 
+export function cancelOrder(token, orderNumber) {
+	return axios({
+		url: 'cancelOrder',
+		method: 'GET',
+		headers: {
+			Authorization: token,
+		},
+		params: {
+			orderNumber
+		}
+	})
+}
+
 export function getOrder(token, orderNumber) {
 	return axios({
 		url: `order/${orderNumber}`,
