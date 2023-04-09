@@ -36,19 +36,23 @@
           </span>
         </div>
           <el-input type="textarea" placeholder="订单备注:给个鞋包呗！(当然肯定不会给)" v-model="orderRemarks"></el-input>
-        <div class="orderInfo">
+        <div class="orderInfo" v-if="this.order.status == 0">
           <el-button type="success" @click="toPay">支付订单</el-button>
           <el-button type="danger" @click="cancelOrder">取消订单</el-button>
         </div>
+        <div class="orderInfo" v-if="this.order.status == 1">
+          <el-button type="success"  disabled>订单已支付</el-button>
+        </div>
+        <div class="orderInfo" v-if="this.order.status == 2">
+          <el-button type="success"  disabled>订单已发货</el-button>
+        </div>
+        <div class="orderInfo" v-if="this.order.status == 3">
+          <el-button type="success"  disabled>订单已完成</el-button>
+        </div>
+        <div class="orderInfo" v-if="this.order.status == 4">
+          <el-button type="success"  disabled>订单已取消</el-button>
+        </div>
       </div>
-
-
-
-
-
-
-
-
 
       <!-- 支付宝前端响应界面 -->
       <div ref="alipayWap" v-html="alipay"> </div>
@@ -100,8 +104,10 @@ export default {
       this.$router.push({path: '/productInfo/' + this.order.product.id})
     },
     payOrder(orderNumber = this.orderNumber) {
-      payOrder(orderNumber).then(res => {
-        console.log(res)
+      const token = window.localStorage.getItem('adminToken')
+      payOrder(token,orderNumber).then(res => {
+        if (res.code === 200) {
+          console.log(res)
         this.alipay = res.data
         this.$nextTick(() => {
           // 提交支付表单
@@ -110,7 +116,9 @@ export default {
             // this.toPayFlag = false;
           }, 500);
         });
-
+        }else{
+          this.msgError(res.msg)
+        }
       })
     }
   }
