@@ -4,8 +4,9 @@
       <h2 class="m-text-500">订单管理</h2>
     </div>
     <div class="ui attached segment m-padding-bottom-large">
-      <div style="margin-bottom:  10px;">
-        <el-button type="danger" size="mini" @click="deleteOrder">删除订单</el-button>
+      <el-empty description="暂无订单，快去下单吧！" v-if="orderList.length === 0"></el-empty>
+      <div style="margin-bottom:  10px;" v-if="!orderList.length === 0">
+        <el-button type="danger" size="mini" @click="deleteOrder" >删除订单</el-button>
         <el-button type="danger" size="mini" v-if="this.value" @click="cancelDelete">确定删除</el-button>
         <el-button type="danger" size="mini" v-if="this.value" @click="cancelDelete">取消</el-button>
       </div>

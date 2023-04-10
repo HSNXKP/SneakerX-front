@@ -42,20 +42,20 @@
         
   
       </div>
-      <div class="orderInfo" v-if="order.status == 0">
+      <div class="orderInfo" v-show="order.status == 0">
           <el-button type="success" @click="toPay">支付订单</el-button>
           <el-button type="danger" @click="cancelOrder">取消订单</el-button>
         </div>
-        <div class="orderInfo" v-if="order.status == 1">
+        <div class="orderInfo" v-show="order.status == 1">
           <el-button type="success"  disabled>订单已支付</el-button>
         </div>
-        <div class="orderInfo" v-if="order.status == 2">
+        <div class="orderInfo" v-show="order.status == 2">
           <el-button type="success"  disabled>订单已发货</el-button>
         </div>
-        <div class="orderInfo" v-if="order.status == 3">
+        <div class="orderInfo" v-show="order.status == 3">
           <el-button type="success"  disabled>订单已完成</el-button>
         </div>
-        <div class="orderInfo" v-if="order.status == 4">
+        <div class="orderInfo" v-show="order.status == 4">
           <el-button type="success"  disabled>订单已取消</el-button>
         </div>
       <!-- 支付宝前端响应界面 -->
@@ -93,7 +93,8 @@ export default {
       },
       alipay: '',
       value: 1,
-      orderRemarks: ''
+      orderRemarks: '',
+      value: true
     }
   },
   created() {
