@@ -38,3 +38,18 @@ export function getOrder(token, orderNumber) {
 		}
 	})
 }
+
+export function getOrderList(token, id) {
+	return axios({
+		url: `getOrder`,
+		method: 'GET',
+		headers: {
+			Authorization: token,
+		},
+		params: {
+			id
+		}
+	})
+}
+
+

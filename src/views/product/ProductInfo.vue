@@ -34,11 +34,11 @@
 
           <el-form-item label="收货地址">
             <el-select v-model="orderForm.address" placeholder="请选择收获地址" >
-              <el-option v-for="item in address" :key="item.id" :label="item.name + item.addressDetail" :value="item.id" >
+              <el-option v-for="item in address" :key="item.id" :label="item.name + item.addressDetail" :value="item.id">
                 <span style="float: left">{{ item.name + item.phone }}</span>
                 <span style="float: right; color: #8492a6; font-size: 13px">{{ item.addressDetail }}</span>
               </el-option>
-              <el-option v-if="address.length == 0" :key="''" :label="没有收货地址" :value=" ''" >
+              <el-option  :key="''"  :value=" ''"  v-if="address.length == 0">
                 <span style="float: left">没有收货地址</span>
               </el-option>
             </el-select>

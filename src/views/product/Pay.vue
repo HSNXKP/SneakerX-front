@@ -6,60 +6,58 @@
     <div class="ui attached segment m-padding-bottom-large">
       <div class="ui attached segment m-padding-bottom-large">
         <div class="orderInfo">
-          <span>商品名称:{{ this.order.product.name }}</span>
+          <span>商品名称:{{ order.product.name }}</span>
         </div>
-        <el-card shadow="always" style="text-align: center; margin-top: 10px;">
-          <img :src="this.order.product.image" />
+        <el-card shadow="always" class="orderInfo">
+          <img :src="order.product.image" />
         </el-card>
 
         <div class="ui divider"></div>
-        <el-card shadow="always" style="text-align: center; margin-top: 10px;">
-          收货方式 : {{ this.order.address.name +'，' + this.order.address.phone +'，'+ this.order.address.address +'，' + this.order.address.addressDetail }}
-        </el-card>
-        <div class="orderInfo">
+        <div shadow="always" class="orderDetailInfo">
+          收货方式 : {{ order.address.name +'，' + order.address.phone +'，'+ order.address.address +'，' + order.address.addressDetail }}
         </div>
-        <div class="orderInfo">
-          商品尺码 : [{{ this.order.size }}]
+        <div class="orderDetailInfo">
+          商品尺码 : [{{ order.size }}]
         </div>
-        <div class="orderInfo">
-          商品数量 : <el-input-number size="mini" v-model="this.order.quantity" disabled></el-input-number>
+        <div class="orderDetailInfo">
+          商品数量 :  x{{ order.quantity }}
         </div>
-        <div class="orderInfo">
+        <div class="orderDetailInfo">
           <span class="orderPrice">
-            商品总价格 : {{ this.order.amount }}
+            商品总价格 : {{ order.amount }}
           </span>
         </div>
 
-        <div class="orderInfo">
-          <span class="orderNumber">
-            订单编号 : {{ this.order.orderNumber }}
-          </span>
+        <div class="orderDetailInfo">
+            订单编号 : {{ order.orderNumber }}
         </div>
         
-        <div class="orderInfo">
-          <span class="orderNumber">
-            创建时间 : {{ this.order.createTime | dateFormat('YYYY-MM-DD HH:mm') }}（下单后30分钟内可支付）
-          </span>
+        <div class="orderDetailInfo">
+            创建时间 : {{ order.createTime | dateFormat('YYYY-MM-DD HH:mm') }}（下单后30分钟内可支付）
         </div>
+        <div class="orderDetailInfo">
+            订单备注 :
           <el-input type="textarea" placeholder="订单备注:给个鞋包呗！(当然肯定不会给)" v-model="orderRemarks"></el-input>
-        <div class="orderInfo" v-if="this.order.status == 0">
+        </div>
+        
+  
+      </div>
+      <div class="orderInfo" v-if="order.status == 0">
           <el-button type="success" @click="toPay">支付订单</el-button>
           <el-button type="danger" @click="cancelOrder">取消订单</el-button>
         </div>
-        <div class="orderInfo" v-if="this.order.status == 1">
+        <div class="orderInfo" v-if="order.status == 1">
           <el-button type="success"  disabled>订单已支付</el-button>
         </div>
-        <div class="orderInfo" v-if="this.order.status == 2">
+        <div class="orderInfo" v-if="order.status == 2">
           <el-button type="success"  disabled>订单已发货</el-button>
         </div>
-        <div class="orderInfo" v-if="this.order.status == 3">
+        <div class="orderInfo" v-if="order.status == 3">
           <el-button type="success"  disabled>订单已完成</el-button>
         </div>
-        <div class="orderInfo" v-if="this.order.status == 4">
+        <div class="orderInfo" v-if="order.status == 4">
           <el-button type="success"  disabled>订单已取消</el-button>
         </div>
-      </div>
-
       <!-- 支付宝前端响应界面 -->
       <div ref="alipayWap" v-html="alipay"> </div>
     </div>
@@ -76,7 +74,22 @@ export default {
   data() {
     return {
       order: {
-
+        product:{
+          name:'',
+          image:''
+        },
+        address:{
+          name:'',
+          phone:'',
+          address:'',
+          addressDetail:''
+        },
+        size:'',
+        quantity:'',
+        amount:'',
+        orderNumber:'',
+        createTime:'',
+        status:''
       },
       alipay: '',
       value: 1,
@@ -168,6 +181,11 @@ export default {
   text-align: center;
   margin-top: 10px;
 }
+.orderDetailInfo {
+  margin-top: 10px;
+  color: #999;
+}
+
 
 .orderNumber {
   font-size: 10px;
