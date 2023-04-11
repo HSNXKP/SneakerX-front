@@ -3,21 +3,27 @@
     <div class="ui top attached segment" style="text-align: center">
       <h2 class="m-text-500">SneakerX支付系统</h2>
     </div>
-    <div class="ui attached segment m-padding-bottom-large">
-      <div class="ui attached segment m-padding-bottom-large">
+    <!-- 判断当前的订单状态是否存在 存在就显示 -->
+    <el-empty description="暂无订单，快去下单吧！" v-if="order.status === ''"></el-empty>
+    <div class="ui attached segment m-padding-bottom-large" v-else>
+      <!-- v-if 做判断先判断空 在使用v-else 要是先判断v-if="!order.children === null" 的情况会出问题-->
+      <div class="ui attached segment m-padding-bottom-large" v-if="order.children === null">
         <div class="orderInfo">
-          <span>商品名称:{{ order.product.name }}</span>
+          <span >商品名称:{{ order.product.name  }}</span>
         </div>
         <el-card shadow="always" class="orderInfo">
           <img :src="order.product.image" />
         </el-card>
 
         <div class="ui divider"></div>
-        <div shadow="always" class="orderDetailInfo">
-          收货方式 : {{ order.address.name +'，' + order.address.phone +'，'+ order.address.address +'，' + order.address.addressDetail }}
+    
+        <div class="orderDetailInfo"> 
+          商品尺码 : [{{ order.size }}]
         </div>
         <div class="orderDetailInfo">
-          商品尺码 : [{{ order.size }}]
+          <span class="orderPrice">
+            商品单价 : {{ order.price }}
+          </span>
         </div>
         <div class="orderDetailInfo">
           商品数量 :  x{{ order.quantity }}
@@ -35,13 +41,62 @@
         <div class="orderDetailInfo">
             创建时间 : {{ order.createTime | dateFormat('YYYY-MM-DD HH:mm') }}（下单后30分钟内可支付）
         </div>
+        <div shadow="always" class="orderDetailInfo">
+          收货方式 : {{ order.address.name +'，' + order.address.phone +'，'+ order.address.address +'，' + order.address.addressDetail }}
+        </div>
         <div class="orderDetailInfo">
-            订单备注 :
-          <el-input type="textarea" placeholder="订单备注:给个鞋包呗！(当然肯定不会给)" v-model="orderRemarks"></el-input>
+            订单备注 : {{ order.orderRemarks}}
+          <el-input v-if="order.status === 0" type="textarea" placeholder="订单备注:给个鞋包呗！(当然肯定不会给)" v-model="orderRemarks"></el-input>
         </div>
         
   
       </div>
+      <div class="ui attached segment m-padding-bottom-large" v-else>
+        <div class="children" v-for="(item,index) in order.children" :key="index">
+          <div class="orderInfo">
+          <span  >商品名称:{{ item.product.name }}</span>
+        </div>
+        <el-card shadow="always" class="orderInfo">
+          <img  :src="item.product.image" />
+        </el-card>
+
+        <div class="ui divider"></div>
+
+        <div class="orderDetailInfo">
+          商品尺码 : [{{ item.size }}]
+        </div>
+        <div class="orderDetailInfo">
+          <span class="orderPrice">
+            商品单价 : {{ item.price }}
+          </span>
+        </div>
+        <div class="orderDetailInfo">
+          商品数量 :  x{{ item.quantity }}
+        </div>
+        </div>
+        <div class="orderDetailInfo">
+          <span class="orderPrice">
+            商品总价格 : {{ order.amount }}
+          </span>
+        </div>
+        <div class="orderDetailInfo">
+            订单编号 : {{ order.orderNumber }}
+        </div>
+        <div class="orderDetailInfo">
+            创建时间 : {{ order.createTime | dateFormat('YYYY-MM-DD HH:mm') }}（下单后30分钟内可支付）
+        </div>
+        <div shadow="always" class="orderDetailInfo">
+          收货方式 : {{ order.address.name +'，' + order.address.phone +'，'+ order.address.address +'，' + order.address.addressDetail }}
+        </div>
+        <div class="orderDetailInfo">
+            订单备注 : {{ order.orderRemarks}}
+          <el-input v-if="order.status === 0" type="textarea" placeholder="订单备注:给个鞋包呗！(当然肯定不会给)" v-model="orderRemarks"></el-input>
+        </div>
+        
+      </div>
+     
+
+
       <div class="orderInfo" v-show="order.status == 0">
           <el-button type="success" @click="toPay">支付订单</el-button>
           <el-button type="danger" @click="cancelOrder">取消订单</el-button>
@@ -61,6 +116,7 @@
       <!-- 支付宝前端响应界面 -->
       <div ref="alipayWap" v-html="alipay"> </div>
     </div>
+    
   </div>
 </template>
 
@@ -89,7 +145,8 @@ export default {
         amount:'',
         orderNumber:'',
         createTime:'',
-        status:''
+        status:'',
+        children:[]
       },
       alipay: '',
       value: 1,
@@ -108,15 +165,13 @@ export default {
   },
   methods: {
     getOrder(orderNumber = this.orderNumber) {
-      console.log(this.orderNumber)
       const token = window.localStorage.getItem('adminToken') 
-      console.log(token)
-      console.log(orderNumber)
       getOrder(token,orderNumber).then(res => {
         if (res.code === 200) {
           this.order = res.data
-          console.log(res.data)
+          
         }else{
+          console.log(this.order)
           this.msgError(res.msg)
         }
       })

@@ -10,9 +10,6 @@
         <el-button type="danger" size="mini" v-if="this.value" @click="cancelDelete">确定删除</el-button>
         <el-button type="danger" size="mini" v-if="this.value" @click="cancelDelete">取消</el-button>
       </div>
-      <div>
-
-      </div>
       <div class="ui attached segment m-padding-bottom-large" v-for="(item, index) in orderList" :key="index">
           <el-checkbox style="font-size:center" v-if="value"></el-checkbox>
           <span style="color: #999;" v-if="item.status === 0 ">
@@ -35,54 +32,53 @@
             </span>
         <div class="orderInfo" v-show="item.children.length === 0" >
               <el-card class="imageInfo">
-            <el-image style=" width: 100%; height: 100%; padding: 0 0 0 0;" :src="item.image">
-            </el-image>
+                <router-link :to="`/pay/${item.orderNumber}`" > <el-image style=" width: 100%; height: 100%; padding: 0 0 0 0;" :src="item.image"></el-image></router-link>
           </el-card>
           <div>
             <div class="orderDetail">
                 商品名称：{{ item.name }}
               </div>
-            <div class="orderDetail">
-                商品数量：x{{ item.quantity }}
+              <div class="orderDetail">
+                商品货号：{{ item.code }}
               </div>
               <div class="orderDetail">
                 商品尺码：{{ item.size }}
               </div>
-              <div class="orderDetail">
+            <div class="orderDetail">
+                商品数量：x{{ item.quantity }}
+              </div>
+              <div class="orderDetail" style="color: red">
                 商品单价：{{ item.price }}
               </div>
-              <div class="orderDetail">
+              <div class="orderDetail" style="color: red">
                 商品总价：{{ item.amount }}
-              </div>
-              <div class="orderDetail">
-                商品货号：{{ item.code }}
               </div>
           </div>
         </div>
         <div class="orderInfo" v-show="item.children.length > 0" v-for="(children, index) in item.children" :key="index">
               <el-card class="imageInfo" >
-                <el-image style=" width: 100%; height: 100%; padding: 0 0 0 0;" :src="children.image">
-            </el-image>
+            <router-link :to="`/pay/${item.orderNumber}`" ><el-image style=" width: 100%; height: 100%; padding: 0 0 0 0;" :src="children.image"></el-image></router-link>
           </el-card>
           <div>
             <div class="orderDetail">
                 商品名称：{{ children.name }}
               </div>
-            <div class="orderDetail">
-                商品数量：x{{ children.quantity }}
+              <div class="orderDetail" >
+                商品货号：{{ children.code }}
               </div>
               <div class="orderDetail">
                 商品尺码：{{ children.size }}
               </div>
-              <div class="orderDetail">
+            <div class="orderDetail">
+                商品数量：x{{ children.quantity }}
+              </div>
+              <div class="orderDetail" style="color: red">
                 商品单价：{{ children.price }}
               </div>
-              <div class="orderDetail">
+              <div class="orderDetail" style="color: red">
                 商品总价：{{ children.amount }}
               </div>
-              <div class="orderDetail">
-                商品货号：{{ children.code }}
-              </div>
+
           </div>
         </div>
       </div>
