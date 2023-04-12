@@ -2,7 +2,7 @@ import axios from '@/plugins/axios'
 
 export function getMomentListByPageNum(token, id,pageNum) {
 	return axios({
-		url: 'bolgTitleById',
+		url: 'user/bolgTitleById',
 		method: 'GET',
 		headers: {
 			Authorization: token,
@@ -21,19 +21,6 @@ export function likeMoment(id) {
 	})
 }
 
-export function getBlogTitleByUserId(token,pageNum,id) {
-	return axios({
-		url:'bolgTitleById',
-		method: 'GET',
-		headers: {
-			Authorization: token,
-		},
-		params: {
-			pageNum,
-			id
-		}
-	})
-}
 
 export function deleteBlogById(token,id){
 	return axios({

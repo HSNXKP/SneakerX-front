@@ -21,13 +21,12 @@
             </div>
       <div class="ui divider"></div>
       <div v-for="(item,index) in cartList" :key="index">
-        <el-checkbox ></el-checkbox>
+        <el-checkbox v-model="item.checked" @change="changeproductCategoryIdChecked(item)" ></el-checkbox>
             <router-link style="margin-left:10px" :to="`/product/${item.productCategoryId}`" ><i class="el-icon-goods" style="color:red">{{ item.productCategoryName }}</i></router-link>
         <div class="orderInfo"  v-for="(cart,index) in item.cartList" :key="index">
-          <el-checkbox v-model="cart.checked" ></el-checkbox>
+          <el-checkbox v-model="cart.checked" @change="changeCaetIdChecked(cart)" ></el-checkbox>
               <el-card class="imageInfo">
-            <el-image style=" width: 100%; height: 100%; padding: 0 0 0 0;" :src="cart.image">
-            </el-image>
+            <router-link :to="`/productInfo/${cart.productId}`" > <el-image style=" width: 100%; height: 100%; padding: 0 0 0 0;" :src="cart.image"></el-image></router-link>
           </el-card>
           <div>
             <div class="orderDetail">
@@ -42,11 +41,11 @@
             <div class="orderDetail">
               数量：
               <a>
-                <i class="el-icon-remove-outline"></i>
+                <i @click="downQuantity(cart.id)" class="el-icon-remove-outline"></i>
               </a>
                 {{ cart.quantity }}
                 <a>
-                  <i @click="add(cart.id)" class="el-icon-circle-plus-outline"></i>
+                  <i @click="addQuantity(cart.id)" class="el-icon-circle-plus-outline"></i>
                 </a>
               </div>
               <div class="productNumber">
@@ -72,7 +71,7 @@
 
 <script>
 import { mapState } from "vuex";
-import { cart } from '@/api/cart';
+import { cart,addQuantity,downQuantity,changeproductCategoryIdChecked,changeCaetIdChecked } from '@/api/cart';
 
 export default {
     name: "Cart",
@@ -90,8 +89,26 @@ export default {
     this.cart()
   },
   methods:{
-    add(id){
+    addQuantity(id){
+      const token = window.localStorage.getItem('adminToken') 
+      addQuantity(token,id).then(res=>{
+            if(res.code==200){
+              this.cart()
+            }else{
+              this.msgError(res.msg)
+            }
+          })
       console.log(id)
+    },
+    downQuantity(id){
+      const token = window.localStorage.getItem('adminToken') 
+      downQuantity(token,id).then(res=>{
+            if(res.code==200){
+              this.cart()
+            }else{
+              this.msgError(res.msg)
+            }
+          })
     },
     cart(){
       const token = window.localStorage.getItem('adminToken') 
@@ -115,9 +132,41 @@ export default {
           console.log(data[i].cartList[y].amount)
           amount = amount + data[i].cartList[y].amount
           this.amount = amount
+          console.log(this.amount)
         }
       }
-    }
+    },
+    // 方法不同 接口相同 通过当前的type来判断
+    changeproductCategoryIdChecked(data){
+      console.log(data)
+      const id = data.productCategoryId
+      const token = window.localStorage.getItem('adminToken')
+      const userId = this.user.id
+      const type = 'productCategoryId'
+      const checked = data.checked
+      changeproductCategoryIdChecked(token,id,type,userId,checked).then(res=>{
+        if(res.code==200){
+          this.cart()
+        }else{
+          this.msgError(res.msg)
+        }
+      })
+    },
+    // 方法不同 接口相同 通过当前的type来判断
+    changeCaetIdChecked(data){
+      const id = data.id
+      const token = window.localStorage.getItem('adminToken')
+      const userId = this.user.id
+      const type = 'cartId'
+      const checked = data.checked
+      changeCaetIdChecked(token,id,type,userId,checked).then(res=>{
+        if(res.code==200){
+          this.cart()
+        }else{
+          this.msgError(res.msg)
+        }
+      })
+    },
 
   },
 }

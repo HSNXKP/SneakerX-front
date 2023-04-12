@@ -26,3 +26,62 @@ export function cart(token,id) {
 	})
 }
 
+
+export function addQuantity(token,id) {
+	return axios({
+		url: 'user/addQuantity',
+		method: 'GET',
+		headers: {
+			Authorization: token,
+		},
+		params: {
+			id
+		}
+	})
+}
+
+export function downQuantity(token,id) {
+	return axios({
+		url: 'user/downQuantity',
+		method: 'GET',
+		headers: {
+			Authorization: token,
+		},
+		params: {
+			id
+		}
+	})
+}
+
+export function changeproductCategoryIdChecked(token,id,type,userId,checked) {
+	return axios({
+		url: 'user/changeChecked',
+		method: 'GET',
+		headers: {
+			Authorization: token,
+		},
+		params: {
+			id,
+			type,
+			userId,
+			checked
+		}
+	})
+}
+
+export function changeCaetIdChecked(token,id,type,userId,checked) {
+	return axios({
+		url: 'user/changeChecked',
+		method: 'GET',
+		headers: {
+			Authorization: token,
+		},
+		params: {
+			id,
+			type,
+			userId,
+			checked
+		}
+	})
+}
+
