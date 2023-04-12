@@ -17,8 +17,8 @@
 					<div class="ui stackable grid">
 						<!--左侧随机推荐商品-->
 						<div class="three wide column m-mobile-hide">
-							<RandomSneaker :randomProductList="randomProductList" :class="{'m-display-none':focusMode}"/>
-							<Introduction :class="{'m-display-none':focusMode}"  v-if="user != '' "/> 
+							<!-- <RandomSneaker :randomProductList="randomProductList" :class="{'m-display-none':focusMode}"/>
+							<Introduction :class="{'m-display-none':focusMode}"  v-if="user != '' "/>  -->
 						</div>
 						<!--中间 主要路由-->
 						<div class="ten wide column">
