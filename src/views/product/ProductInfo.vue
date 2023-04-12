@@ -146,7 +146,7 @@ import { getProductSizeWithPriceByProductId } from '@/api/productSize'
 import { mapState } from "vuex";
 import { checkPhone } from '@/common/reg';
 import { getProductById } from '@/api/product';
-import { order } from '@/api/order';
+import { addCart } from '@/api/cart';
 
 export default {
   name: "ProductInfo",
@@ -221,6 +221,7 @@ export default {
 			}
 		},
   methods: {
+    // 提交订单
     submitOrder() {
       this.orderForm.userId = this.user.id
       this.orderForm.productId = this.productId
@@ -234,15 +235,26 @@ export default {
       }
       this.$refs.orderFormRef.validate((valid) => {
         if (valid) {
-          order(token,this.orderForm).then(res=>{
+     
+        } 
+      });
+    },
+    // 加入购物车
+    addProductToCart() {
+      this.orderForm.userId = this.user.id
+      this.orderForm.productId = this.productId
+      const token = window.localStorage.getItem('adminToken') 
+      if(this.orderForm.sizeWithPrice == ''){
+          return  this.msgError('请选择购买的商品尺码')
+      }
+      this.$refs.orderFormRef.validate((valid) => {
+        if (valid) {
+          addCart(token,this.orderForm).then(res=>{
             if(res.code==200){
-            this.$refs.orderFormRef.resetFields();
               this.$notify({
 							title: res.msg,
 							type: 'success'
 						})
-              this.$router.push({path: '/pay/' + res.data})
-            // 清空表单
             }else{
               this.$notify({
 							title: res.msg,
@@ -252,9 +264,6 @@ export default {
           })
         } 
       });
-    },
-    addProductToCart() {
-      console.log("addProductToCart!");
       console.log(this.orderForm);
     },
     addAddressDialg() {

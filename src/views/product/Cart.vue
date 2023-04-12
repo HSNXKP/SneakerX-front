@@ -3,11 +3,11 @@
     <div class="ui top attached segment" style="text-align: center">
 			<h2 class="m-text-500">我的购物车</h2>
 		</div>
-    
-    <div class="ui attached segment m-padding-bottom-large">
-    
+    <div class="ui attached segment m-padding-bottom-large" v-if="this.cartList.length === 0">
+      <el-empty  description="暂无商品 赶紧加入购物车吧！"></el-empty></div>
+    <div class="ui attached segment m-padding-bottom-large" v-else>
             <div >
-              <el-select placeholder="请选择收获地址" size="mini">
+              <el-select :vaule="value" placeholder="请选择收获地址" size="mini">
               <el-option >
                 <span style="float: left">ss</span>
                 <span style="float: right; color: #8492a6; font-size: 13px">ss</span>
@@ -20,161 +20,50 @@
             <el-button  size="mini">管理</el-button>
             </div>
       <div class="ui divider"></div>
-
-      <div >
+      <div v-for="(item,index) in cartList" :key="index">
         <el-checkbox ></el-checkbox>
-            <router-link style="margin-left:10px" :to="`/tag/${ss}`" ><i class="el-icon-goods" style="color:red">Nike</i></router-link>
-        <div class="orderInfo"  >
-          <el-checkbox  ></el-checkbox>
+            <router-link style="margin-left:10px" :to="`/product/${item.productCategoryId}`" ><i class="el-icon-goods" style="color:red">{{ item.productCategoryName }}</i></router-link>
+        <div class="orderInfo"  v-for="(cart,index) in item.cartList" :key="index">
+          <el-checkbox v-model="cart.checked" ></el-checkbox>
               <el-card class="imageInfo">
-            <el-image style=" width: 100%; height: 100%; padding: 0 0 0 0;" :src="url">
+            <el-image style=" width: 100%; height: 100%; padding: 0 0 0 0;" :src="cart.image">
             </el-image>
           </el-card>
           <div>
             <div class="orderDetail">
-                商品：熊猫dunk
+                商品：{{ cart.name }}
               </div>
               <div class="orderDetail">
-               尺码： 38
+               尺码：{{ cart.size }}
               </div>
               <div class="orderDetail">
-              货号 ： CD5464-101
+              货号：{{ cart.code }}
               </div>
             <div class="orderDetail">
               数量：
               <a>
                 <i class="el-icon-remove-outline"></i>
               </a>
-                {{this.quantity}}
+                {{ cart.quantity }}
                 <a>
-                  <i @click="add" class="el-icon-circle-plus-outline"></i>
+                  <i @click="add(cart.id)" class="el-icon-circle-plus-outline"></i>
                 </a>
               </div>
               <div class="productNumber">
-                <span style="color: red;" >￥3333</span>
+                <span style="color: red;" >￥{{ cart.price }}</span>
               </div>
-          
           </div>
         </div>
-
-        <div class="orderInfo"  >
-          <el-checkbox style="font-size:center" ></el-checkbox>
-              <el-card class="imageInfo">
-            <el-image style=" width: 100%; height: 100%; padding: 0 0 0 0;" :src="url">
-            </el-image>
-          </el-card>
-          <div>
-            <div class="orderDetail">
-                商品：熊猫dunk
-              </div>
-              <div class="orderDetail">
-               尺码： 38
-              </div>
-              <div class="orderDetail">
-              货号 ： CD5464-101
-              </div>
-            <div class="orderDetail">
-              数量：
-              <a>
-                <i class="el-icon-remove-outline"></i>
-              </a>
-                {{this.quantity}}
-                <a>
-                  <i @click="add" class="el-icon-circle-plus-outline"></i>
-                </a>
-              </div>
-              <div class="productNumber">
-                <span style="color: red;" >￥3333</span>
-              </div>
-          
-          </div>
-        </div>
-
       </div>
-      <div class="ui divider"></div>
-      <div >
-        <el-checkbox ></el-checkbox>
-            <router-link style="margin-left:10px" :to="`/tag/${ss}`" ><i class="el-icon-goods" style="color:red">Nike</i></router-link>
-        <div class="orderInfo"  >
-          <el-checkbox  ></el-checkbox>
-              <el-card class="imageInfo">
-            <el-image style=" width: 100%; height: 100%; padding: 0 0 0 0;" :src="url">
-            </el-image>
-          </el-card>
-          <div>
-            <div class="orderDetail">
-                商品：熊猫dunk
-              </div>
-              <div class="orderDetail">
-               尺码： 38
-              </div>
-              <div class="orderDetail">
-              货号 ： CD5464-101
-              </div>
-            <div class="orderDetail">
-              数量：
-              <a>
-                <i class="el-icon-remove-outline"></i>
-              </a>
-                {{this.quantity}}
-                <a>
-                  <i @click="add" class="el-icon-circle-plus-outline"></i>
-                </a>
-              </div>
-              <div class="productNumber">
-                <span style="color: red;" >￥3333</span>
-              </div>
-          
-          </div>
-        </div>
-
-        <div class="orderInfo"  >
-          <el-checkbox style="font-size:center" ></el-checkbox>
-              <el-card class="imageInfo">
-            <el-image style=" width: 100%; height: 100%; padding: 0 0 0 0;" :src="url">
-            </el-image>
-          </el-card>
-          <div>
-            <div class="orderDetail">
-                商品：熊猫dunk
-              </div>
-              <div class="orderDetail">
-               尺码： 38
-              </div>
-              <div class="orderDetail">
-              货号 ： CD5464-101
-              </div>
-            <div class="orderDetail">
-              数量：
-              <a>
-                <i class="el-icon-remove-outline"></i>
-              </a>
-                {{this.quantity}}
-                <a>
-                  <i @click="add" class="el-icon-circle-plus-outline"></i>
-                </a>
-              </div>
-
-
-              <div class="productNumber">
-                <span style="color: red;" >￥3333</span>
-              </div>
-          
-          </div>
-        </div>
-
-      </div>
-
       <div class="ui divider"></div>
         <span  class="amountDetail">合计:
           <span class="amount">
-            ￥3333
+            ￥{{ this.amount }}
           </span>
           </span>
           <div class="amounts">
         <el-button type="danger" size="mini">结算</el-button>
       </div>
-
      <div>
      </div>
     </div>
@@ -182,21 +71,55 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+import { cart } from '@/api/cart';
+
 export default {
     name: "Cart",
     data() {
     return {
-      url: "https://img.picgo.net/2023/04/04/Nike-SB-Dunk-Low-Supreme-Black-Product7bd22cfa854e06f9.webp",
-      value:'',
-      quantity : 1
+      value:1,
+      cartList:[],
+      amount: 0
     };
   },
+  computed:{
+    ...mapState(['user']),
+  },
+  created(){
+    this.cart()
+  },
   methods:{
-    add(){
-      this.quantity = this.quantity + 1
+    add(id){
+      console.log(id)
+    },
+    cart(){
+      const token = window.localStorage.getItem('adminToken') 
+      const id = this.user.id
+      cart(token,id).then(res=>{
+            if(res.code==200){
+              console.log(res.data)
+              this.cartList=res.data
+              this.computeAmount(res.data)
+              console.log(this.cartList.length)
+            }else{
+              this.msgError(res.msg)
+            }
+          })
+    },
+    computeAmount(data){
+      var amount = 0;
+      for (var i = 0; i < data.length; i++) {
+        console.log(data[i].cartList.length)
+        for(var y = 0; y < data[i].cartList.length;y++){
+          console.log(data[i].cartList[y].amount)
+          amount = amount + data[i].cartList[y].amount
+          this.amount = amount
+        }
+      }
     }
-  }
 
+  },
 }
 </script>
 
