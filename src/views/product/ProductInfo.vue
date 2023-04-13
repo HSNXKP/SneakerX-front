@@ -147,6 +147,7 @@ import { mapState } from "vuex";
 import { checkPhone } from '@/common/reg';
 import { getProductById } from '@/api/product';
 import { addCart } from '@/api/cart';
+import { order } from '@/api/order';
 
 export default {
   name: "ProductInfo",
@@ -235,7 +236,22 @@ export default {
       }
       this.$refs.orderFormRef.validate((valid) => {
         if (valid) {
-     
+          order(token,this.orderForm).then(res=>{
+            if(res.code==200){
+            this.$refs.orderFormRef.resetFields();
+              this.$notify({
+							title: res.msg,
+							type: 'success'
+						})
+              this.$router.push({path: '/pay/' + res.data})
+            // 清空表单
+            }else{
+              this.$notify({
+							title: res.msg,
+							type: 'warning'
+						})
+            }
+          })
         } 
       });
     },

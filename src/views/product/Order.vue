@@ -112,7 +112,6 @@ export default {
       getOrderList(token,id).then(res => {
         if (res.code === 200) {
           this.orderList=res.data
-          console.log(res.data)
         }else{
           this.msgError(res.msg)
         }

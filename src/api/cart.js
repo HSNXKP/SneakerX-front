@@ -2,7 +2,7 @@ import axios from '@/plugins/axios'
 
 export function addCart(token,orderForm) {
 	return axios({
-		url: 'addCart',
+		url: 'user/addCart',
 		method: 'POST',
 		headers: {
 			Authorization: token,
@@ -13,21 +13,21 @@ export function addCart(token,orderForm) {
 	})
 }
 
-export function cart(token,id) {
+export function cart(token,userId) {
 	return axios({
-		url: 'cart',
+		url: 'user/cart',
 		method: 'GET',
 		headers: {
 			Authorization: token,
 		},
 		params: {
-			id
+			userId
 		}
 	})
 }
 
 
-export function addQuantity(token,id) {
+export function addQuantity(token,id,userId) {
 	return axios({
 		url: 'user/addQuantity',
 		method: 'GET',
@@ -35,12 +35,13 @@ export function addQuantity(token,id) {
 			Authorization: token,
 		},
 		params: {
-			id
+			id,
+			userId
 		}
 	})
 }
 
-export function downQuantity(token,id) {
+export function downQuantity(token,id,userId) {
 	return axios({
 		url: 'user/downQuantity',
 		method: 'GET',
@@ -48,7 +49,8 @@ export function downQuantity(token,id) {
 			Authorization: token,
 		},
 		params: {
-			id
+			id,
+			userId
 		}
 	})
 }
@@ -81,6 +83,35 @@ export function changeCaetIdChecked(token,id,type,userId,checked) {
 			type,
 			userId,
 			checked
+		}
+	})
+}
+
+
+export function deleteCart(token,id,userId,type) {
+	return axios({
+		url: 'user/deleteCart',
+		method: 'GET',
+		headers: {
+			Authorization: token,
+		},
+		params: {
+			id,
+			userId,
+			type
+		}
+	})
+}
+
+export function getCartList(token,userId) {
+	return axios({
+		url: 'user/getCartListByUserIdIsChecked',
+		method: 'GET',
+		headers: {
+			Authorization: token,
+		},
+		params: {
+			userId,
 		}
 	})
 }

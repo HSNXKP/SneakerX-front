@@ -64,7 +64,6 @@
 				var id= this.user.id
 				getArchives(token,id).then(res => {
 					if (res.code === 200) {
-						console.log(res.data)
 						this.blogMap = res.data.blogMap
 						this.count = res.data.count
 					} else {

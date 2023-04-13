@@ -102,13 +102,19 @@ const routes = [
 				path: '/order',
 				name: 'Order',
 				component: () => import('@/views/product/Order'),
-				meta : {title: '订单管理',needLogin:true}
+				meta : {title: 'SneakerX订单管理',needLogin:true}
 			},
 			{
 				path: '/pay/:orderNumber',
 				name: 'Pay',
 				component: () => import('@/views/product/Pay'),
 				meta : {title: 'SneakerX支付系统'}
+			},
+			{
+				path: '/settleAccount',
+				name: 'SettleAccount',
+				component: () => import('@/views/product/SettleAccount'),
+				meta : {title: 'SneakerX购物车结算'}
 			},
 		]
 	}

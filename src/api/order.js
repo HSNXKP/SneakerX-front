@@ -2,7 +2,7 @@ import axios from '@/plugins/axios'
 
 export function order(token, orderForm) {
 	return axios({
-		url: 'order',
+		url: 'user/order',
 		method: 'POST',
 		headers: {
 			Authorization: token,
@@ -15,7 +15,7 @@ export function order(token, orderForm) {
 
 export function cancelOrder(token, orderNumber) {
 	return axios({
-		url: 'cancelOrder',
+		url: 'user/cancelOrder',
 		method: 'GET',
 		headers: {
 			Authorization: token,
@@ -28,7 +28,7 @@ export function cancelOrder(token, orderNumber) {
 
 export function getOrder(token, orderNumber) {
 	return axios({
-		url: `order/${orderNumber}`,
+		url: `user/order/${orderNumber}`,
 		method: 'POST',
 		headers: {
 			Authorization: token,
@@ -41,7 +41,7 @@ export function getOrder(token, orderNumber) {
 
 export function getOrderList(token, id) {
 	return axios({
-		url: `getOrder`,
+		url: `user/getOrder`,
 		method: 'GET',
 		headers: {
 			Authorization: token,
