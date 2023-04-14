@@ -12,6 +12,9 @@
       </div>
       <div class="ui attached segment m-padding-bottom-large" v-for="(item, index) in orderList" :key="index">
           <el-checkbox style="font-size:center" v-if="value"></el-checkbox>
+          <span style="color: #999;">
+              下单时间：{{ item.createTime | dateFormat('YYYY-MM-DD HH:mm') }}
+            </span>
           <span style="color: #999;" v-if="item.status === 0 ">
               订单状态：未支付
             </span>

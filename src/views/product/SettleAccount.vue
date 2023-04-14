@@ -295,7 +295,6 @@ export default {
           }
           order(token,this.orderForm).then(res=>{
             if(res.code==200){
-            this.$refs.orderFormRef.resetFields();
               this.$notify({
 							title: res.msg,
 							type: 'success'

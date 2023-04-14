@@ -211,6 +211,7 @@ export default {
         ],
       },
       deleteCartVisable: false,
+      checked: false,
     };
   },
   computed: {
@@ -250,6 +251,7 @@ export default {
         if (res.code == 200) {
           this.cartList = res.data;
           this.computeAmount(res.data);
+          this.computeIsChecked(res.data);
         } else {
           this.msgError(res.msg);
         }
@@ -262,6 +264,23 @@ export default {
         for (var y = 0; y < data[i].cartList.length; y++) {
           amount = amount + data[i].cartList[y].amount;
           this.amount = amount;
+        }
+      }
+    },
+        // 计算每次结算的时候是否有选中的状态
+    computeIsChecked(data) {
+      for (var i = 0; i < data.length; i++) {
+        if (data[i].checked) {
+          this.checked = true;
+        } else {
+          this.checked = false;
+        }
+        for (var y = 0; y < data[i].cartList.length; y++) {
+          if (data[i].cartList[y].checked) {
+            this.checked = true;
+          } else {
+            this.checked = false;
+          }
         }
       }
     },
@@ -412,8 +431,16 @@ export default {
       console.log(this.cartList);
     },
     settleAccount(){
+      if(this.checked == false){
+        this.$message({
+          type: "error",
+          message: "请勾选结算的商品",
+        });
+        return
+      }
       this.$router.push({path:`/settleAccount/${this.addressId}`})
-    }
+    },
+
     // computedDeleteId(data){
     //   const checked = []
     //   for (var i = 0; i < data.length; i++) {

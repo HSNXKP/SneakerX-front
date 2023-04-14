@@ -349,6 +349,7 @@ export default {
           console.log(res.data)
           // 传值需要传到data中的数据 ，传给后端订单需要一个确切的值
           this.sizeWithPrice= res.data
+          this.orderForm.sizeWithPrice = []
         }else{
           this.msgError(res.msg)
         }
@@ -358,9 +359,9 @@ export default {
     getProductById(id = this.productId){
       getProductById(id).then(res=>{
         if(res.code==200){
-          console.log(res.data)
           // 传值需要传到data中的数据 ，传给后端订单需要一个确切的值
           this.product= res.data
+          // 清空数组
         }else{
           this.msgError(res.msg)
         }
