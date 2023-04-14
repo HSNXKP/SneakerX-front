@@ -412,7 +412,7 @@ export default {
       console.log(this.cartList);
     },
     settleAccount(){
-      this.$router.push({path:'/settleAccount'})
+      this.$router.push({path:`/settleAccount/${this.addressId}`})
     }
     // computedDeleteId(data){
     //   const checked = []

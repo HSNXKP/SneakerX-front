@@ -111,7 +111,7 @@ const routes = [
 				meta : {title: 'SneakerX支付系统'}
 			},
 			{
-				path: '/settleAccount',
+				path: '/settleAccount/:id',
 				name: 'SettleAccount',
 				component: () => import('@/views/product/SettleAccount'),
 				meta : {title: 'SneakerX购物车结算'}

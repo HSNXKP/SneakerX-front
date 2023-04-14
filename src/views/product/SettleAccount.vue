@@ -9,9 +9,9 @@
     <div class="ui attached segment m-padding-bottom-large" v-if="this.cartList.length === 0">
       <el-empty description="暂无商品 赶紧加入购物车吧！"></el-empty>
     </div>
-    <div class="ui attached segment m-padding-bottom-large">
+    <div class="ui attached segment m-padding-bottom-large" v-else>
       <div>
-        <el-select v-model="addressId" placeholder="请选择收获地址">
+        <el-select v-model="orderForm.address" placeholder="请选择收获地址">
           <el-option
             v-for="item in address"
             :key="item.id"
@@ -106,9 +106,17 @@
             <div class="productNumber">
               <span style="color: red">￥{{ cart.price }}</span>
             </div>
+            
           </div>
         </div>
       </div>
+      <div class="orderDetail">
+        <el-radio-group v-model="orderForm.payType">
+              <el-radio label="1" size="mini" border disabled>微信</el-radio>
+              <el-radio label="2" size="mini" border>支付宝</el-radio>
+            </el-radio-group>
+      </div>
+  
       <div class="ui divider"></div>
       <span class="amountDetail"
         >合计:
@@ -129,6 +137,7 @@ import { checkPhone } from "@/common/reg";
 import { getCartList } from '@/api/cart';
 import { mapState } from "vuex";
 import { addQuantity, downQuantity} from "@/api/cart";
+import { order } from '@/api/order';
 
 export default {
   name: "SettleAccount",
@@ -136,6 +145,11 @@ export default {
     return {
       cartList:[],
       amount:0,
+      orderForm:{
+        userId:'',
+        address:'',
+        payType:'2'
+      },
       form: {
         name: "",
         phone: "",
@@ -144,7 +158,6 @@ export default {
         isDefaultAddress: false,
       },
       address : [],
-      addressId: "",
       options: regionData,
       selectedAddress: [],
        // 校验
@@ -165,10 +178,14 @@ export default {
   },
   computed: {
     ...mapState(["user"]),
+    cartAddressId(){
+      return  parseInt(this.$route.params.id)
+    }
   },
   created(){
     this.getCartList()
     this.getAddressList()
+    this.cartSettleAccountAddress()
   },
   methods:{
     getCartList(){
@@ -226,21 +243,17 @@ export default {
       const token = window.localStorage.getItem("adminToken");
       getAddressList(token, id).then((res) => {
         if (res.code == 200) {
-          this.formatData(res.data);
           this.address = res.data;
         } else {
           this.msgError(res.msg);
         }
       });
     },
-    // 将当前登录的用户Id查询出来的收货地址放到默认的地址上面去
-    formatData(data) {
-      for (var i = 0; i < data.length; i++) {
-        if (data[i].isDefaultAddress === true) {
-          this.addressId = data[i].id;
-        }
-      }
-      return data;
+    // 将当前购物车选中的id放到默认的地址上面去
+    cartSettleAccountAddress(id = this.cartAddressId) {
+      console.log(this.cartAddressId)
+          this.orderForm.address = id
+          console.log(this.addressId)
     },
     addAddressDialg() {
       this.addAddressDialgVisible = true;
@@ -271,7 +284,31 @@ export default {
       });
     },
     settleAccount(){
-      this.$router.push({path:'/order'})
+            // 提交订单
+          this.orderForm.userId = this.user.id
+          // 购物车和单个商品公用一个接口 order：单个订单 cartOrder:购物车订单
+          this.orderForm.type = 'cartOrder'
+          const token = window.localStorage.getItem('adminToken') 
+          console.log(this.orderForm)
+          if(this.orderForm.address == ''){
+              return  this.msgError('请选择收货地址')
+          }
+          order(token,this.orderForm).then(res=>{
+            if(res.code==200){
+            this.$refs.orderFormRef.resetFields();
+              this.$notify({
+							title: res.msg,
+							type: 'success'
+						})
+              this.$router.push({path: '/pay/' + res.data})
+            // 清空表单
+            }else{
+              this.$notify({
+							title: res.msg,
+							type: 'warning'
+						})
+            }
+          })
     }
   }
 };

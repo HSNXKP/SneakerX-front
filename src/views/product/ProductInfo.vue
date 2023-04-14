@@ -167,6 +167,7 @@ export default {
         isDefaultAddress:false,
         address: '',
         quantity: 1,
+        type:''
       },
       // 添加收货地址表单
       form:{
@@ -226,6 +227,8 @@ export default {
     submitOrder() {
       this.orderForm.userId = this.user.id
       this.orderForm.productId = this.productId
+      // 购物车和单个商品公用一个接口 order：单个订单 cartOrder:购物车订单
+      this.orderForm.type = 'order'
       const token = window.localStorage.getItem('adminToken') 
       console.log(this.orderForm)
       if(this.orderForm.address == ''){
@@ -280,7 +283,6 @@ export default {
           })
         } 
       });
-      console.log(this.orderForm);
     },
     addAddressDialg() {
       this.addAddressDialgVisible = true;
