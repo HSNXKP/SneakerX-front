@@ -70,7 +70,7 @@
 									<div style="font-size: 12px;text-align: center;margin-top: 5px;">一块是真爱</div>
 								</div>
 							</div>
-							<el-button slot="reference" class="ui orange inverted circular button m-text-500">赞赏</el-button>
+							<!-- <el-button slot="reference" class="ui orange inverted circular button m-text-500">赞赏</el-button> -->
 						</el-popover>
 					</div>
 					<!--横线-->
