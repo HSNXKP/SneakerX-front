@@ -88,8 +88,7 @@
 		methods: {
 			getMomentList() {
 				//如果有则发送博主身份Token
-				const adminToken = window.localStorage.getItem('adminToken')
-				const token = adminToken ? adminToken : ''
+				const token = window.localStorage.getItem('adminToken')
 				var id = this.user.id
 				console.log(this.pageNum)
 				getMomentListByPageNum(token,id, this.pageNum).then(res => {
@@ -148,8 +147,9 @@
 					cancelButtonText: '取消',
 					type: 'warning'
 				}).then(() => {
+					const userId = this.user.id
 					const token = window.localStorage.getItem('adminToken')
-					deleteBlogById(token,id).then(res =>{
+					deleteBlogById(token,id,userId).then(res =>{
 						if(res.code == 200){
 							this.msgSuccess(res.msg)
 							this.getMomentList()

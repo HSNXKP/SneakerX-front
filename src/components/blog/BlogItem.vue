@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="ui padded attached segment m-padded-tb-large m-margin-bottom-big m-box" v-for="item in blogList" :key="item.id">
+			<div class="ui padded attached segment m-padded-tb-large m-margin-bottom-big m-box" v-for="item in blogList" :key="item.id">
 			<div class="ui large red right corner label" v-if="item.top">
 				<i class="arrow alternate circle up icon"></i>
 			</div>
@@ -59,6 +59,8 @@
 				</div>
 			</div>
 		</div>
+	
+	
 	</div>
 </template>
 

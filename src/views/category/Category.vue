@@ -3,6 +3,9 @@
 		<div class="ui top segment" style="text-align: center">
 			<h2 class="m-text-500">{{ categoryName }} 频道下的动态</h2>
 		</div>
+		<div class="ui top segment" style="text-align: center"  v-if="this.blogList.length === 0">
+			<el-empty description="该标签下暂无动态 赶快去发布动态吧！"></el-empty>
+		</div>
 		<BlogList :getBlogList="getBlogList" :blogList="blogList" :totalPage="totalPage"/>
 	</div>
 </template>

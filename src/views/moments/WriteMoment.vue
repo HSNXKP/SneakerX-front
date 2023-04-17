@@ -156,7 +156,8 @@ export default {
 			},
 			// 获取博客进行编辑
 			getBlog(id) {
-				getBlogById(this.token,id).then(res => {
+				const userId =this.user.id
+				getBlogById(this.token,id,userId).then(res => {
 					if(res.code === 200){
 					this.computeCategoryAndTag(res.data)
 					this.form = res.data
@@ -194,13 +195,14 @@ export default {
 			submit() {
 				this.$refs.formRef.validate(valid => {
 					if (valid) {
+						const userId=this.user.id
 						if(this.radio === ''){
 					     return this.msgError("请选择动态可见范围")
 				         }
 						if (this.$route.params.id) {
 							this.form.category = null
 							this.form.tags = null
-							updateBlog(this.token,this.form).then(res => {
+							updateBlog(this.token,this.form,userId).then(res => {
 								if(res.code === 200){
 								this.msgSuccess(res.msg)
 								this.$refs.formRef.resetFields()	
@@ -211,8 +213,7 @@ export default {
 								//this.$router.push('/blog/list')
 							})
 						} else {
-							this.form.id=this.user.id
-							saveBlog(this.token,this.form).then(res => {
+							saveBlog(this.token,this.form,userId).then(res => {
 								if(res.code === 200){
 								this.msgSuccess(res.msg)
 								this.$refs.formRef.resetFields()

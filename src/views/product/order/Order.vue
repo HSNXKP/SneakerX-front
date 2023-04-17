@@ -97,7 +97,6 @@ export default {
   name: "Order",
   data() {
     return {
-      url: "https://img.picgo.net/2023/04/04/Nike-SB-Dunk-Low-Supreme-Black-Product7bd22cfa854e06f9.webp",
       value:false,
       orderList:[]
     };

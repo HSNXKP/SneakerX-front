@@ -12,7 +12,7 @@
 			</a>
 			<div class="content">
 				<a class="nickname"  target="_blank" rel="external nofollow noopener">{{ comment.nickname }}</a>
-				<div class="ui  left pointing label" v-if="comment.adminComment" :class="comment.flagColor" >{{ comment.userFlag }}</div>
+				<div class="ui  left pointing label" v-if="comment.userFlag" :class="comment.flagColor" >{{ comment.userFlag }}</div>
 				<div class="metadata">
 					<strong class="date">{{ comment.createTime | dateFormat('YYYY-MM-DD HH:mm') }}</strong>
 				</div>
@@ -28,7 +28,7 @@
 					</a>
 					<div class="content">
 						<a class="nickname"  target="_blank" rel="external nofollow noopener">{{ reply.nickname }}</a>
-						<div class="ui  left pointing label" v-if="reply.adminComment" :class="reply.flagColor">{{ reply.userFlag }}</div>
+						<div class="ui  left pointing label" v-if="reply.userFlag" :class="reply.flagColor">{{ reply.userFlag }}</div>
 						<div class="metadata">
 							<strong class="date">{{ reply.createTime | dateFormat('YYYY-MM-DD HH:mm') }}</strong>
 						</div>

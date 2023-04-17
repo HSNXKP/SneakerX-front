@@ -22,7 +22,7 @@ export function likeMoment(id) {
 }
 
 
-export function deleteBlogById(token,id){
+export function deleteBlogById(token,id,userId){
 	return axios({
 		url:'user/deleteBlog',
 		method: 'GET',
@@ -30,12 +30,13 @@ export function deleteBlogById(token,id){
 			Authorization: token,
 		},
 		params: {
-			id
+			id,
+			userId
 		}
 	})
 }
 
-export function saveBlog(token,form) {
+export function saveBlog(token,form,userId) {
 	return axios({
 		url: 'user/blog',
 		method: 'POST',
@@ -44,11 +45,14 @@ export function saveBlog(token,form) {
 		},
 		data: {
 			...form
+		},
+		params:{
+			userId
 		}
 	})
 }
 
-export function getBlogById(token,id){
+export function getBlogById(token,id,userId){
 	return axios({
 		url: 'user/blog',
 		method: 'GET',
@@ -56,12 +60,13 @@ export function getBlogById(token,id){
 			Authorization: token,
 		},
 		params: {
-			id
+			id,
+			userId
 		}
 	})
 }
 
-export function updateBlog(token,form){
+export function updateBlog(token,form,userId){
 	return axios({
 		url: 'user/blog',
 		method: 'PUT',
@@ -70,6 +75,9 @@ export function updateBlog(token,form){
 		},
 		data: {
 			...form
+		},
+		params:{
+			userId
 		}
 	})
 }

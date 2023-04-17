@@ -52,19 +52,19 @@ const routes = [
 				path: '/moments',
 				name: 'moments',
 				component: () => import('@/views/moments/Moments'),
-				meta: {title: '动态',needLogin: true}
+				meta: {title: '我的动态',needLogin: true}
 			},
 			{
 				path: '/product/:id',
 				name: 'product',
-				component: () => import('@/views/product/Product'),
+				component: () => import('@/views/product/product/Product'),
 				meta: {title: '商品分类'}
 
 			},
 			{
 				path: '/productInfo/:id',
 				name: 'productInfo',
-				component: () => import('@/views/product/ProductInfo'),
+				component: () => import('@/views/product/product/ProductInfo'),
 				meta: {title: '商品'}
 				
 			},
@@ -84,7 +84,7 @@ const routes = [
 				path: '/blog/edit/:id',
 				name: 'editBlog',
 				component: () => import('@/views/moments/WriteMoment'),
-				meta: {title: '编辑动态', icon: 'el-icon-edit',needLogin:true},
+				meta: {title: '编辑动态',needLogin:true},
 			},
 			{
 				path: '/userInfo',
@@ -95,26 +95,26 @@ const routes = [
 			{
 				path: '/cart',
 				name: 'Cart',
-				component: () => import('@/views/product/Cart'),
+				component: () => import('@/views/product/cart/Cart'),
 				meta : {title: '我的购物车',needLogin:true}
 			},
 			{
 				path: '/order',
 				name: 'Order',
-				component: () => import('@/views/product/Order'),
+				component: () => import('@/views/product/order/Order'),
 				meta : {title: 'SneakerX订单管理',needLogin:true}
 			},
 			{
 				path: '/pay/:orderNumber',
 				name: 'Pay',
-				component: () => import('@/views/product/Pay'),
-				meta : {title: 'SneakerX支付系统'}
+				component: () => import('@/views/product/pay/Pay'),
+				meta : {title: 'SneakerX支付系统',needLogin:true}
 			},
 			{
 				path: '/settleAccount/:id',
 				name: 'SettleAccount',
-				component: () => import('@/views/product/SettleAccount'),
-				meta : {title: 'SneakerX购物车结算'}
+				component: () => import('@/views/product/cart/SettleAccount'),
+				meta : {title: 'SneakerX购物车结算',needLogin:true}
 			},
 		]
 	}

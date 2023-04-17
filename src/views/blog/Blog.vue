@@ -61,7 +61,7 @@
 					<!--文章Markdown正文-->
 					<div class="typo js-toc-content m-padded-tb-small match-braces rainbow-braces" v-viewer :class="{'m-big-fontsize':bigFontSize}" v-html="blog.content"></div>
 					<!--赞赏-->
-					<div style="margin: 2em auto">
+					<!-- <div style="margin: 2em auto">
 						<el-popover placement="top" width="220" trigger="click" v-if="blog.appreciation">
 							<div class="ui orange basic label" style="width: 100%">
 								<div class="image">
@@ -70,9 +70,9 @@
 									<div style="font-size: 12px;text-align: center;margin-top: 5px;">一块是真爱</div>
 								</div>
 							</div>
-							<!-- <el-button slot="reference" class="ui orange inverted circular button m-text-500">赞赏</el-button> -->
+							<el-button slot="reference" class="ui orange inverted circular button m-text-500">赞赏</el-button>
 						</el-popover>
-					</div>
+					</div> -->
 					<!--横线-->
 					<el-divider></el-divider>
 					<!--标签-->

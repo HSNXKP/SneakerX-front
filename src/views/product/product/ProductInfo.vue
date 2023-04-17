@@ -42,7 +42,7 @@
                 <span style="float: left">没有收货地址</span>
               </el-option>
             </el-select>
-            <el-button style="margin-left: 5px;" icon="el-icon-location-information" circle @click="addAddressDialg"></el-button>
+            <el-button style="margin-left: 5px;" size="small" icon="el-icon-location-information" circle @click="addAddressDialg"></el-button>
           </el-form-item>
 
           <!--添加地址框-->

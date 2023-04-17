@@ -93,7 +93,7 @@
       <el-dropdown class="item m-avatar" :class="{ 'm-mobile-hide': mobileHide }"
         :disabled="user == '' ? true : false">
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>个人中心</el-dropdown-item>
+          <el-dropdown-item @click.native="toUserInfo">个人中心</el-dropdown-item>
           <el-dropdown-item @click.native="updatePassword">修改密码</el-dropdown-item>
           <el-dropdown-item @click.native="toLogOut">退出登录</el-dropdown-item>
         </el-dropdown-menu>
@@ -202,6 +202,9 @@ export default {
     debounceQuery(queryString, callback) {
       this.timer && clearTimeout(this.timer)
       this.timer = setTimeout(() => this.querySearchAsync(queryString, callback), 1000)
+    },
+    toUserInfo(){
+      this.$router.push('/userInfo')
     },
     querySearchAsync(queryString, callback) {
       if (queryString == null

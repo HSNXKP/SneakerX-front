@@ -23,3 +23,16 @@ export function getCategoryAndTag(token) {
 		},
 	})
 }
+
+export function updateUser(token,from) {
+	return axios({
+		url: 'user/updateUser',
+		method: 'POST',
+		headers: {
+			Authorization: token,
+		},
+		data:{
+			...from
+		}
+	})
+}
