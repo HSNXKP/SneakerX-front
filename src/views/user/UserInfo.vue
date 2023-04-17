@@ -92,6 +92,7 @@ export default {
 		const token = window.localStorage.getItem('adminToken')
 		updateUser(token,this.form).then(res => {
 					if (res.code === 200) {
+						this.msgSuccess(res.msg)
 						this.getUser()
 					} else {
 						this.msgError(res.msg)
@@ -105,6 +106,7 @@ export default {
 		const userId = this.user.id
 		getUser(token,userId).then(res => {
 					if (res.code === 200) {
+						this.form=res.data
 						this.$store.commit('user', res.data)
 					} else {
 						this.msgError(res.msg)
