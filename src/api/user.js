@@ -36,3 +36,16 @@ export function updateUser(token,from) {
 		}
 	})
 }
+
+export function getUser(token,userId) {
+	return axios({
+		url: 'user/getUser',
+		method: 'GET',
+		headers: {
+			Authorization: token,
+		},
+		params:{
+			userId
+		}
+	})
+}

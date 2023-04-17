@@ -16,19 +16,19 @@
 		<h3  class="m-text-500">个人资料卡</h3>
         <el-form label-width="80px">
           <el-form-item label="用户姓名">
-            <el-input v-model="user.username" size="mini"></el-input>
+            <el-input v-model="form.username" size="mini"></el-input>
           </el-form-item>
 		  <el-form-item label="用户昵称">
-            <el-input v-model="user.nickname" size="mini"></el-input>
+            <el-input v-model="form.nickname" size="mini"></el-input>
           </el-form-item>
 		  <el-form-item label="用户邮箱">
-            <el-input v-model="user.email" size="mini"></el-input>
+            <el-input v-model="form.email" size="mini"></el-input>
           </el-form-item>
 		  <el-form-item label="评论前戳">
-            <el-input v-model="user.userFlag" size="mini"></el-input>
+            <el-input v-model="form.userFlag" size="mini"></el-input>
           </el-form-item>
 		  <el-form-item label="前戳颜色">
-					<el-select v-model="user.flagColor" placeholder="请选择颜色" :clearable="true" size="mini" style="width: 100%">
+					<el-select v-model="form.flagColor" placeholder="请选择颜色" :clearable="true" size="mini" style="width: 100%">
 						<el-option v-for="item in colors" :key="item.value" :label="item.label" :value="item.value">
 							<span style="float: left; width: 100px;">{{ item.label }}</span>
 							<span style="float: left; width: 100px; height: inherit" :class="`me-${item.value}`"></span>
@@ -37,7 +37,7 @@
 					</el-select>
 				</el-form-item>
 		  <el-form-item label="个性签名">
-   		 <el-input type="textarea" v-model="user.userSign"></el-input>
+   		 <el-input type="textarea" v-model="form.userSign"></el-input>
  		 </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="updateUser" style="float:right" size="mini">保存</el-button>
@@ -49,7 +49,7 @@
 
 <script>
 import { mapState } from "vuex";
-import {updateUser} from "@/api/user";
+import {updateUser ,getUser} from "@/api/user";
 
 export default {
   name: "UserInfo",
@@ -84,17 +84,26 @@ export default {
   computed: {
     ...mapState(["user"]),
   },
+ created(){
+	this.getUser()
+ },
   methods: {
 	updateUser() {
 		const token = window.localStorage.getItem('adminToken')
-		this.form.id = this.user.id
-		this.form.username = this.user.username,
-		this.form.nickname = this.user.nickname,
-		this.form.email = this.user.email,
-		this.form.userFlag = this.user.userFlag,
-		this.form.flagColor = this.user.flagColor,
-		this.form.userSign = this.user.userSign
 		updateUser(token,this.form).then(res => {
+					if (res.code === 200) {
+						this.getUser()
+					} else {
+						this.msgError(res.msg)
+					}
+				}).catch(() => {
+					this.msgError("请求失败")
+				})
+      },
+	  getUser() {
+		const token = window.localStorage.getItem('adminToken')
+		const userId = this.user.id
+		getUser(token,userId).then(res => {
 					if (res.code === 200) {
 						this.$store.commit('user', res.data)
 					} else {
