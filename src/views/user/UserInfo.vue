@@ -1,6 +1,5 @@
 <template>
   <div>
-
 	<div class="avatarInfo">
 		<el-card >
 			<img  class="avatar"  :src="user.avatar" />
@@ -10,8 +9,6 @@
 			<div style="display:inline-block;" class="ui  left pointing label" :class="user.flagColor" >{{ user.userFlag }}</div>
       </el-card>
 	</div>
-	
-
       <el-card style="margin-top:10px">
 		<h3  class="m-text-500">个人资料卡</h3>
         <el-form label-width="80px">

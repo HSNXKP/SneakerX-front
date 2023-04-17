@@ -88,7 +88,7 @@
 		<!--博客信息-->
 		<div class="ui attached positive message">
 			<ul class="list">
-				<li>作者：{{ user.username }}
+				<li>作者：{{ user.nickname }}
 				</li>
 				<li>发表时间：{{ blog.createTime | dateFormat('YYYY-MM-DD HH:mm') }}</li>
 				<li>最后修改：{{ blog.updateTime | dateFormat('YYYY-MM-DD HH:mm') }}</li>

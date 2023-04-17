@@ -1,15 +1,19 @@
 <template>
 	<div>
-			<el-card   style="margin-bottom: 10px;" shadow="hover"  v-for="item in blogList" :key="item.id">
+			<div class="ui padded attached segment m-padded-tb-large m-margin-bottom-big m-box" v-for="item in blogList" :key="item.id">
+			<div class="ui large red right corner label" v-if="item.top">
+				<i class="arrow alternate circle up icon"></i>
+			</div>
 			<div class="ui middle aligned mobile reversed stackable">
 				<div class="ui grid m-margin-lr">
+					<!--标题-->
 					<div class="row m-padded-tb-small">
-						<div class=" m-avatar">
+						<!-- <div class="ui   m-scaleup m-avatar">
 							<img :src="'http://localhost/QQ20221014224335.jpg'">
-						</div>
-						<!-- <h2 class="ui header m-center m-scaleup">
+						</div> -->
+						<h2 class="ui header m-center m-scaleup">
 							<a href="javascript:;" @click.prevent="toBlog(item)" class="m-black">{{ item.title }}</a>
-						</h2> -->
+						</h2>
 					</div>
 					<!--文章简要信息-->
 					<div class="row m-padded-tb-small">
@@ -37,9 +41,9 @@
 						</div>
 					</div>
 					<!--分类-->
-					<!-- <router-link :to="`/category/${item.category.name}`" class="ui orange large ribbon label">
+					<router-link :to="`/category/${item.category.name}`" class="ui orange large ribbon label">
 						<i class="small folder open icon"></i><span class="m-text-500">{{ item.category.name }}</span>
-					</router-link> -->
+					</router-link>
 					<!--文章Markdown描述-->
 					<div class="typo m-padded-tb-small line-numbers match-braces rainbow-braces" v-html="item.description"></div>
 					<!--阅读全文按钮-->
@@ -57,7 +61,7 @@
 					</div>
 				</div>
 			</div>
-		</el-card>
+		</div>
 	
 	
 	</div>

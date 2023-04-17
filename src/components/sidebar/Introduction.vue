@@ -6,7 +6,7 @@
 					<img :src="user.avatar" >
 				</div>
 				<div class="content" align="center">
-					<div class="header">{{ user.username }}</div>
+					<div class="header">{{ user.nickname }}</div>
 					<!--彩色滚动字体-->
 					<div id="rollText" class="m-margin-top" style="font-size:13px" >
 						{{ user.userSign }}

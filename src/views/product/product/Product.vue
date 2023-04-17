@@ -12,7 +12,7 @@
           <el-col class="productMargin"  :span="item.price === undefined ?8: 6"   v-for="(item, index) in productCategoryListWithProduct" :key="index">
             <el-card :body-style="{ padding: '0px' }"  shadow="hover"  >
               <!-- 异步处理 判断进入哪个router  href="#" 表示不跳转页面 仍在在本页面请求-->
-              <a href="#" @click="toProduct(item.id,item.productCategoryId)">
+              <a href="javascript:void(0)" @click="toProduct(item.id,item.productCategoryId)" >
                 <img :src="item.image" class="image">
               </a>
                <div style="padding: 10px;">
