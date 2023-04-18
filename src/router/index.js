@@ -28,7 +28,7 @@ const routes = [
 				path: '/archives',
 				name: 'archives',
 				component: () => import('@/views/archives/Archives'),
-				meta: {title: '日志',needLogin: true}
+				meta: {title: '品牌入驻'}
 			},
 			{
 				path: '/blog/:id',
@@ -46,7 +46,7 @@ const routes = [
 				path: '/category/:name',
 				name: 'category',
 				component: () => import('@/views/category/Category'),
-				meta: {title: '分类'}
+				meta: {title: '球鞋社区'}
 			},
 			{
 				path: '/moments',

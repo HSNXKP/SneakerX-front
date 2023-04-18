@@ -10,7 +10,7 @@
 		<!--评论-->
 	</el-card>
 	<el-card>
-			<div class="ui bottom teal attached  threaded comments">
+			<div class="ui bottom teal attached segment  threaded comments" style="border: 1px solid transparent !important; box-shadow: none !important;" >
 			<CommentList :page="1" :blogId="null" v-if="about.commentEnabled==='true'"/>
 			<h3 class="ui header" v-else>评论已关闭</h3>
 		</div>

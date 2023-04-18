@@ -37,10 +37,10 @@
 							<img src="http://localhost/tv/1.png">
 						</a>
 						<a class="tab-link" :class="{'on':activeEmojiTab===1}" @click="activeEmojiTab=1">
-							<img src="https://cdn.naccl.top/blog/img/aru/1.png">
+							<img src="http://localhost/aru/1.png">
 						</a>
 						<a class="tab-link" :class="{'on':activeEmojiTab===2}" @click="activeEmojiTab=2">
-							<img src="https://cdn.naccl.top/blog/img/paopao/1.png">
+							<img src="http://localhost/paopao/1.png">
 						</a>
 					</div>
 				</div>

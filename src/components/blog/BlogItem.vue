@@ -15,7 +15,7 @@
 				<div class="ui grid m-margin-lr">
 					<div class="row m-padded-tb-small">
 						<div>
-							<img class="avatar" src="http://localhost/QQ20221014224335.jpg">
+							<img class="avatar" :src="item.user.avatar">
 						</div>
 						<div class="item m-common-black" style="margin-left:10px">
 								<span>{{ item.user.nickname }}</span>

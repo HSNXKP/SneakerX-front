@@ -11,7 +11,7 @@
       <!-- 分类 -->
       <el-dropdown trigger="click" @command="categoryRoute">
         <span class="el-dropdown-link item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'category' }">
-          <i class="paperclip icon"></i>频道<i class="el-icon-arrow-down el-icon--right"></i>
+          <i class="paperclip icon"></i>球鞋社区<i class="el-icon-arrow-down el-icon--right"></i>
         </span>
 
         <el-dropdown-menu slot="dropdown">
@@ -63,12 +63,12 @@
 
 
       <router-link to="/archives" class="item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'archives' }">
-        <i class="calendar check icon"></i>日志
+        <i class="calendar check icon"></i>品牌入驻
       </router-link>
-
+<!-- 
       <router-link to="/moments" class="item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'moments' }">
         <i class="comment alternate outline icon"></i>我的动态
-      </router-link>
+      </router-link> -->
 
            <!-- <router-link to="/friends" class="right item" :class="{'m-mobile-hide': mobileHide,'active':$route.name==='friends'}">
              <i class="users icon"></i>友人帐

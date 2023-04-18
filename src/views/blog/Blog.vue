@@ -100,11 +100,12 @@
 	</el-card>
 		<!--评论-->
 		<el-card>
-			<div class="ui bottom teal attached  threaded comments">
-			<CommentList :page="0" :blogId="blogId" v-if="blog.commentEnabled"/>
-			<h3 class="ui header" v-else>评论已关闭</h3>
-		</div>
+				<div class="ui bottom   attached  segment    threaded comments" style="border: 1px solid transparent !important; box-shadow: none !important;" >
+					<CommentList :page="0" :blogId="blogId" v-if="blog.commentEnabled"/>
+					<h3 class="ui header" v-else>评论已关闭</h3>
+			</div>
 		</el-card>
+		
 	</div>
 </template>
 
@@ -264,5 +265,6 @@
 	padding: 0 0 0 0 !important;
 	height: 25px !important;
 }
+
 
 </style>
