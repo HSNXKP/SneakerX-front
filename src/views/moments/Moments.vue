@@ -1,10 +1,9 @@
 <template>
 	<div>
-		<div class="ui top attached segment" style="text-align: center">
-			<h2 class="m-text-500">我的动态 </h2>
-			
-		</div>
-		<div class="ui attached segment m-padding-bottom-large">
+		<el-card>
+			<h2 class="m-text-500" style="text-align: center">我的动态 </h2>
+			<div class="ui divider"></div>
+		<div >
 			<el-empty v-if="this.momentList.length == 0" description="暂无动态 快去发布吧！"></el-empty>
 			<div class="moments">
 				<div class="moment" v-for="(moment,index) in momentList" :key="index">
@@ -50,6 +49,7 @@
 			               layout="prev, pager, next" background hide-on-single-page class="pagination">
 			</el-pagination>
 		</div>
+	</el-card>
 	</div>
 </template>
 

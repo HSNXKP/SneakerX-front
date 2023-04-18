@@ -1,8 +1,10 @@
 <template>
 	<div >
-		<el-empty class="ui top segment" description="未登录 不能发布动态！"  v-if="this.user == '' " ></el-empty>
-    <div class="ui top segment" style="text-align: center" v-else> 
+		<el-card>
+		<el-empty description="未登录 不能发布动态！"  v-if="this.user == '' " ></el-empty>
+    	<div  style="text-align: center" v-else> 
 		<h2 class="m-text-500">发布动态 </h2>
+		<div class="ui divider"></div>
         <el-form :model="form" :rules="formRules" ref="formRef" label-position="top">
 			<el-row :gutter="10">
 				<el-col :span="12">
@@ -81,7 +83,7 @@
 			</span>
 		</el-dialog>
     </div>
-		
+	</el-card>
 	</div>
 </template>
 

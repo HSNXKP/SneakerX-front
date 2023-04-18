@@ -1,13 +1,11 @@
 <template>
 	<div>
-
-		
-		<div class="ui top segment" style="text-align: center">
-			<h2 class="m-text-500">标签# {{ tagName }} 下的动态</h2>
-		</div>
-		<div class="ui top segment" style="text-align: center"  v-if="this.blogList.length === 0">
+		<el-card style="margin-bottom: 10px;">
+			<h2 class="m-text-500" style="text-align: center">标签# {{ tagName }} 下的动态</h2>
+		</el-card>
+		<el-card  v-if="this.blogList.length === 0">
 			<el-empty description="该标签下暂无动态 赶快去发布动态吧！"></el-empty>
-		</div>
+		</el-card>
 		<BlogList :getBlogList="getBlogList" :blogList="blogList" :totalPage="totalPage" v-else/>
 		
 	</div>
@@ -64,5 +62,4 @@
 </script>
 
 <style scoped>
-
 </style>

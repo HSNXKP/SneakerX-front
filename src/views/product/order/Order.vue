@@ -1,16 +1,15 @@
 <template>
   <div>
-    <div class="ui top attached segment" style="text-align: center">
-      <h2 class="m-text-500">订单管理</h2>
-    </div>
-    <div class="ui attached segment m-padding-bottom-large">
+    <el-card>
+      <h2 class="m-text-500" style="text-align: center">订单管理</h2>
+    <div class="ui  divider"></div>
       <el-empty description="暂无订单，快去下单吧！" v-if="orderList.length === 0"></el-empty>
       <div style="margin-bottom:  10px;" v-if="!orderList.length === 0">
         <el-button type="danger" size="mini" @click="deleteOrder" >删除订单</el-button>
         <el-button type="danger" size="mini" v-if="this.value" @click="cancelDelete">确定删除</el-button>
         <el-button type="danger" size="mini" v-if="this.value" @click="cancelDelete">取消</el-button>
       </div>
-      <div class="ui attached segment m-padding-bottom-large" v-for="(item, index) in orderList" :key="index">
+      <div v-for="(item, index) in orderList" :key="index">
           <el-checkbox style="font-size:center" v-if="value"></el-checkbox>
           <span style="color: #999;">
               下单时间：{{ item.createTime | dateFormat('YYYY-MM-DD HH:mm') }}
@@ -84,8 +83,10 @@
 
           </div>
         </div>
+        <div class="ui  divider"></div>
       </div>
-    </div>
+  </el-card>
+
   </div>
 </template>
 

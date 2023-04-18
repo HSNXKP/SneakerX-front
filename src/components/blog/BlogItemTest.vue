@@ -62,8 +62,6 @@
 				</div>
 			</div>
 		</div>
-	
-	
 	</div>
 </template>
 
@@ -89,6 +87,8 @@
 	width: 50px;
 	height: 50px;
 	border-radius: 50%;
+	min-width: 50px;
+  padding: 0 !important;
 }
 
 </style>

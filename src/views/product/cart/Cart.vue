@@ -1,15 +1,12 @@
 <template>
   <div>
-    <div class="ui top attached segment" style="text-align: center">
-      <h2 class="m-text-500">我的购物车</h2>
-    </div>
-    <div
-      class="ui attached segment m-padding-bottom-large"
-      v-if="this.cartList.length === 0"
-    >
+    <el-card>
+      <h2 class="m-text-500" style="text-align: center">我的购物车</h2>
+    <div class="ui  divider "></div>
+    <div v-if="this.cartList.length === 0">
       <el-empty description="暂无商品 赶紧加入购物车吧！"></el-empty>
     </div>
-    <div class="ui attached segment m-padding-bottom-large" v-else>
+    <div v-else>
       <div>
         <el-select v-model="addressId" placeholder="请选择收获地址">
           <el-option
@@ -160,7 +157,8 @@
       </div>
       <div></div>
     </div>
-  </div>
+  </el-card>
+ </div>
 </template>
 
 <script>

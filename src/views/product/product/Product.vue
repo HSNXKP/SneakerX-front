@@ -1,11 +1,10 @@
 <template>
   <div>
-    <div class="ui top attached segment" style="text-align: center">
-			<h2 class="m-text-500">{{ this.productCategoryName }} 系列</h2>
-		</div>
-		<div class="ui attached segment m-padding-bottom-large">
+    <el-card>
+			<h2 class="m-text-500" style="text-align: center">{{ this.productCategoryName }} 系列</h2>
+      <div class="ui  divider "></div>
+		<div>
       <el-empty v-if="productCategoryListWithProduct.length == 0" description="暂无商品 去别的地方看看吧！"></el-empty>
-
 			<div class="ui divided items">
         <!-- 商品分类展示界面 两个卡片间隔为1 左右间隔加起来等于2 就是gutter    span一个卡片占8格子 一共24格子-->
        <el-row :gutter="4">  
@@ -29,6 +28,7 @@
         </div>
 
 			</div>
+    </el-card>
     </div>
 </template>
 

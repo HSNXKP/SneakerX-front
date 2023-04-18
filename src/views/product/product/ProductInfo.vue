@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="ui top attached segment" style="text-align: center">
-      <h2 class="m-text-500">{{ this.product.name }}</h2>
-    </div>
-    <div class="ui attached segment m-padding-bottom-large">
+    <el-card>
+      <h2 class="m-text-500"  style="text-align: center">{{ this.product.name }}</h2>
+      <div class="ui  divider "></div>
+    <div >
       <div class="ui divided items">
         <div class="imageInfo">
           <img :src=this.product.image />
@@ -135,6 +135,7 @@
         <div class="ui divider"></div>
       </div>
     </div>
+  </el-card>
   </div>
 </template>
 

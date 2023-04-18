@@ -1,15 +1,14 @@
 <template>
   <div>
-    <div class="ui top attached segment" style="text-align: center">
-      <h2 class="m-text-500">SneakerX支付系统</h2>
-    </div>
+    <el-card>
+      <h2 class="m-text-500"  style="text-align: center">SneakerX支付系统</h2>
     <!-- 判断当前的订单状态是否存在 存在就显示 -->
-    <div class="ui attached segment m-padding-bottom-large" v-if="order.status === ''">
+    <div  v-if="order.status === ''">
       <el-empty description="暂无订单，快去下单吧！" ></el-empty>
     </div>
-    <div class="ui attached segment m-padding-bottom-large" v-else>
+    <div  v-else>
       <!-- v-if 做判断先判断空 在使用v-else 要是先判断v-if="!order.children === null" 的情况会出问题-->
-      <div class="ui attached segment m-padding-bottom-large" v-if="order.children === null">
+      <div v-if="order.children === null">
         <div class="orderInfo">
           <span >商品名称:{{ order.product.name  }}</span>
         </div>
@@ -119,6 +118,7 @@
       <div ref="alipayWap" v-html="alipay"> </div>
     </div>
     
+  </el-card>
   </div>
 </template>
 
