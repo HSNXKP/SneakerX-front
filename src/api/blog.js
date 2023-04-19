@@ -33,4 +33,14 @@ export function getSearchBlogList(query) {
 	})
 }
 
+export function getUserById(id) {
+	return axios({
+		url: 'getUserById',
+		method: 'GET',
+		params: {
+			id
+		}
+	})
+}
+
 

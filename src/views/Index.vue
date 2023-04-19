@@ -16,26 +16,58 @@
 				<div class="ui container">
 					<div class="ui stackable grid">
 						<!--左侧随机推荐商品-->
-						<div class="three wide column m-mobile-hide">
-							<RandomSneaker :randomProductList="randomProductList" :class="{'m-display-none':focusMode}"/>
-							<Introduction :class="{'m-display-none':focusMode}"  v-if="user != '' "/> 
+						<div class="three wide column m-mobile-hide"  style="margin-left:30px">
+							<BloggerInfo :class="{'m-display-none':randomSneaker}" v-if="this.$route.name === 'blog'"/>
+							<RandomSneaker :randomProductList="randomProductList" :class="{'m-display-none':randomSneaker}" v-if="this.$route.name === 'blog'"/>
+							<RandomBlog :randomBlogList="randomBlogList" :class="{'m-display-none':randomBlog}" v-if="this.$route.name === 'home'"/>
+							<Tags :tagList="tagList" :class="{'m-display-none':tagCard}" v-if="this.$route.name === 'home'"/>
+							<!-- 使用||不生效 -->
+							<Introduction :class="{'m-display-none':userInfo}"  v-if="!(user != '' && this.$route.name === 'blog')"/> 
+							<!-- 
+									//登陆的个人信息卡
+									userInfo:false,
+									//当前动态的博主信息卡
+									bloggerInfo:false,
+									//推荐球鞋
+									randomSneaker:false,
+									//推荐动态
+									randomBlog:false,
+									//标签卡片
+									tagCard:false,
+							 -->
 						</div>
 						<!--中间 主要路由-->
-						<div class="ten wide column">
+						<div class="twelve wide column">
 							<keep-alive include="Home">
 								<router-view/>
 							</keep-alive>
 						</div>
 						<!--右侧 随机推荐动态 总标签-->
-						<div class="three wide column m-mobile-hide">
+						<!-- <div class="three wide column m-mobile-hide">
 							<RandomBlog :randomBlogList="randomBlogList" :class="{'m-display-none':focusMode}"/>
 							<Tags :tagList="tagList" :class="{'m-display-none':focusMode}"/>
-							<!--只在文章页面显示目录-->
-							<Tocbot v-if="$route.name==='blog'"/>
-						</div>
+						</div> -->
 					</div>
 				</div>
 			</div>
+			<!--  -->
+			<!-- <div class="m-padded-tb-big">
+				<div class="ui container">
+					<div class="ui stackable grid">
+						<div class="three wide column m-mobile-hide">
+							<RandomSneaker :randomProductList="randomProductList" :class="{'m-display-none':focusMode}"/>
+							<Introduction :class="{'m-display-none':focusMode}"  v-if="user != '' "/> 
+						</div>
+						<div class="thirten wide column">
+							<keep-alive include="Home">
+								<router-view/>
+							</keep-alive>
+						</div>
+					</div>
+				</div>
+			</div> -->
+
+			<!--  -->
 		</div>
 
 		<!--私密文章密码对话框-->
@@ -62,7 +94,7 @@
 	import Introduction from "@/components/sidebar/Introduction";
 	import Tags from "@/components/sidebar/Tags";
 	import RandomBlog from "@/components/sidebar/RandomBlog";
-	import Tocbot from "@/components/sidebar/Tocbot";
+	import BloggerInfo from "@/components/sidebar/BloggerInfo";
 	import BlogPasswordDialog from "@/components/index/BlogPasswordDialog";
 	import UpdatePasswordDialog from "@/components/index/UpdatePasswordDialog"
 	import AddTagDialog from "@/components/tag/AddTagDialog"
@@ -72,7 +104,7 @@
 
 	export default {
 		name: "Index",
-		components: {Header, BlogPasswordDialog, Tocbot, RandomBlog, Tags, Nav, Footer, Introduction,UpdatePasswordDialog,AddTagDialog,RandomSneaker},
+		components: {Header, BlogPasswordDialog, BloggerInfo, RandomBlog, Tags, Nav, Footer, Introduction,UpdatePasswordDialog,AddTagDialog,RandomSneaker},
 		data() {
 			return {
 				siteInfo: {
@@ -91,7 +123,7 @@
 			}
 		},
 		computed: {
-			...mapState(['focusMode','user'])
+			...mapState(['focusMode','user','userInfo','bloggerInfo','randomSneaker','randomBlog','tagCard'])
 		},
 		watch: {
 			//路由改变时，页面滚动至顶部
@@ -163,7 +195,7 @@
 		padding: 0;
 	}
 
-	.ui.grid .ten.column {
+	.ui.grid .twelve.column {
 		padding-top: 0;
 	}
 

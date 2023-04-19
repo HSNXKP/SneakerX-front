@@ -425,3 +425,7 @@ footer {
 .me-black {
     background: #303132;
 }
+.no-segments{
+    border: 1px solid transparent !important; 
+    box-shadow: none !important;
+}

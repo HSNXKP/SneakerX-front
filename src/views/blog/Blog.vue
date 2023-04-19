@@ -49,11 +49,11 @@
 									<i class="font icon"></i>
 								</div>
 							</a>
-							<a class="item m-common-black" @click.prevent="changeFocusMode">
+							<!-- <a class="item m-common-black" @click.prevent="changeFocusMode">
 								<div data-inverted="" data-tooltip="专注模式" data-position="top center">
 									<i class="book icon"></i>
 								</div>
-							</a>
+							</a> -->
 						</div>
 					</div>
 					<!--分类-->
@@ -99,13 +99,12 @@
 		</div> -->
 	</el-card>
 		<!--评论-->
-		<el-card>
-				<div class="ui bottom   attached  segment    threaded comments" style="border: 1px solid transparent !important; box-shadow: none !important;" >
+			<el-card  >
+				<div class="ui bottom   attached  segment    threaded comments no-segments" >
 					<CommentList :page="0" :blogId="blogId" v-if="blog.commentEnabled"/>
 					<h3 class="ui header" v-else>评论已关闭</h3>
 			</div>
 		</el-card>
-		
 	</div>
 </template>
 
@@ -114,7 +113,7 @@
 	import CommentList from "@/components/comment/CommentList";
 	import {likeMoment} from "@/api/moment";
 	import {mapState} from "vuex";
-	import {SET_FOCUS_MODE, SET_IS_BLOG_RENDER_COMPLETE} from '@/store/mutations-types';
+	import {SET_IS_BLOG_RENDER_COMPLETE,SET_BLOGGER} from '@/store/mutations-types';
 
 	export default {
 		name: "Blog",
@@ -155,7 +154,6 @@
 			})
 		},
 		beforeRouteLeave(to, from, next) {
-			this.$store.commit(SET_FOCUS_MODE, false)
 			// 从文章页面路由到其它页面时，销毁当前组件的同时，要销毁tocbot实例
 			// 否则tocbot一直在监听页面滚动事件，而文章页面的锚点已经不存在了，会报"Uncaught TypeError: Cannot read property 'className' of null"
 			tocbot.destroy()
@@ -169,7 +167,6 @@
 			// 如果跳转到其它页面，to.path!==from.path 就放行 next()
 			// 如果是跳转锚点，path不会改变，hash会改变，to.path===from.path, to.hash!==from.path 不放行路由跳转，就能让锚点正常跳转
 			if (to.path !== from.path) {
-				this.$store.commit(SET_FOCUS_MODE, false)
 				//在当前组件内路由到其它博客文章时，要重新获取文章
 				this.getBlog(to.params.id)
 				//只要路由路径有改变，且停留在当前Blog组件内，就把文章的渲染完成状态置为 false
@@ -192,6 +189,8 @@
 						this.blog = res.data
 						// 因为是层级关系，请求先相应的blog，还没有请求到数据的时候user.username会报一个错误 如果不转换一下的话
 						this.user =this.blog.user	
+						this.$store.commit(SET_BLOGGER, this.user)
+						console.log(res.data)
 						document.title = this.blog.title + this.siteInfo.webTitleSuffix
 						//v-html渲染完毕后，渲染代码块样式
 						this.$nextTick(() => {
@@ -205,9 +204,6 @@
 				}).catch(() => {
 					this.msgError("请求失败")
 				})
-			},
-			changeFocusMode() {
-				this.$store.commit(SET_FOCUS_MODE, !this.focusMode)
 			},
 			like(id) {
 				if (this.likeMomentIds.indexOf(id) > -1) {

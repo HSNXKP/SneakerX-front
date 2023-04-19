@@ -34,6 +34,27 @@ export default {
 	},
 	//专注模式
 	focusMode: false,
+	//登陆的个人信息卡
+	userInfo: false,
+	//当前动态的博主信息卡
+	bloggerInfo: false,
+	//当前动态的博主id
+	blogger:{
+		id:'',
+		username:'',
+		nickname:'',
+		password:'',
+		avatar: '',
+		role: '',
+		email: '',
+		userFlag:''
+	},
+	//推荐球鞋
+	randomSneaker: false,
+	//推荐动态
+	randomBlog: false,
+	//标签卡片
+	tagCard: false,
 	//文章页面路由到首页的标记
 	isBlogToHome: false,
 	//可视窗口大小

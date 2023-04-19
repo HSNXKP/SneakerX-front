@@ -1,11 +1,11 @@
 <template>
 	<div>
-		<div class="ui segments m-box">
-			<div class="ui card">
+		<div class="ui  m-box" >
+			<div class="ui card no-segments">
 				<div class="image">
 					<img :src="user.avatar" >
 				</div>
-				<div class="content" align="center">
+				<div class="content " align="center">
 					<div class="header">{{ user.nickname }}</div>
 					<!--彩色滚动字体-->
 					<div id="rollText" class="m-margin-top" style="font-size:13px" >
@@ -13,14 +13,6 @@
 					</div>
 				</div>
 					<div class="extra content" align="center" >
-						<!-- 我的动态 -->
-						<a @click="toMoments"  target="_blank" class="ui circular icon button">
-							<el-badge is-dot hidden >	
-								<svg style="width: 1em!important;height: 1em!important;"   t="1681835613717" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7989" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200">
-									<path d="M880.4 436.9c23.9-23.9 10-64.8-23.5-69.2l-204.7-26.9c-13.3-1.7-24.9-9.9-31-21.9l-93.9-183.8c-15.4-30.1-58.6-29.5-73.1 1l-88.8 186.3c-5.8 12.1-17.1 20.6-30.4 22.7l-203.8 32.5c-33.4 5.3-46.2 46.6-21.6 69.8l149.8 142c9.7 9.2 14.3 22.7 12.2 35.9l-32.1 203.9c-5.3 33.4 30 58.3 59.7 42.2L480.5 773c11.8-6.4 26-6.6 37.9-0.5l184 93.5c30.1 15.3 64.7-10.6 58.6-43.8l-37.7-202.9c-2.4-13.2 1.8-26.7 11.2-36.2l145.9-146.2z" p-id="7990" fill="#d81e06"></path><path d="M656.7 280.7c38.5 45.8 145.6 50 145.6 50 11.4-0.7 17-14.1 9.6-22.7l-45.4-52.6c-3-3.4-4-8.1-2.9-12.4l17.5-67.2c2.9-11-8.1-20.5-18.6-16.1l-64 27c-4.2 1.8-8.9 1.3-12.7-1.1L627.3 148c-9.6-6.1-22 1.4-21.1 12.7 0 0.1 7.9 69.3 50.5 120z" p-id="7991" fill="#d81e06"></path>
-								</svg>
-							</el-badge>
-						</a>
 						<!-- 修改个人信息 -->
 						<a @click="toUserInfo"  target="_blank" class="ui circular icon button">
 							<el-badge is-dot hidden >	
@@ -38,7 +30,14 @@
 						</svg>
 						</el-badge>
 					</a>
-
+						<!-- 我的动态 -->
+						<a @click="toMoments"  target="_blank" class="ui circular icon button">
+							<el-badge is-dot hidden >	
+								<svg style="width: 1em!important;height: 1em!important;"   t="1681835613717" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7989" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200">
+									<path d="M880.4 436.9c23.9-23.9 10-64.8-23.5-69.2l-204.7-26.9c-13.3-1.7-24.9-9.9-31-21.9l-93.9-183.8c-15.4-30.1-58.6-29.5-73.1 1l-88.8 186.3c-5.8 12.1-17.1 20.6-30.4 22.7l-203.8 32.5c-33.4 5.3-46.2 46.6-21.6 69.8l149.8 142c9.7 9.2 14.3 22.7 12.2 35.9l-32.1 203.9c-5.3 33.4 30 58.3 59.7 42.2L480.5 773c11.8-6.4 26-6.6 37.9-0.5l184 93.5c30.1 15.3 64.7-10.6 58.6-43.8l-37.7-202.9c-2.4-13.2 1.8-26.7 11.2-36.2l145.9-146.2z" p-id="7990" fill="#d81e06"></path><path d="M656.7 280.7c38.5 45.8 145.6 50 145.6 50 11.4-0.7 17-14.1 9.6-22.7l-45.4-52.6c-3-3.4-4-8.1-2.9-12.4l17.5-67.2c2.9-11-8.1-20.5-18.6-16.1l-64 27c-4.2 1.8-8.9 1.3-12.7-1.1L627.3 148c-9.6-6.1-22 1.4-21.1 12.7 0 0.1 7.9 69.3 50.5 120z" p-id="7991" fill="#d81e06"></path>
+								</svg>
+							</el-badge>
+						</a>
 					<!-- 个人订单 -->
 					<a @click="toOrder"  target="_blank" class="ui circular icon button">
 						<el-badge is-dot hidden >	
@@ -58,11 +57,11 @@
 					</a>
 				</div>
 				<div>
-					<el-collapse accordion>
+					<!-- <el-collapse accordion>
 						<el-collapse-item :title="item.title" :name="index" v-if="item.title" v-for="(item,index) in introduction.favorites" :key="index">
 							<div>{{ item.content }}</div>
 						</el-collapse-item>
-					</el-collapse>
+					</el-collapse> -->
 				</div>
 		
 			</div>
@@ -109,16 +108,5 @@
 		white-space: nowrap;
 		text-overflow: ellipsis;
 		overflow: hidden;
-	}
-</style>
-
-<style scoped>
-	.el-collapse-item {
-		padding-left: 15px;
-		padding-right: 15px;
-	}
-
-	.el-collapse-item .el-collapse-item__content {
-		padding-bottom: 10px;
 	}
 </style>

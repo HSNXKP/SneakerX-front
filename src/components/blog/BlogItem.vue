@@ -71,7 +71,7 @@
 									<i class="small red heart  icon" ></i><span>{{ item.likes === 0 ? '' : item.likes }}</span>
 								</span>
 								<span class="item m-common-black">
-									<i class="small comment alternate  icon"></i><span>{{ allComment === 0 ? '' : allComment }}</span>
+									<i class="small comment alternate  icon"></i><span>{{ item.comments === 0 ? '' : item.comments }}</span>
 								</span>
 								<span class="item m-views">
 									<i class="small eye icon"></i><span>{{ item.views }}</span>
@@ -86,9 +86,6 @@
 				</div>
 			</div>
 		</el-card>
-	
-		
-	
 	</div>
 </template>
 
@@ -122,7 +119,7 @@ color: #999;
 
 
  /deep/ .el-card__header{
-	margin-top: 4px;
+	margin-top: 6px;
 	padding: 0 0 0 0 !important;
 	height: 25px !important;
 }

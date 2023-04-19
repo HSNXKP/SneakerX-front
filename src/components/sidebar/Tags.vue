@@ -1,9 +1,9 @@
 <template>
 	<!--标签云-->
-	<div class="ui segments m-box">
-		<div class="ui secondary  segment"><i class="tags purple  icon"></i>
+	<div class="ui segments m-box no-segments">
+		<div class="ui   segment"><i class="tags purple  icon"></i>
 			<span style="color:purple">
-				#标签指南
+				#热门标签指南
 			</span>
 			</div>
 		<div class="ui purple segment m-padding-small">

@@ -16,7 +16,13 @@ import {
 	SAVE_CLIENT_SIZE,
 	SAVE_USER,
 	UPDATE_PASSWORD_DIALOG_VISIBLE,
-	ADD_TAG_DIALOG_VISIBLE
+	ADD_TAG_DIALOG_VISIBLE,
+	SET_USER_INFO_STATUS,
+	SET_BLOGGER_INFO_STATUS,
+	SET_RANDOM_SNEAKER_STATUS,
+	SET_RANDOM_BLOG_STATUS,
+	SET_TAG_CARD_STATUS,
+	SET_BLOGGER
 } from "./mutations-types";
 
 export default {
@@ -75,6 +81,21 @@ export default {
 	[SET_FOCUS_MODE](state, focusMode) {
 		state.focusMode = focusMode
 	},
+	[SET_USER_INFO_STATUS](state, userInfo) {
+		state.userInfo = userInfo
+	},
+	[SET_BLOGGER_INFO_STATUS](state, bloggerInfo) {
+		state.bloggerInfo = bloggerInfo
+	},
+	[SET_RANDOM_SNEAKER_STATUS](state, randomSneaker) {
+		state.randomSneaker = randomSneaker
+	},
+	[SET_RANDOM_BLOG_STATUS](state, randomBlog) {
+		state.randomBlog = randomBlog
+	},
+	[SET_TAG_CARD_STATUS](state, tagCard) {
+		state.tagCard = tagCard
+	},
 	[SET_IS_BLOG_TO_HOME](state, isBlogToHome) {
 		state.isBlogToHome = isBlogToHome
 	},
@@ -89,5 +110,8 @@ export default {
 	},
 	[ADD_TAG_DIALOG_VISIBLE](state,visible){
 		state.addTagDialogVisible=visible
+	},
+	[SET_BLOGGER](state,blogger){
+		state.blogger=blogger
 	}
 }

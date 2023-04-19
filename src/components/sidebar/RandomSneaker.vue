@@ -1,7 +1,7 @@
 <template>
 	<!--随机文章-->
-	<div class="ui segments m-box">
-		<div class="ui secondary segment"><i class="bookmark blue icon"></i>
+	<div class="ui segments  m-box no-segments" >
+		<div class="ui  segment"><i class="bookmark blue icon"></i>
 			<span style="color:blue">
 				球鞋推荐
 			</span>

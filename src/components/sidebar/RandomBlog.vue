@@ -1,9 +1,9 @@
 <template>
 	<!--随机文章-->
-	<div class="ui segments m-box">
-		<div class="ui secondary segment"><i class="bookmark red icon"></i>
+	<div class="ui segments m-box no-segments" >
+		<div class="ui  segment"><i class="bookmark red icon"></i>
 			<span style="color:red">
-				精彩推荐
+				本周精选
 			</span>
 			</div>
 		<div class="ui red segment">

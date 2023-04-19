@@ -57,7 +57,6 @@ export default {
 			// 在路由 beforeRouteUpdate 中判断路径是否改变
 			// 如果跳转到其它页面，to.path!==from.path 就放行 next()
 			if (to.path !== from.path) {
-				// this.$store.commit(SET_FOCUS_MODE, false)
 				this.getProductCategory(to.params.id)
 				next()
 			}
