@@ -49,3 +49,33 @@ export function getUser(token,userId) {
 		}
 	})
 }
+
+
+export function addFans(token,userId,bloggerId) {
+	return axios({
+		url: 'user/addFans',
+		method: 'GET',
+		headers: {
+			Authorization: token,
+		},
+		params:{
+			userId,
+			bloggerId
+		}
+	})
+}
+
+
+export function isFans(token,userId,bloggerId) {
+	return axios({
+		url: 'user/isFans',
+		method: 'GET',
+		headers: {
+			Authorization: token,
+		},
+		params:{
+			userId,
+			bloggerId
+		}
+	})
+}
