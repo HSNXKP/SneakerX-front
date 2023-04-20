@@ -22,7 +22,8 @@ import {
 	SET_RANDOM_SNEAKER_STATUS,
 	SET_RANDOM_BLOG_STATUS,
 	SET_TAG_CARD_STATUS,
-	SET_BLOGGER
+	SET_BLOGGER,
+	SET_IS_FAN
 } from "./mutations-types";
 
 export default {
@@ -112,6 +113,9 @@ export default {
 		state.addTagDialogVisible=visible
 	},
 	[SET_BLOGGER](state,blogger){
-		state.blogger=blogger
+		state.blogger = blogger
+	},
+	[SET_IS_FAN](state,isFan){
+		state.isFan=isFan
 	}
 }

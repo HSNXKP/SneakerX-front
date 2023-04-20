@@ -35,7 +35,6 @@
 								<a @click="like(blog.id)">
 									<i class="small  like icon" :class="isLike(blog.id)?'like-color':'like'" ></i><span>{{ blog.likes === 0 ? '': blog.likes }}</span>
 								</a>
-			
 							</div>
 							<!-- comments -->
 							<div class="item m-common-black" >
@@ -157,6 +156,8 @@
 			// 从文章页面路由到其它页面时，销毁当前组件的同时，要销毁tocbot实例
 			// 否则tocbot一直在监听页面滚动事件，而文章页面的锚点已经不存在了，会报"Uncaught TypeError: Cannot read property 'className' of null"
 			tocbot.destroy()
+			// 将vuex中的博主信息删除
+			this.$store.commit(SET_BLOGGER, '')
 			next()
 		},
 		beforeRouteUpdate(to, from, next) {
@@ -189,6 +190,7 @@
 						this.blog = res.data
 						// 因为是层级关系，请求先相应的blog，还没有请求到数据的时候user.username会报一个错误 如果不转换一下的话
 						this.user =this.blog.user	
+						// 将博主信息保存到vuex中
 						this.$store.commit(SET_BLOGGER, this.user)
 						console.log(res.data)
 						document.title = this.blog.title + this.siteInfo.webTitleSuffix

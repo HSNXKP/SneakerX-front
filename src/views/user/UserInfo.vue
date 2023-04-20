@@ -1,14 +1,22 @@
 <template>
   <div>
-	<div class="avatarInfo">
-		<el-card >
-			<img  class="avatar"  :src="user.avatar" />
-			<div  style="display:inline-block;"> 
-				<h4   class="m-text-500">{{ user.nickname }}</h4>
+		<el-card style="margin-bottom: 5px;">
+			<div style="display:flex">
+				<img  class="avatar"  :src="user.avatar" />
+			<div> 
+				<h4   class="m-text-500 nickname" >{{ user.nickname }} <div  class="ui  left pointing label" :class="user.flagColor" >{{ user.userFlag }}</div></h4>
+				<div class="fans">
+						粉丝：{{ user.fans }}
+						关注：{{ user.follow }}
+				</div>
+				<div class="product">
+						<a href="javascript:;">
+							<i class="el-icon-star-off"></i>商品收藏
+						</a>
+				</div>
 			</div>
-			<div style="display:inline-block;" class="ui  left pointing label" :class="user.flagColor" >{{ user.userFlag }}</div>
+			</div>
       </el-card>
-	</div>
       <el-card style="margin-top:10px">
 		<h3  class="m-text-500">个人资料卡</h3>
         <el-form label-width="80px">
@@ -118,14 +126,6 @@ export default {
 
 <style scoped>
 
-.avatarInfo{
-	margin-bottom: 5px;
-	
-}
- .el-card__body{
-	display: flex !important;
-}
-
 
 .userInfo{
   font-size: 12px;
@@ -136,9 +136,23 @@ export default {
   height: 90px;
   width: 90px;
   border-radius: 50%;
-  text-align: center;
-  display:inline-block; 
-  vertical-align:top
+}
+.fans{
+  margin-left: 8px;
+  margin-top: 6px;
+  font-size: 12px;
+  color: #999;
+}
+.nickname{
+	margin-bottom: 0px;
+	margin-top: 1px;
+	margin-left: 4px;
+}
+.product{
+	margin-left: 8px;
+  	margin-top: 6px;
+  	font-size: 12px;
+  	color: #999;
 }
 
 </style>

@@ -62,7 +62,7 @@
 
 
 
-      <router-link to="/archives" class="item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'archives' }">
+      <router-link to="/brandSettled" class="item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'brandSettled' }">
         <i class="calendar check icon"></i>品牌入驻
       </router-link>
 <!-- 

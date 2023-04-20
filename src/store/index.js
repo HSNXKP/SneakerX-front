@@ -19,6 +19,7 @@ export default new Vuex.Store({
 			reducer(val) {
 				return {
 					user: val.user,
+					blogger: val.blogger
 				}
 			}
 		})

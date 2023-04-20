@@ -2,6 +2,7 @@
 	<div>
 		<el-card style="margin-bottom: 10px;">
 			<h2 class="m-text-500" style="text-align: center">{{ categoryName }}</h2>
+			<div class="ui  divider "></div>
 		</el-card>
 		<el-card style="text-align: center"  v-if="this.blogList.length === 0">
 			<el-empty description="该社区下暂无动态 赶快去发布动态吧！"></el-empty>

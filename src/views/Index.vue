@@ -21,8 +21,8 @@
 							<RandomSneaker :randomProductList="randomProductList" :class="{'m-display-none':randomSneaker}" v-if="this.$route.name === 'blog'"/>
 							<RandomBlog :randomBlogList="randomBlogList" :class="{'m-display-none':randomBlog}" v-if="this.$route.name === 'home'"/>
 							<Tags :tagList="tagList" :class="{'m-display-none':tagCard}" v-if="this.$route.name === 'home'"/>
-							<!-- 使用||不生效 -->
-							<Introduction :class="{'m-display-none':userInfo}"  v-if="!(user != '' && this.$route.name === 'blog')"/> 
+							<Introduction :class="{'m-display-none':userInfo}"  v-show="!(user === '' || this.$route.name === 'blog') "/> 
+							<!-- <Introduction :class="{'m-display-none':userInfo}"  v-if="this.userInfoVisble === true"/>  -->
 							<!-- 
 									//登陆的个人信息卡
 									userInfo:false,
@@ -120,6 +120,7 @@
 				badges: [],
 				newBlogList: [],
 				hitokoto: {},
+				userInfoVisble:false
 			}
 		},
 		computed: {
@@ -136,6 +137,7 @@
 			this.getHitokoto()
 			//从localStorage恢复之前的评论信息
 			this.$store.commit(RESTORE_COMMENT_FORM)
+			this.isUserInfoVisble()
 		},
 		mounted() {
 			//保存可视窗口大小
@@ -155,7 +157,7 @@
 						this.tagList = res.data.tagList
 						this.randomBlogList = res.data.randomBlogList
 						this.randomProductList = res.data.randomProductList
-						console.log(this.randomProductList)
+						console.log(this.randomProductList)	
 						console.log(res.data.randomProductList)
 						this.$store.commit(SAVE_SITE_INFO, this.siteInfo)
 						this.$store.commit(SAVE_INTRODUCTION, res.data.introduction)
@@ -168,8 +170,15 @@
 				getHitokoto().then(res => {
 					this.hitokoto = res
 				})
+			},
+			isUserInfoVisble(){
+			if(this.user != '' || this.$route.name != 'blog'){
+				this.userInfoVisble=true
 			}
+			this.userInfoVisble=false
 		}
+		},
+	
 	}
 </script>
 

@@ -7,17 +7,17 @@
 				</div>
 				<div class="content " align="center">
 					<div class="fans">
-						粉丝：12
-						关注：12
+						粉丝：{{ blogger.fans }}
+						关注：{{ blogger.follow }}
 					</div>
 					<div class="header">{{ blogger.nickname }}</div>
-					<div id="rollText" class="m-margin-top" style="font-size:13px" >
+					<div id="rollText"  style="font-size:13px" >
 						简介：{{ blogger.userSign }}
 					</div>
 					<div class="m-margin-top">
 					</div>
                     <div class="m-margin-top" >
-                        <el-button type="primary" size="mini" icon="el-icon-plus" @click="addFans"  v-if="isFan == false">关注</el-button>
+                        <el-button type="primary" size="mini" icon="el-icon-plus" @click="addFans"  v-if="this.isFan === false">关注</el-button>
 						<el-button size="mini"  v-else >已关注</el-button>
                         <el-button type="success" size="mini" icon="el-icon-star-off"  >他的动态</el-button>
                     </div>
@@ -30,19 +30,24 @@
 <script>
 	import {mapState} from 'vuex'
 	import {addFans,isFans} from'@/api/user'
+	import {SET_IS_FAN} from '@/store/mutations-types';
 
 	export default {
 		name: "BloggerInfo",
-		return :{
-			isFan: true
-		},
 		computed: {
-			...mapState(['blogger','user'])
+			...mapState(['blogger','user','isFan'])
 		},
-		created() {
+		watch:{
+			blogger() {
+				if (this.blogger.id) {
+					this.isFans()
+				}
+			}
 		},
 		methods: {
+			// 关注博主
 			addFans() {
+				const token = window.localStorage.getItem('adminToken')
 				const userId = this.user.id;
 				if (userId === this.blogger.id) {
 					this.$message({
@@ -51,24 +56,30 @@
 					});
 					return;
 				}
-				bloggerId = this.blogger.id;
-				addFans(userId,bloggerId).then(res => {
-					if (res.data.code === 200) {
+				const bloggerId = this.blogger.id;
+				addFans(token,userId,bloggerId).then(res => {
+					if (res.code === 200) {
+						this.blogger.fans = this.blogger.fans + 1
 						this.isFans()
-						this.msgSuccess(res.msg);
 					}else{
 						this.msgError(res.msg);
 					}
 				})
 			},
+			// 判断是否为粉丝
 			isFans() {
+				console.log(this.blogger.id)
+				console.log(this.blogger)
+				console.log(this.user)
+				const token = window.localStorage.getItem('adminToken')
 				const userId = this.user.id;
 				const bloggerId = this.blogger.id;
-				this.isFans(userId,bloggerId).then(res => {
-					if (res.data.code === 200) {
-						this.isFan = res.data;
-					}else{
-						this.msgError(res.msg);
+				isFans(token,userId,bloggerId).then(res => {
+					if (res.code === 200) {
+						console.log(res.data)
+						console.log(this.isFan)
+						this.$store.commit(SET_IS_FAN,res.data)
+						console.log(this.isFan)
 					}
 				})
 			}

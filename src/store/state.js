@@ -47,8 +47,12 @@ export default {
 		avatar: '',
 		role: '',
 		email: '',
-		userFlag:''
+		userFlag:'',
+		fans:'',
+		follow:''
 	},
+	// 当前的博主是否关注
+	isFan:false,
 	//推荐球鞋
 	randomSneaker: false,
 	//推荐动态
@@ -71,7 +75,9 @@ export default {
 		avatar: '',
 		role: '',
 		email: '',
-		userFlag:''
+		userFlag:'',
+		fans:'',
+		follow:''
 	},
 	// 修改密码框
 	updatePasswordDialogVisible:false,

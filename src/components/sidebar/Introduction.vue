@@ -6,10 +6,14 @@
 					<img :src="user.avatar" >
 				</div>
 				<div class="content " align="center">
-					<div class="header">{{ user.nickname }}</div>
+					<div class="fans">
+						粉丝：{{ user.fans }}
+						关注：{{ user.follow }}
+					</div>
+					<div class="header" >{{ user.nickname }}</div>
 					<!--彩色滚动字体-->
-					<div id="rollText" class="m-margin-top" style="font-size:13px" >
-						{{ user.userSign }}
+					<div id="rollText"  style="font-size:13px" >
+						简介：{{ user.userSign }}
 					</div>
 				</div>
 					<div class="extra content" align="center" >
@@ -109,4 +113,9 @@
 		text-overflow: ellipsis;
 		overflow: hidden;
 	}
+	.fans{
+		font-size: 12px;
+		color: #999;
+	}
+
 </style>

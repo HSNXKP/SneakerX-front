@@ -24,10 +24,16 @@ const routes = [
 				component: () => import('@/views/home/Home'),
 				meta: {title: '首页'}
 			},
+			// {
+			// 	path: '/archives',
+			// 	name: 'archives',
+			// 	component: () => import('@/views/archives/Archives'),
+			// 	meta: {title: '品牌入驻'}
+			// },
 			{
-				path: '/archives',
-				name: 'archives',
-				component: () => import('@/views/archives/Archives'),
+				path: '/brandSettled',
+				name: 'BrandSettled',
+				component: () => import('@/views/brandSettled/BrandSettled'),
 				meta: {title: '品牌入驻'}
 			},
 			{

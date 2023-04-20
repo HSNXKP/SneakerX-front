@@ -129,13 +129,8 @@ export default {
         }
     },
 	computed: {
-    ...mapState(['addTagDialogVisible','user','form']),
+    ...mapState(['addTagDialogVisible','user']),
     },
-    watch: {
-			'form.words'(newValue) {
-				this.form.readTime = newValue ? Math.round(newValue / 200) : null
-			},
-		},
 		created() {
 			this.getData()
 			if (this.$route.params.id) {

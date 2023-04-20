@@ -9,7 +9,7 @@
         <!-- 商品分类展示界面 两个卡片间隔为1 左右间隔加起来等于2 就是gutter    span一个卡片占8格子 一共24格子-->
        <el-row :gutter="4">  
           <el-col class="productMargin"  :span="item.price === undefined ?8: 6"   v-for="(item, index) in productCategoryListWithProduct" :key="index">
-            <el-card :body-style="{ padding: '0px' }"  shadow="hover"  >
+            <el-card :body-style="{ padding: '0px' }"  shadow="hover"  class="i">
               <!-- 异步处理 判断进入哪个router  href="#" 表示不跳转页面 仍在在本页面请求-->
               <a href="javascript:void(0)" @click="toProduct(item.id,item.productCategoryId)" >
                 <img :src="item.image" class="image">
@@ -115,6 +115,7 @@ export default {
   .nameProductCategory {
     font-size: 0.1rem;
     color: #541010;
+    
   } 
 
   
@@ -158,4 +159,10 @@ export default {
   .clearfix:after {
       clear: both
   }
+  .i {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
 </style>

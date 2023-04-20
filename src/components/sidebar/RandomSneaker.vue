@@ -3,7 +3,7 @@
 	<div class="ui segments  m-box no-segments" >
 		<div class="ui  segment"><i class="bookmark blue icon"></i>
 			<span style="color:blue">
-				球鞋推荐
+				本文关联球鞋
 			</span>
 			</div>
 		<div class="ui blue segment">
