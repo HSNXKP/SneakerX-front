@@ -83,10 +83,15 @@
             <el-input-number size="mini" v-model="orderForm.quantity"  :min="1" :max="5" ></el-input-number>
             <span class="purchaseRestrictions">（该商品限购{{ this.product.purchaseRestrictions }}件）</span>
           </el-form-item>
-          <el-form-item>
-            <el-button type="success" @click="submitOrder" size="medium">立即购买</el-button>
+          <div class="submitOrder">
+            <el-button href="javascript:;" size="mini" @click="collecOrCanceltProduct()">
+              收藏
+              <i class="el-icon-star-off"  style="margin-right: 5px;" v-if="this.isCollect === false "></i>
+              <i class="el-icon-star-on"  style="margin-right: 5px;color: yellowgreen;" v-else></i>
+            </el-button>
+            <el-button type="success"  @click="submitOrder" size="medium">立即购买</el-button>
             <el-button size="medium" @click="addProductToCart">加入购物车</el-button>
-          </el-form-item>
+          </div>
         </el-form>
         <el-collapse v-model="activeNames">
           <el-collapse-item name="1">
@@ -149,6 +154,7 @@ import { checkPhone } from '@/common/reg';
 import { getProductById } from '@/api/product';
 import { addCart } from '@/api/cart';
 import { order } from '@/api/order';
+import {collectProduct ,cancelCollectProduct ,isCollectProduct} from "@/api/user";
 
 export default {
   name: "ProductInfo",
@@ -193,6 +199,7 @@ export default {
 				]
 			},
       product:{},
+      isCollect:false,
     }
   },
   created(){
@@ -201,6 +208,7 @@ export default {
           this.getAddressList()
         }
     this.getProductSizeWithPriceByProductId()
+    this.isCollectProduct()
   },
 	computed: {
     ...mapState(['user']),
@@ -368,9 +376,39 @@ export default {
         }
       })
     },
-    
-
-    
+    collecOrCanceltProduct(){
+      const token = window.localStorage.getItem('adminToken') 
+      const userId = this.user.id
+      const productId = this.productId
+      if(this.isCollect === true){
+        cancelCollectProduct(token,userId,productId).then(res=>{
+          if(res.code==200){
+            this.isCollect = res.data
+            this.isCollectProduct()
+          }
+        })
+      }
+      collectProduct(token,userId,productId).then(res=>{
+        if(res.code==200){
+          this.msgSuccess(res.msg)
+          this.isCollectProduct()
+        }
+      })
+    },
+    isCollectProduct(){
+      const token = window.localStorage.getItem('adminToken') 
+      // 获得user的id
+      const userId = this.user.id
+      const productId = this.productId
+      // 转换成Long类型
+      isCollectProduct(token,userId,productId).then(res=>{
+        if(res.code==200){
+          this.isCollect = res.data
+        }else{
+          this.msgError(res.msg)
+        }
+      })
+    },
   } 
 };
 </script>
@@ -418,5 +456,9 @@ export default {
   font-size: 10px;
   zoom: 0.8;
   color: red;
+}
+.submitOrder{
+  margin-left: 20px;
+  margin-bottom: 20px;
 }
 </style>
