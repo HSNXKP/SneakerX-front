@@ -214,7 +214,8 @@ export default {
     },
     payOrder(orderNumber = this.orderNumber) {
       const token = window.localStorage.getItem('adminToken')
-      payOrder(token,orderNumber).then(res => {
+      const orderRemarks = this.orderRemarks
+      payOrder(token,orderNumber,orderRemarks).then(res => {
         if (res.code === 200) {
           console.log(res)
         this.alipay = res.data

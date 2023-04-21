@@ -81,46 +81,15 @@ export function isFans(token,userId,bloggerId) {
 }
 
 
-export function collectProduct(token,userId,productId) {
+export function getProductCollect(token,userId) {
 	return axios({
-		url: 'user/collectProduct',
+		url: 'user/getProductCollect',
 		method: 'GET',
 		headers: {
 			Authorization: token,
 		},
-		params:{
-			userId,
-			productId
-		}
-	})
-}
-
-
-export function cancelCollectProduct(token,userId,productId) {
-	return axios({
-		url: 'user/cancelCollectProduct',
-		method: 'GET',
-		headers: {
-			Authorization: token,
-		},
-		params:{
-			userId,
-			productId
-		}
-	})
-}
-
-
-export function isCollectProduct(token,userId,productId) {
-	return axios({
-		url: 'user/isCollectProduct',
-		method: 'GET',
-		headers: {
-			Authorization: token,
-		},
-		params:{
-			userId,
-			productId
-		}
+		params: {
+            userId
+        }
 	})
 }

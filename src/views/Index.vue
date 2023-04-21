@@ -17,12 +17,14 @@
 					<div class="ui stackable grid">
 						<!--左侧随机推荐商品-->
 						<div class="three wide column m-mobile-hide"  style="margin-left:30px">
-							<BloggerInfo :class="{'m-display-none':randomSneaker}" v-if="this.$route.name === 'blog'"/>
+							<BloggerInfo :class="{'m-display-none':randomSneaker}" v-if="this.$route.name === 'blog' && this.blogger.id != this.user.id"/>
 							<RandomSneaker :randomProductList="randomProductList" :class="{'m-display-none':randomSneaker}" v-if="this.$route.name === 'blog'"/>
 							<RandomBlog :randomBlogList="randomBlogList" :class="{'m-display-none':randomBlog}" v-if="this.$route.name === 'home'"/>
 							<Tags :tagList="tagList" :class="{'m-display-none':tagCard}" v-if="this.$route.name === 'home'"/>
-							<Introduction :class="{'m-display-none':userInfo}"  v-show="!(user === '' || this.$route.name === 'blog') "/> 
-							<!-- <Introduction :class="{'m-display-none':userInfo}"  v-if="this.userInfoVisble === true"/>  -->
+							<!-- <Introduction :class="{'m-display-none':userInfo}"  v-show="!(user === '' || this.$route.name === 'blog') "/>  -->
+							<!-- 当进入自己的动态的时候会展示自己的卡片 -->
+							<Introduction :class="{'m-display-none':userInfo}"  v-show="user != '' && (this.blogger.id === this.user.id)?this.$route.name === 'blog':this.$route.name != 'blog' "/>
+							<!-- <Introduction :class="{'m-display-none':userInfo}"  v-if="this.userInfoVisble"/>  -->
 							<!-- 
 									//登陆的个人信息卡
 									userInfo:false,
@@ -124,7 +126,7 @@
 			}
 		},
 		computed: {
-			...mapState(['focusMode','user','userInfo','bloggerInfo','randomSneaker','randomBlog','tagCard'])
+			...mapState(['focusMode','user','blogger','userInfo','bloggerInfo','randomSneaker','randomBlog','tagCard'])
 		},
 		watch: {
 			//路由改变时，页面滚动至顶部
@@ -172,8 +174,15 @@
 				})
 			},
 			isUserInfoVisble(){
-			if(this.user != '' || this.$route.name != 'blog'){
+			if(this.user != ''){
 				this.userInfoVisble=true
+				if(this.$route.name == 'blog'){
+					if(this.user.id == this.blogger.id){
+						this.userInfoVisble=true
+					}
+					this.userInfoVisble=false
+				}
+				this.userInfoVisble=false
 			}
 			this.userInfoVisble=false
 		}

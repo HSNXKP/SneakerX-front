@@ -24,12 +24,6 @@ const routes = [
 				component: () => import('@/views/home/Home'),
 				meta: {title: '首页'}
 			},
-			// {
-			// 	path: '/archives',
-			// 	name: 'archives',
-			// 	component: () => import('@/views/archives/Archives'),
-			// 	meta: {title: '品牌入驻'}
-			// },
 			{
 				path: '/brandSettled',
 				name: 'BrandSettled',
@@ -121,6 +115,12 @@ const routes = [
 				name: 'SettleAccount',
 				component: () => import('@/views/product/cart/SettleAccount'),
 				meta : {title: 'SneakerX购物车结算',needLogin:true}
+			},
+			{
+				path: '/productCollect',
+				name: 'ProductCollect',
+				component: () => import('@/views/product/product/ProductCollect'),
+				meta : {title: '商品收藏',needLogin:true}
 			},
 		]
 	}

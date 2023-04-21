@@ -1,6 +1,6 @@
 import axios from '@/plugins/axios'
 
-export function payOrder(token,orderNumber) {
+export function payOrder(token,orderNumber,orderRemarks) {
 	return axios({
 		url: 'pay',
 		method: 'GET',
@@ -8,7 +8,8 @@ export function payOrder(token,orderNumber) {
 			Authorization: token,
 		},
 		params: {
-			orderNumber
+			orderNumber,
+			orderRemarks
 		}
 	})
 }

@@ -52,4 +52,19 @@ export function getOrderList(token, id) {
 	})
 }
 
+export function deleteOrderByOrderNumber(token, orderNumber,userId) {
+	return axios({
+		url: `user/deleteOrderByOrderNumber`,
+		method: 'GET',
+		headers: {
+			Authorization: token,
+		},
+		params: {
+			orderNumber,
+			userId
+		}
+	})
+}
+
+
 

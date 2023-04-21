@@ -2,15 +2,21 @@
   <div>
     <el-card>
       <h2 class="m-text-500" style="text-align: center">订单管理</h2>
-    <div class="ui  divider"></div>
+    <div class="ui  divider "></div>
       <el-empty description="暂无订单，快去下单吧！" v-if="orderList.length === 0"></el-empty>
-      <div style="margin-bottom:  10px;" v-if="!orderList.length === 0">
-        <el-button type="danger" size="mini" @click="deleteOrder" >删除订单</el-button>
-        <el-button type="danger" size="mini" v-if="this.value" @click="cancelDelete">确定删除</el-button>
+      <div v-else>
+      <div style="margin-bottom:  10px;" >
+        <el-button  size="mini" @click="deleteOrder" >管理</el-button>
         <el-button type="danger" size="mini" v-if="this.value" @click="cancelDelete">取消</el-button>
       </div>
+      <div class="ui  divider "></div>
       <div v-for="(item, index) in orderList" :key="index">
-          <el-checkbox style="font-size:center" v-if="value"></el-checkbox>
+        <i
+            class="el-icon-remove"
+            style="color: red; padding-top: 4px; margin-left: 4px"
+            v-if="value"
+            @click="deleteOrderByOrderNumber(item.orderNumber)">
+          </i>
           <span style="color: #999;">
               下单时间：{{ item.createTime | dateFormat('YYYY-MM-DD HH:mm') }}
             </span>
@@ -85,13 +91,14 @@
         </div>
         <div class="ui  divider"></div>
       </div>
+      </div>
   </el-card>
 
   </div>
 </template>
 
 <script>
-import { getOrderList } from '@/api/order';
+import { getOrderList ,deleteOrderByOrderNumber} from '@/api/order';
 import { mapState } from "vuex";
 
 export default {
@@ -99,7 +106,8 @@ export default {
   data() {
     return {
       value:false,
-      orderList:[]
+      orderList:[],
+
     };
   },
   created() {
@@ -119,6 +127,31 @@ export default {
           this.msgError(res.msg)
         }
       })
+    },
+    deleteOrderByOrderNumber(orderNumber){
+      // 二次确认
+      this.$confirm('此操作将永久删除该订单, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+      const token = window.localStorage.getItem('adminToken') 
+      const userId = this.user.id
+      deleteOrderByOrderNumber(token,orderNumber,userId).then(res => {
+        if (res.code === 200) {
+          this.msgSuccess(res.msg)
+          this.getOrderList()
+        }else{
+          this.msgError(res.msg)
+        }
+      })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });          
+      });
+   
     },
     deleteOrder(){
       this.value = true

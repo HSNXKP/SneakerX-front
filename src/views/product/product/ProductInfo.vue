@@ -154,7 +154,7 @@ import { checkPhone } from '@/common/reg';
 import { getProductById } from '@/api/product';
 import { addCart } from '@/api/cart';
 import { order } from '@/api/order';
-import {collectProduct ,cancelCollectProduct ,isCollectProduct} from "@/api/user";
+import {collectProduct ,cancelCollectProduct ,isCollectProduct} from "@/api/product";
 
 export default {
   name: "ProductInfo",
@@ -376,6 +376,7 @@ export default {
         }
       })
     },
+    // 收藏商品 // isCollect是true则取消收藏，false则收藏
     collecOrCanceltProduct(){
       const token = window.localStorage.getItem('adminToken') 
       const userId = this.user.id
@@ -390,22 +391,18 @@ export default {
       }
       collectProduct(token,userId,productId).then(res=>{
         if(res.code==200){
-          this.msgSuccess(res.msg)
           this.isCollectProduct()
         }
       })
     },
+    // 判断商品是否收藏
     isCollectProduct(){
       const token = window.localStorage.getItem('adminToken') 
-      // 获得user的id
       const userId = this.user.id
       const productId = this.productId
-      // 转换成Long类型
       isCollectProduct(token,userId,productId).then(res=>{
         if(res.code==200){
           this.isCollect = res.data
-        }else{
-          this.msgError(res.msg)
         }
       })
     },

@@ -10,7 +10,7 @@
 						关注：{{ user.follow }}
 				</div>
 				<div class="product">
-						<a href="javascript:;">
+						<a href="javascript:;" @click="toProductCollect">
 							<i class="el-icon-star-off"></i>商品收藏
 						</a>
 				</div>
@@ -119,7 +119,11 @@ export default {
 				}).catch(() => {
 					this.msgError("请求失败")
 				})
-      }
+    	},
+		toProductCollect(){
+			this.$router.push('/productCollect')
+		}
+
     }
 };
 </script>
