@@ -93,3 +93,17 @@ export function getProductCollect(token,userId) {
         }
 	})
 }
+
+export function uploadAvatarImage(token,file,userId) {
+	return axios({
+		url: 'user/uploadAvatarImage',
+		method: 'POST',
+		headers: {
+			Authorization: token,
+		},
+		params: {
+			file,
+            userId
+        }
+	})
+}

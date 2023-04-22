@@ -2,7 +2,14 @@
   <div>
 		<el-card style="margin-bottom: 5px;">
 			<div style="display:flex">
-				<img  class="avatar"  :src="user.avatar" />
+				<el-upload
+			 action="http://localhost/uploadAvatarImage"
+			 :show-file-list="false"
+			 :on-success="handleAvatarSuccess"
+			 :before-upload="beforeAvatarUpload"
+			 >
+			 <a href="javascript:;" ><img  class="avatar"  :src="user.avatar" /></a>
+			</el-upload>
 			<div> 
 				<h4   class="m-text-500 nickname" >{{ user.nickname }} <div  class="ui  left pointing label" :class="user.flagColor" >{{ user.userFlag }}</div></h4>
 				<div class="fans">
@@ -54,7 +61,7 @@
 
 <script>
 import { mapState } from "vuex";
-import {updateUser ,getUser} from "@/api/user";
+import {updateUser ,getUser ,uploadAvatarImage} from "@/api/user";
 
 export default {
   name: "UserInfo",
@@ -70,20 +77,22 @@ export default {
 		  userSign:''
         },
 		colors: [
-					{label: '红色', value: 'red'},
-					{label: '橘黄', value: 'orange'},
-					{label: '黄色', value: 'yellow'},
-					{label: '橄榄绿', value: 'olive'},
-					{label: '纯绿', value: 'green'},
-					{label: '水鸭蓝', value: 'teal'},
-					{label: '纯蓝', value: 'blue'},
-					{label: '紫罗兰', value: 'violet'},
-					{label: '紫色', value: 'purple'},
-					{label: '粉红', value: 'pink'},
-					{label: '棕色', value: 'brown'},
-					{label: '灰色', value: 'grey'},
-					{label: '黑色', value: 'black'},
-				],
+		{label: '红色', value: 'red'},
+		{label: '橘黄', value: 'orange'},
+		{label: '黄色', value: 'yellow'},
+		{label: '橄榄绿', value: 'olive'},
+		{label: '纯绿', value: 'green'},
+		{label: '水鸭蓝', value: 'teal'},
+		{label: '纯蓝', value: 'blue'},
+		{label: '紫罗兰', value: 'violet'},
+		{label: '紫色', value: 'purple'},
+		{label: '粉红', value: 'pink'},
+		{label: '棕色', value: 'brown'},
+		{label: '灰色', value: 'grey'},
+		{label: '黑色', value: 'black'},
+		],
+		HOST: process.env.BASE_URL,
+		imageUrl: ''
 	}
   },
   computed: {
@@ -122,8 +131,38 @@ export default {
     	},
 		toProductCollect(){
 			this.$router.push('/productCollect')
-		}
+		},
+		handleAvatarSuccess(res,file) {
+			console.log(res)
+			this.user.avatar = URL.createObjectURL(file.raw);
+      	},
+      	beforeAvatarUpload(file) {
+      	    const isJPG = file.type === 'image/jpeg';
+		    const isPNG = file.type === 'image/png';
+      	    const isLt2M = file.size / 1024 / 1024 < 2;
 
+        if (!isJPG && !isPNG ) {
+          this.$message.error('上传头像图片只能是 JPG 格式或者 PNG格式!');
+        }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!');
+        }
+        return isJPG && isLt2M && isPNG;
+      },
+	  uploadAvatarImage(file) {
+		const formatData = new FormData()
+		const token = window.localStorage.getItem('adminToken')
+		const userId = this.user.id
+		formatData.append('file', file)
+		formatData.append('token', token)
+		formatData.append('userId', userId)
+		const instance = Axios.create({
+              baseURL: this.HOST
+         })
+		 instance.post('/uploadAvatarImage', formatData).then(res => {
+			return res.data
+		})
+	  },
     }
 };
 </script>
