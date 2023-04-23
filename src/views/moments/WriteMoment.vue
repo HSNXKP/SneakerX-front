@@ -33,9 +33,9 @@
 
 			<el-row :gutter="20">
 				<el-col :span="12">
-					<!-- 球鞋分类 -->
-					<el-form-item align="left" label="球鞋分类" prop="cate">
-						<el-select v-model="form.cate" placeholder="请选择球鞋的分类" :allow-create="true" :filterable="true"  style="width: 100%;">
+					<!-- 动态分类 -->
+					<el-form-item align="left" label="动态分类" prop="cate">
+						<el-select v-model="form.cate" placeholder="请选择动态的分类" :allow-create="true" :filterable="true"  style="width: 100%;">
 							<el-option :label="item.name" :value="item.id" v-for="item in categoryList" :key="item.id"></el-option>
 						</el-select>
 					</el-form-item>

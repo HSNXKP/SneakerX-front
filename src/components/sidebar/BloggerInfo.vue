@@ -1,7 +1,7 @@
 <template>
 	<div>
-		<div class="ui  m-box" >
-			<div class="ui card no-segments">
+		<div class="ui  m-box" style="margin-top:0px; margin-bottom:10px">
+			<div class="ui card no-segments" >
 				<div class="image">
 					<img :src="blogger.avatar" >
 				</div>
@@ -59,7 +59,9 @@
 				const bloggerId = this.blogger.id;
 				addFans(token,userId,bloggerId).then(res => {
 					if (res.code === 200) {
+						// 博主粉丝数+1 用户关注数+1
 						this.blogger.fans = this.blogger.fans + 1
+						this.user.follow = this.user.follow + 1
 						this.isFans()
 					}else{
 						this.msgError(res.msg);

@@ -69,8 +69,6 @@ export default {
           this.productCategoryListWithProduct = res.data.productCategoryListWithProduct
           this.productCategoryName = res.data.productCategoryName
           console.log(this.productCategoryListWithProduct)
-        }else{
-          this.msgError(res.data)
         }
       }).catch(() => {
         this.msgError("请求失败")

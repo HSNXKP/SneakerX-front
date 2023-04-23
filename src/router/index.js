@@ -143,7 +143,7 @@ router.beforeEach((to, from, next) => {
 			NProgress.start()
 			// 延长0.5秒，防止进度条闪烁
 			setTimeout(() => {
-			  next('/login')
+			// 不跳转 直接调接口 返回结果输出  
 			  NProgress.done()
 			}, 500)
 				}

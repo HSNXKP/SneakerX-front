@@ -1,6 +1,10 @@
 <template>
 	<div>
-		<el-card style="margin-bottom: 5px;">
+		<el-card  v-if="this.blog.id === undefined">
+			<el-empty description="未查询到该动态"></el-empty>
+		</el-card>
+		<div v-else>
+			<el-card style="margin-bottom: 5px;">
 				<!--标题-->
 				<div slot="header" class="clearfix"  v-if="blog.top">
 					<a >
@@ -104,6 +108,9 @@
 					<h3 class="ui header" v-else>评论已关闭</h3>
 			</div>
 		</el-card>
+		</div>
+		
+	
 	</div>
 </template>
 
@@ -201,6 +208,7 @@
 							this.$store.commit(SET_IS_BLOG_RENDER_COMPLETE, true)
 						})
 					} else {
+						console.log(this.blog.length)
 						this.msgError(res.msg)
 					}
 				}).catch(() => {

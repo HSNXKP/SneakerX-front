@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-card>
+    <el-card v-if="!this.product === ''">
       <h2 class="m-text-500"  style="text-align: center">{{ this.product.name }}</h2>
       <div class="ui  divider "></div>
     <div >
@@ -140,6 +140,9 @@
         <div class="ui divider"></div>
       </div>
     </div>
+  </el-card>
+  <el-card v-else>
+    <el-empty description="未查询到该商品"></el-empty>
   </el-card>
   </div>
 </template>
@@ -371,8 +374,6 @@ export default {
           // 传值需要传到data中的数据 ，传给后端订单需要一个确切的值
           this.product= res.data
           // 清空数组
-        }else{
-          this.msgError(res.msg)
         }
       })
     },

@@ -1,13 +1,20 @@
 <template>
   <div>
+	<div v-if="user!= ''">
 		<el-card style="margin-bottom: 5px;">
+			<!-- <div  class="ui   label" :class="user.flagColor" >{{ user.userFlag }}</div> -->
 			<div style="display:flex">
 				<el-upload
-			 action="http://localhost/uploadAvatarImage"
+			 :action="base + apiUrl"
 			 :show-file-list="false"
 			 :on-success="handleAvatarSuccess"
 			 :before-upload="beforeAvatarUpload"
+			 :headers="headers"
+			 :data="{
+				userId: user.id
+			 }"
 			 >
+			
 			 <a href="javascript:;" ><img  class="avatar"  :src="user.avatar" /></a>
 			</el-upload>
 			<div> 
@@ -56,12 +63,20 @@
 	        </el-form-item>
         </el-form>
       </el-card>
+	</div>
+	<div v-else>
+		<el-card>
+			<h2 class="m-text-500" style="text-align: center">个人信息</h2>
+			<el-empty description="未登录 不能查看个人信息呦"></el-empty>
+		</el-card>
+	</div>
+	
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
-import {updateUser ,getUser ,uploadAvatarImage} from "@/api/user";
+import {updateUser ,getUser} from "@/api/user";
 
 export default {
   name: "UserInfo",
@@ -91,8 +106,11 @@ export default {
 		{label: '灰色', value: 'grey'},
 		{label: '黑色', value: 'black'},
 		],
-		HOST: process.env.BASE_URL,
-		imageUrl: ''
+		base: 'http://localhost:8090/',
+		apiUrl : 'user/uploadAvatarImage',
+		headers: {
+			Authorization: window.localStorage.getItem('adminToken')
+		},
 	}
   },
   computed: {
@@ -133,36 +151,30 @@ export default {
 			this.$router.push('/productCollect')
 		},
 		handleAvatarSuccess(res,file) {
-			console.log(res)
-			this.user.avatar = URL.createObjectURL(file.raw);
+			if (res.code === 200) {
+				this.getUser()
+			}
       	},
+	
       	beforeAvatarUpload(file) {
+			if(this.user === ''){
+				this.$message.error('请先登录!');
+				return false;
+			}
       	    const isJPG = file.type === 'image/jpeg';
 		    const isPNG = file.type === 'image/png';
+			const isWebp = file.type === 'image/webp';
       	    const isLt2M = file.size / 1024 / 1024 < 2;
 
-        if (!isJPG && !isPNG ) {
-          this.$message.error('上传头像图片只能是 JPG 格式或者 PNG格式!');
+        if (!isJPG && !isPNG && !isWebp) {
+			this.$message.error('上传头像图片格式错误!');
+			return false;
         }
         if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
+			this.$message.error('上传头像图片大小不能超过 2MB!');
+			return false;
         }
-        return isJPG && isLt2M && isPNG;
       },
-	  uploadAvatarImage(file) {
-		const formatData = new FormData()
-		const token = window.localStorage.getItem('adminToken')
-		const userId = this.user.id
-		formatData.append('file', file)
-		formatData.append('token', token)
-		formatData.append('userId', userId)
-		const instance = Axios.create({
-              baseURL: this.HOST
-         })
-		 instance.post('/uploadAvatarImage', formatData).then(res => {
-			return res.data
-		})
-	  },
     }
 };
 </script>

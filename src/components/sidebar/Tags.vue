@@ -1,6 +1,6 @@
 <template>
 	<!--标签云-->
-	<div class="ui segments m-box no-segments">
+	<div class="ui segments m-box no-segments" style="margin-top:0px; margin-bottom:10px">
 		<div class="ui   segment"><i class="tags purple  icon"></i>
 			<span style="color:purple">
 				#热门标签

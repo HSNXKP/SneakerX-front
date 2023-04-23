@@ -1,6 +1,6 @@
 <template>
 	<!--随机文章-->
-	<div class="ui segments  m-box no-segments" >
+	<div class="ui segments  m-box no-segments" style="margin-top:0px; margin-bottom:10px">
 		<div class="ui  segment"><i class="bookmark blue icon"></i>
 			<span style="color:blue">
 				本文关联球鞋
