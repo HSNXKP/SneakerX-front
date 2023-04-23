@@ -199,7 +199,6 @@
 						this.user =this.blog.user	
 						// 将博主信息保存到vuex中
 						this.$store.commit(SET_BLOGGER, this.user)
-						console.log(res.data)
 						document.title = this.blog.title + this.siteInfo.webTitleSuffix
 						//v-html渲染完毕后，渲染代码块样式
 						this.$nextTick(() => {
@@ -208,7 +207,6 @@
 							this.$store.commit(SET_IS_BLOG_RENDER_COMPLETE, true)
 						})
 					} else {
-						console.log(this.blog.length)
 						this.msgError(res.msg)
 					}
 				}).catch(() => {

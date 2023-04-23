@@ -1,6 +1,9 @@
 <template>
   <div>
-    <el-card v-if="!this.product === ''">
+    <el-card  v-if="this.product.id === undefined">
+			<el-empty description="未查询到该商品"></el-empty>
+		</el-card>
+    <el-card v-else>
       <h2 class="m-text-500"  style="text-align: center">{{ this.product.name }}</h2>
       <div class="ui  divider "></div>
     <div >
@@ -141,9 +144,6 @@
       </div>
     </div>
   </el-card>
-  <el-card v-else>
-    <el-empty description="未查询到该商品"></el-empty>
-  </el-card>
   </div>
 </template>
 
@@ -242,7 +242,6 @@ export default {
       // 购物车和单个商品公用一个接口 order：单个订单 cartOrder:购物车订单
       this.orderForm.type = 'order'
       const token = window.localStorage.getItem('adminToken') 
-      console.log(this.orderForm)
       if(this.orderForm.address == ''){
           return  this.msgError('请选择收货地址')
       }
@@ -308,8 +307,6 @@ export default {
 		      // console.log(arr) //  Proxy {0: '120000', 1: '120100', 2: '120101'}  和上句一样
           // addressText为el-cascader的值 北京市 市辖区 朝阳区
 			  var addressText=CodeToText[arr[0]]+CodeToText[arr[1]]+CodeToText[arr[2]]
-        console.log(this.form.address)
-			  console.log(addressText) 
         this.form.address=addressText
 	  },
     // 保存地址
@@ -337,7 +334,6 @@ export default {
       const token = window.localStorage.getItem('adminToken') 
       getAddressList(token,id).then(res=>{
         if(res.code==200){
-          console.log(res.data)
           this.formatData(res.data)
           this.address=res.data
         }else{
@@ -358,7 +354,6 @@ export default {
     getProductSizeWithPriceByProductId(id = this.productId){
       getProductSizeWithPriceByProductId(id).then(res=>{
         if(res.code==200){
-          console.log(res.data)
           // 传值需要传到data中的数据 ，传给后端订单需要一个确切的值
           this.sizeWithPrice= res.data
           this.orderForm.sizeWithPrice = []
