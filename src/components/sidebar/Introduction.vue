@@ -109,7 +109,8 @@
 				this.$router.push({path:'/Cart'})
 			},
 			toMoments(){
-				this.$router.push({path:'/Moments'})
+				const id = this.user.id;
+				this.$router.push(`/moments/${id}`)
 			},
 			toProductCollect(){
 				this.$router.push({path:'/ProductCollect'})

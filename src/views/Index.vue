@@ -17,8 +17,8 @@
 					<div class="ui stackable grid">
 						<!--左侧随机推荐商品-->
 						<div class="three wide column m-mobile-hide"  style="margin-left:30px">
-							<Introduction :class="{'m-display-none':userInfo}"  v-if="user != '' && (this.blogger.id === this.user.id)?this.$route.name === 'blog':this.$route.name != 'blog' "/>
-							<BloggerInfo :class="{'m-display-none':bloggerInfo}" v-if="this.$route.name === 'blog' && this.blogger.id != this.user.id"/>
+							<Introduction :class="{'m-display-none':userInfo}"  v-if="(user != '' && (this.blogger.id === this.user.id)?this.$route.name === 'blog' || this.$route.name === 'moments' :this.$route.name != 'blog' && this.$route.name != 'moments' )"/>
+							<BloggerInfo :class="{'m-display-none':bloggerInfo}" v-if="(this.$route.name === 'blog' || this.$route.name === 'moments' ) && this.blogger.id != this.user.id  "/>
 							<RandomSneaker :randomProductList="randomProductList" :class="{'m-display-none':randomSneaker}" v-if="this.$route.name === 'blog'"/>
 							<RandomBlog :randomBlogList="randomBlogList" :class="{'m-display-none':randomBlog}" v-if="this.$route.name === 'home'"/>
 							<Tags :tagList="tagList" :class="{'m-display-none':tagCard}" v-if="this.$route.name === 'home'"/>
@@ -76,9 +76,9 @@
 		<BlogPasswordDialog/>
 
 		<!--APlayer-->
-		<div class="m-mobile-hide">
+		<!-- <div class="m-mobile-hide">
 			<meting-js :server="siteInfo.playlistServer" :id="siteInfo.playlistId" type="playlist" fixed="true" theme="#25CCF7" v-if="siteInfo.playlistServer && siteInfo.playlistId"></meting-js>
-		</div>
+		</div> -->
 		<!--回到顶部-->
 		<el-backtop style="box-shadow: none;background: none;z-index: 9999;">
 			<img src="/img/paper-plane.png" style="width: 40px;height: 40px;">

@@ -18,8 +18,8 @@
 					</div>
                     <div class="m-margin-top" >
                         <el-button type="primary" size="mini" icon="el-icon-plus" @click="addFans"  v-if="this.isFan === false">关注</el-button>
-						<el-button size="mini"  v-else >已关注</el-button>
-                        <el-button type="success" size="mini" icon="el-icon-star-off"  >他的动态</el-button>
+						<el-button size="mini"  v-else @click="cancelFollow" >已关注</el-button>
+                        <el-button type="success" size="mini" icon="el-icon-star-off"  @click="toBloggerMoments">他的动态</el-button>
                     </div>
 				</div>
 			</div>
@@ -29,7 +29,7 @@
 
 <script>
 	import {mapState} from 'vuex'
-	import {addFans,isFans} from'@/api/user'
+	import {addFans,cancelFollow,isFans} from'@/api/user'
 	import {SET_IS_FAN} from '@/store/mutations-types';
 
 	export default {
@@ -84,6 +84,38 @@
 						console.log(this.isFan)
 					}
 				})
+			},
+			toBloggerMoments() {
+				const id = this.blogger.id;
+				this.$router.push(`/moments/${id}`)
+			},
+			cancelFollow(){
+				// 二次确认
+				this.$confirm('确定取消关注吗?', '提示', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+					type: 'warning'
+				}).then(() => {
+					const token = window.localStorage.getItem('adminToken')
+				const userId = this.user.id;
+				const bloggerId = this.blogger.id;
+				cancelFollow(token,userId,bloggerId).then(res => {
+					if (res.code === 200) {
+						// 博主粉丝数-1 用户关注数-1
+						this.blogger.fans = this.blogger.fans - 1
+						this.user.follow = this.user.follow - 1
+						this.isFans()
+					}else{
+						this.msgError(res.msg);
+					}
+				})
+				}).catch(() => {
+					this.$message({
+						type: 'info',
+						message: '已取消'
+					});
+				});
+		
 			}
 		}
 	}

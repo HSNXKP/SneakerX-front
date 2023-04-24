@@ -66,6 +66,22 @@ export function addFans(token,userId,bloggerId) {
 }
 
 
+export function cancelFollow(token,userId,bloggerId) {
+	return axios({
+		url: 'user/cancelFollow',
+		method: 'GET',
+		headers: {
+			Authorization: token,
+		},
+		params:{
+			userId,
+			bloggerId
+		}
+	})
+}
+
+
+
 export function isFans(token,userId,bloggerId) {
 	return axios({
 		url: 'user/isFans',

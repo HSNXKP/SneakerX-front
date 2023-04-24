@@ -87,7 +87,6 @@
           if (res.code == 200) {
             console.log(res.data);
             this.productCollectList = res.data
-            isAllChecked();
           }else{
             this.msgError(res.msg);
           }

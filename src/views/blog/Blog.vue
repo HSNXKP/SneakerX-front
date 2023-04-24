@@ -160,9 +160,6 @@
 			})
 		},
 		beforeRouteLeave(to, from, next) {
-			// 从文章页面路由到其它页面时，销毁当前组件的同时，要销毁tocbot实例
-			// 否则tocbot一直在监听页面滚动事件，而文章页面的锚点已经不存在了，会报"Uncaught TypeError: Cannot read property 'className' of null"
-			tocbot.destroy()
 			// 将vuex中的博主信息删除
 			this.$store.commit(SET_BLOGGER, '')
 			next()

@@ -23,12 +23,12 @@
 
 			<!-- 动态描述 -->
 			<el-form-item  align="left" label="动态描述" prop="description">
-				<mavon-editor style="z-index :1" v-model="form.description"/>
+				<mavon-editor ref="md" @imgAdd="imgAdd"  @change="changeDescription" @imgDel="imgDel" style="z-index :1" v-model="form.description"/>
 			</el-form-item>
 
 			<!-- 动态正文 -->
 			<el-form-item align="left" label="动态正文" prop="content">
-				<mavon-editor style="z-index :1" v-model="form.content"/>
+				<mavon-editor ref="md" @imgAdd="imgAdd" @change="changeContent"  @imgDel="imgDel" style="z-index :1" v-model="form.content"/>
 			</el-form-item>
 
 			<el-row :gutter="20">
@@ -89,6 +89,7 @@
 
 <script>
 import {mapState} from "vuex";
+import axios from "axios";
 import {getCategoryAndTag} from "@/api/user";
 import {saveBlog,getBlogById,updateBlog} from "@/api/moment";
 
@@ -203,7 +204,7 @@ export default {
 								if(res.code === 200){
 								this.msgSuccess(res.msg)
 								this.$refs.formRef.resetFields()	
-								this.$router.push('/moments')
+								this.$router.push(`/moments/${userId}`)
 								}else{
 									this.msgError(res.msg)
 								}	
@@ -214,7 +215,7 @@ export default {
 								if(res.code === 200){
 								this.msgSuccess(res.msg)
 								this.$refs.formRef.resetFields()
-								this.$router.push('/moments')
+								this.$router.push(`/moments/${userId}`)
 								}else{
 									this.msgError(res.msg)
 								}
@@ -229,6 +230,38 @@ export default {
 			dialogVisibleClosed(){
 				this.dialogVisible = false
 			},
+			imgAdd(pos,$file){
+				var _this = this
+                var formdata = new FormData();
+                formdata.append('image', $file);
+				axios({
+	  			//后端有 spring.mvc.servlet.path:/api 配置，以便后续nginx控制
+	    		url: 'http://localhost:8090/user/blog/upload',
+	    		method: 'post',
+	    		data: formdata,
+	   			headers: { 'Content-Type': 'multipart/form-data' ,Authorization: window.localStorage.getItem('adminToken')}, //这一步不能丢
+	  			}).then((res) => {
+                    // 第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)
+                    if (res.status === 200) {
+						console.log(res.data.data);
+						console.log(pos);
+						this.$refs.md.$img2Url(pos, res.data.data);
+						console.log(pos);
+						var url = res.data.data;
+						_this.$refs.md[0].$img2Url(pos,url)
+						this.$refs.md[0].$img2Url(pos, res.data.data);
+                    }
+                })
+			},
+			imgDel(pos){
+			},
+			changeDescription(value,render){
+				this.form.description= render
+			},
+			changeContent(value,render){
+				this.form.content= render
+			},
+
 		}
     
 }

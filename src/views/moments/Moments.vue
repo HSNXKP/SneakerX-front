@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<el-card>
-			<h2 class="m-text-500" style="text-align: center">我的动态 </h2>
+			<h2 class="m-text-500" style="text-align: center">{{ !this.user.id === ''? '我' :'他'}}的动态 </h2>
 			<div class="ui divider"></div>
 		<div >
 			<el-empty v-if="this.momentList.length == 0" description="暂无动态 快去发布吧！"></el-empty>
@@ -9,24 +9,22 @@
 				<div class="moment" v-for="(moment,index) in momentList" :key="index">
 					<!-- 头像 -->
 					<div class="avatar">
-						<img :src="user.avatar">
+						<img :src="blogger.id === user.id ? user.avatar :blogger.avatar ">
 					</div>
 					<div class="ui card">
 						<!-- 名字 -->
 						<div class="content m-top">
 							<!-- 用户名称 -->
-							<span style="font-weight: 700">{{ user.nickname }}</span>
+							<span style="font-weight: 700">{{ blogger.id === user.id ? user.nickname :blogger.nickname }}</span>
 							<!-- 时间格式转换 -->
 							<span class="right floated" style="margin-right: 10px;">{{ moment.createTime | dateFromNow }}</span>
 							<!-- 不公开的情况下加锁 -->
 							<span class="ui mini red right corner label" v-if="!moment.isPublished">
 								<i class="arrow alternate lock icon"></i>
-							
 							</span>
 							<span class="ui mini red right corner label" v-if="moment.privacy">
 								<i class="arrow alternate edit icon"></i>
 							</span>
-							
 						</div>
 						<!-- 内容标题 点击进行编辑 -->
 						<a class="content typo" @click="toBlog(moment.id)" >{{ moment.title}} </a>
@@ -36,10 +34,11 @@
 							<a class="left floated">
 								<a  @click="like(moment.id)">
 								<i class="heart icon" :class="isLike(moment.id)?'like-color':'outline'" ></i>{{ moment.likes === 0?' ':moment.likes }}</a>
+								<span v-if="blogger.id === user.id">
 								<el-button type="text" size="mini"   icon="el-icon-edit"  @click="editBlog(moment.id)" ></el-button>
-								<el-button type="text" size="mini"   icon="el-icon-delete" @click="deleteBlog(moment.id)"   ></el-button>								
+								<el-button type="text" size="mini"   icon="el-icon-delete" @click="deleteBlog(moment.id)"   ></el-button>	
+								</span>
 							</a>
-
 						</div>
 					</div>
 				</div>
@@ -54,8 +53,9 @@
 </template>
 
 <script>
-	import {getMomentListByPageNum, likeMoment,deleteBlogById} from "@/api/moment";
+	import {getMomentListByPageNum, likeMoment,deleteBlogById,getBolgListAnonymous,getBlogger} from "@/api/moment";
 	import {mapState} from "vuex";
+	import {SET_BLOGGER} from '@/store/mutations-types';
 
 	export default {
 		name: "Moments",
@@ -77,7 +77,10 @@
 					return this.likeMomentIds.indexOf(id) > -1
 				}
 			},
-			...mapState(['user'])
+			...mapState(['user','blogger']),
+			bloggerId() {
+				return parseInt(this.$route.params.id)
+			}
 		},
 		watch: {
 			likeMomentIds(newValue) {
@@ -85,9 +88,15 @@
 				window.localStorage.setItem('likeMomentIds', JSON.stringify(newValue))
 			}
 		},
+		beforeRouteLeave(to, from, next) {
+			// 将vuex中的博主信息删除
+			this.$store.commit(SET_BLOGGER, '')
+			next()
+		},
 		methods: {
 			getMomentList() {
-				//如果有则发送博主身份Token
+				if(this.user.id == this.bloggerId){
+				// 如果是博主自己则使用userId和Token
 				const token = window.localStorage.getItem('adminToken')
 				var id = this.user.id
 				console.log(this.pageNum)
@@ -95,7 +104,31 @@
 					if (res.code === 200) {
 						this.momentList = res.data.list
 						this.totalPage = res.data.totalPage
+					} else {
+						this.msgError(res.msg)
+					}
+				}).catch(() => {
+					this.msgError("请求失败")
+				})
+				}
+				
+				// 当前的bloggerId和userId不相等 或者未登录 访问的是bloggerId
+				var id = this.bloggerId
+				getBolgListAnonymous(id, this.pageNum).then(res => {
+					if (res.code === 200) {
+						this.momentList = res.data.list
+						this.totalPage = res.data.totalPage
 						console.log(this.momentList)
+					} else {
+						this.msgError(res.msg)
+					}
+				}).catch(() => {
+					this.msgError("请求失败")
+				})
+				// 通过bloggerId获取博主信息
+				getBlogger(id).then(res => {
+					if (res.code === 200) {
+						this.$store.commit(SET_BLOGGER, res.data)
 					} else {
 						this.msgError(res.msg)
 					}

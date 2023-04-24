@@ -1,5 +1,6 @@
 import axios from '@/plugins/axios'
 
+// 获取动态列表 用户登陆
 export function getMomentListByPageNum(token, id,pageNum) {
 	return axios({
 		url: 'user/bolgTitleById',
@@ -10,6 +11,31 @@ export function getMomentListByPageNum(token, id,pageNum) {
 		params: {
 			id,
 			pageNum
+		}
+	})
+}
+
+// 获取动态列表 博主的信息
+export function getBolgListAnonymous(id,pageNum) {
+	return axios({
+		url: 'bolgTitleById',
+		method: 'GET',
+		params: {
+			id,
+			pageNum
+		}
+	})
+}
+
+
+
+// 获取动态列表 博主的信息
+export function getBlogger(bloggerId) {
+	return axios({
+		url: 'getBlogger',
+		method: 'GET',
+		params: {
+			bloggerId
 		}
 	})
 }
@@ -65,6 +91,8 @@ export function getBlogById(token,id,userId){
 		}
 	})
 }
+
+
 
 export function updateBlog(token,form,userId){
 	return axios({

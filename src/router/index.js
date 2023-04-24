@@ -49,10 +49,10 @@ const routes = [
 				meta: {title: '球鞋社区'}
 			},
 			{
-				path: '/moments',
+				path: '/moments/:id',
 				name: 'moments',
 				component: () => import('@/views/moments/Moments'),
-				meta: {title: '我的动态',needLogin: true}
+				meta: {title: '动态'}
 			},
 			{
 				path: '/product/:id',
@@ -78,7 +78,7 @@ const routes = [
 				path: '/writeMoment',
 				name: 'writeMoment',
 				component: () => import('@/views/moments/WriteMoment'),
-				meta : {title: '写动态',needLogin:true}
+				meta : {title: '发布动态',needLogin:true}
 			},
 			{
 				path: '/blog/edit/:id',
