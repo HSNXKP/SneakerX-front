@@ -28,9 +28,8 @@
 
 			<!-- 动态正文 -->
 			<el-form-item align="left" label="动态正文" prop="content">
-				<mavon-editor ref="md" @imgAdd="imgAdd" @change="changeContent"  @imgDel="imgDel" style="z-index :1" v-model="form.content"/>
+				<mavon-editor  ref="md" @imgAdd="imgAddContent"  @change="changeContent" @imgDel="imgDel"  style="z-index :1" v-model="form.content"/>
 			</el-form-item>
-
 			<el-row :gutter="20">
 				<el-col :span="12">
 					<!-- 动态分类 -->
@@ -138,6 +137,9 @@ export default {
 				this.getBlog(this.$route.params.id)
 			}
 		},
+		mounted() {
+			
+		},
 		methods: {
 			addTagDialog(){
 				this.$store.commit('addTagDialogVisible',true).then(res=>{
@@ -231,11 +233,9 @@ export default {
 				this.dialogVisible = false
 			},
 			imgAdd(pos,$file){
-				var _this = this
                 var formdata = new FormData();
                 formdata.append('image', $file);
 				axios({
-	  			//后端有 spring.mvc.servlet.path:/api 配置，以便后续nginx控制
 	    		url: 'http://localhost:8090/user/blog/upload',
 	    		method: 'post',
 	    		data: formdata,
@@ -243,15 +243,26 @@ export default {
 	  			}).then((res) => {
                     // 第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)
                     if (res.status === 200) {
-						console.log(res.data.data);
-						console.log(pos);
 						this.$refs.md.$img2Url(pos, res.data.data);
-						console.log(pos);
-						var url = res.data.data;
-						_this.$refs.md[0].$img2Url(pos,url)
-						this.$refs.md[0].$img2Url(pos, res.data.data);
+						this.$forceUpdate();
                     }
                 })
+			},
+			imgAddContent(pos,$file){
+				var formdata = new FormData();
+				formdata.append('image', $file);
+				axios({
+	    		url: 'http://localhost:8090/user/blog/upload',
+	    		method: 'post',
+	    		data: formdata,
+	   			headers: { 'Content-Type': 'multipart/form-data' ,Authorization: window.localStorage.getItem('adminToken')}, //这一步不能丢
+	  			}).then((res) => {
+					// 第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)
+					if (res.status === 200) {
+						this.$refs.md.$img2Url(pos, res.data.data);
+						this.$forceUpdate();
+					}
+				})
 			},
 			imgDel(pos){
 			},

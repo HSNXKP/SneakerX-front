@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<el-card>
-			<h2 class="m-text-500" style="text-align: center">{{ !this.user.id === ''? '我' :'他'}}的动态 </h2>
+			<h2 class="m-text-500" style="text-align: center">{{ user.id === blogger.id? '我' : blogger.nickname}}的动态 </h2>
 			<div class="ui divider"></div>
 		<div >
 			<el-empty v-if="this.momentList.length == 0" description="暂无动态 快去发布吧！"></el-empty>
