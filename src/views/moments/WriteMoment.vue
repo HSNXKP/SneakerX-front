@@ -23,12 +23,12 @@
 
 			<!-- 动态描述 -->
 			<el-form-item  align="left" label="动态描述" prop="description">
-				<mavon-editor ref="md" @imgAdd="imgAdd"  @change="changeDescription" @imgDel="imgDel" style="z-index :1" v-model="form.description"/>
+				<mavon-editor ref="md1" @imgAdd="imgAddDescription"  @change="changeDescription" @imgDel="imgDel" style="z-index :1" v-model="form.description"/>
 			</el-form-item>
 
 			<!-- 动态正文 -->
 			<el-form-item align="left" label="动态正文" prop="content">
-				<mavon-editor  ref="md" @imgAdd="imgAddContent"  @change="changeContent" @imgDel="imgDel"  style="z-index :1" v-model="form.content"/>
+				<mavon-editor  ref="md2" @imgAdd="imgAddContent"  @change="changeContent" @imgDel="imgDel"  style="z-index :1" v-model="form.content"/>
 			</el-form-item>
 			<el-row :gutter="20">
 				<el-col :span="12">
@@ -125,7 +125,9 @@ export default {
 					cate: [{required: true, message: '请选择分类'}],
 					tagList: [{required: true, message: '请选择标签'}],
 				},
-				token: window.localStorage.getItem('adminToken')
+				token: window.localStorage.getItem('adminToken'),
+				base: 'http://localhost:8090/', 
+				apiUrl : 'user/blog/upload',
         }
     },
 	computed: {
@@ -232,18 +234,18 @@ export default {
 			dialogVisibleClosed(){
 				this.dialogVisible = false
 			},
-			imgAdd(pos,$file){
+			imgAddDescription(pos,$file){
                 var formdata = new FormData();
                 formdata.append('image', $file);
 				axios({
-	    		url: 'http://localhost:8090/user/blog/upload',
+	    		url: base + apiUrl,
 	    		method: 'post',
 	    		data: formdata,
-	   			headers: { 'Content-Type': 'multipart/form-data' ,Authorization: window.localStorage.getItem('adminToken')}, //这一步不能丢
+	   			headers: { 'Content-Type': 'multipart/form-data' ,Authorization: this.token}, //这一步不能丢
 	  			}).then((res) => {
                     // 第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)
                     if (res.status === 200) {
-						this.$refs.md.$img2Url(pos, res.data.data);
+						this.$refs.md1.$img2Url(pos, res.data.data);
 						this.$forceUpdate();
                     }
                 })
@@ -252,14 +254,14 @@ export default {
 				var formdata = new FormData();
 				formdata.append('image', $file);
 				axios({
-	    		url: 'http://localhost:8090/user/blog/upload',
+	    		url: base + apiUrl,
 	    		method: 'post',
 	    		data: formdata,
-	   			headers: { 'Content-Type': 'multipart/form-data' ,Authorization: window.localStorage.getItem('adminToken')}, //这一步不能丢
+	   			headers: { 'Content-Type': 'multipart/form-data' ,Authorization: this.token}, //这一步不能丢
 	  			}).then((res) => {
 					// 第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)
 					if (res.status === 200) {
-						this.$refs.md.$img2Url(pos, res.data.data);
+						this.$refs.md2.$img2Url(pos, res.data.data);
 						this.$forceUpdate();
 					}
 				})
