@@ -126,7 +126,8 @@ export default {
 					tagList: [{required: true, message: '请选择标签'}],
 				},
 				token: window.localStorage.getItem('adminToken'),
-				base: 'http://localhost:8090/', 
+				// base: 'http://localhost:8090/', 
+				base:'http://43.138.9.213:8090/',
 				apiUrl : 'user/blog/upload',
         }
     },
@@ -238,7 +239,7 @@ export default {
                 var formdata = new FormData();
                 formdata.append('image', $file);
 				axios({
-	    		url: base + apiUrl,
+	    		url:this.base + this.apiUrl,
 	    		method: 'post',
 	    		data: formdata,
 	   			headers: { 'Content-Type': 'multipart/form-data' ,Authorization: this.token}, //这一步不能丢
@@ -254,7 +255,7 @@ export default {
 				var formdata = new FormData();
 				formdata.append('image', $file);
 				axios({
-	    		url: base + apiUrl,
+	    		url: this.base + this.apiUrl,
 	    		method: 'post',
 	    		data: formdata,
 	   			headers: { 'Content-Type': 'multipart/form-data' ,Authorization: this.token}, //这一步不能丢
