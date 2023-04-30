@@ -2,81 +2,14 @@
   <div>
     <el-card>
       <h2 class="m-text-500"  style="text-align: center">SneakerX购物车结算</h2>
-    <!-- <div class="ui attached segment m-padding-bottom-large" >
-      <el-empty description="暂无订单，快去下单吧！" ></el-empty>
-    </div> -->
     <div class="ui  divider "></div>
     <div  v-if="this.cartList.length === 0">
       <el-empty description="暂无商品 赶紧加入购物车吧！"></el-empty>
     </div>
     <div  v-else>
       <div>
-        <el-select v-model="orderForm.address" placeholder="请选择收获地址">
-          <el-option
-            v-for="item in address"
-            :key="item.id"
-            :label="item.name + item.addressDetail"
-            :value="item.id"
-          >
-            <span style="float: left">{{ item.name + item.phone }}</span>
-            <span style="float: right; color: #8492a6; font-size: 13px">{{
-              item.addressDetail
-            }}</span>
-          </el-option>
-          <el-option :key="''" :value="''" v-if="address.length == 0">
-            <span style="float: left">没有收货地址</span>
-          </el-option>
-        </el-select>
-              <el-button
-          style="margin-left: 5px"
-          icon="el-icon-location-information"
-          size="mini"
-          circle
-          @click="addAddressDialg"
-        ></el-button>
+        <Address v-model="orderForm.address"   :addressId="cartAddressId"  @backAddress="getAddress($event)" />
       </div>
-
-      <!--添加地址框-->
-      <el-dialog
-        title="添加新的收货地址"
-        width="50%"
-        :visible.sync="addAddressDialgVisible"
-        :before-close="dialogVisibleClosed"
-      >
-        <!--内容主体-->
-        <el-form
-          label-width="80px"
-          ref="formRef"
-          :model="form"
-          :rules="formRules"
-        >
-          <el-form-item label="收货姓名" prop="name">
-            <el-input v-model="form.name"></el-input>
-          </el-form-item>
-          <el-form-item label="收货电话" prop="phone">
-            <el-input v-model="form.phone"></el-input>
-          </el-form-item>
-          <el-form-item label="详情省市" prop="address">
-            <el-cascader
-              :options="options"
-              v-model="selectedAddress"
-              @change="addressChange"
-            ></el-cascader>
-          </el-form-item>
-          <el-form-item label="详情地址" prop="addressDetail">
-            <el-input v-model="form.addressDetail"></el-input>
-          </el-form-item>
-          <el-form-item style="float: left" label="默认地址">
-            <el-switch v-model="form.isDefaultAddress"></el-switch>
-          </el-form-item>
-        </el-form>
-        <!--底部-->
-        <span slot="footer">
-          <el-button type="primary" @click="saveAddress">确 定</el-button>
-          <el-button @click="dialogVisibleClosed">取 消</el-button>
-        </span>
-      </el-dialog>
-
       <div class="ui divider"></div>
       <div v-for="(cart, index) in cartList" :key="index">
         <div class="orderInfo">
@@ -133,16 +66,15 @@
 </template>
 
 <script>
-import { regionData, CodeToText } from "element-china-area-data";
-import { saveAddress, getAddressList } from "@/api/address";
-import { checkPhone } from "@/common/reg";
 import { getCartList } from '@/api/cart';
 import { mapState } from "vuex";
 import { addQuantity, downQuantity} from "@/api/cart";
 import { order } from '@/api/order';
+import Address from "@/components/address/Address";
 
 export default {
   name: "SettleAccount",
+  components: {Address},
   data() {
     return {
       cartList:[],
@@ -152,30 +84,6 @@ export default {
         address:'',
         payType:'2'
       },
-      form: {
-        name: "",
-        phone: "",
-        address: "",
-        addressDetail: "",
-        isDefaultAddress: false,
-      },
-      address : [],
-      options: regionData,
-      selectedAddress: [],
-       // 校验
-       formRules: {
-        name: [
-          { required: true, message: "请输入收货人姓名", trigger: "blur" },
-        ],
-        phone: [
-          { required: true, message: "请输入收货人电话", trigger: "blur" },
-          { validator: checkPhone },
-        ],
-        addressDetail: [
-          { required: true, message: "请输入收货人详细地址", trigger: "blur" },
-        ],
-      },
-      addAddressDialgVisible: false,
     };
   },
   computed: {
@@ -186,7 +94,6 @@ export default {
   },
   created(){
     this.getCartList()
-    this.getAddressList()
     this.cartSettleAccountAddress()
   },
   methods:{
@@ -210,58 +117,9 @@ export default {
           this.amount = amount;
       }
     },
-    // 保存地址
-    saveAddress() {
-      const token = window.localStorage.getItem("adminToken");
-      // 获得user的id
-      const id = this.user.id;
-      // 转换成Long类型
-      saveAddress(token, this.form, id).then((res) => {
-        if (res.code == 200) {
-          this.msgSuccess(res.msg);
-          // 清空表单 因为没有ref 所以只能这样清空
-          this.form = {};
-          // 关闭弹窗
-          this.dialogVisibleClosed();
-          // 更新收货地址
-          this.getAddressList();
-        } else {
-          this.msgError(res.msg);
-        }
-      });
-    },
-    // 省市区联动
-    addressChange(arr) {
-      // console.log(this.selectedOptions) //  Proxy {0: '120000', 1: '120100', 2: '120101'}
-      // console.log(arr) //  Proxy {0: '120000', 1: '120100', 2: '120101'}  和上句一样
-      // addressText为el-cascader的值 北京市 市辖区 朝阳区
-      var addressText =
-        CodeToText[arr[0]] + CodeToText[arr[1]] + CodeToText[arr[2]];
-      this.form.address = addressText;
-    },
-    // 获取当前用户的收货地址
-    getAddressList() {
-      const id = this.user.id;
-      const token = window.localStorage.getItem("adminToken");
-      getAddressList(token, id).then((res) => {
-        if (res.code == 200) {
-          this.address = res.data;
-        } else {
-          this.msgError(res.msg);
-        }
-      });
-    },
     // 将当前购物车选中的id放到默认的地址上面去
     cartSettleAccountAddress(id = this.cartAddressId) {
-      console.log(this.cartAddressId)
           this.orderForm.address = id
-          console.log(this.addressId)
-    },
-    addAddressDialg() {
-      this.addAddressDialgVisible = true;
-    },
-    dialogVisibleClosed() {
-      this.addAddressDialgVisible = false;
     },
     addQuantity(id) {
       const token = window.localStorage.getItem("adminToken");
@@ -310,7 +168,11 @@ export default {
 						})
             }
           })
-    }
+        },
+        getAddress(address){
+        this.orderForm.address = address
+      }
+        
   }
 };
 </script>

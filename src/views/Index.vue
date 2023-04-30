@@ -174,10 +174,10 @@
 				})
 			},
 			isUserInfoVisble(){
-			if(this.user != ''){
-				this.userInfoVisble=true
-				if(this.$route.name == 'blog'){
-					if(this.user.id == this.blogger.id){
+			if(!this.user === ''){
+				this.userInfoVisble = true
+				if(this.$route.name === 'blog'){
+					if(this.user.id === this.blogger.id){
 						this.userInfoVisble=true
 					}
 					this.userInfoVisble=false

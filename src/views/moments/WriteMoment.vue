@@ -126,8 +126,8 @@ export default {
 					tagList: [{required: true, message: '请选择标签'}],
 				},
 				token: window.localStorage.getItem('adminToken'),
-				// base: 'http://localhost:8090/', 
-				base:'http://43.138.9.213:8090/',
+				base: 'http://localhost:8090/', 
+				// base:'http://43.138.9.213:8090/',
 				apiUrl : 'user/blog/upload',
         }
     },
