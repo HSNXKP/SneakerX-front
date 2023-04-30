@@ -36,9 +36,8 @@
 							</div>
 							<!-- 点赞 -->
 							<div class="item m-common-grey">
-								<a @click="like(blog.id)">
-									<i class="small  like icon" :class="isLike(blog.id)?'like-color':'like'" ></i><span>{{ blog.likes === 0 ? '': blog.likes }}</span>
-								</a>
+								<!-- 将blog转化为list -->
+								<LikeBlog class="likeBlog" :id="blog.id" :likes="blog.likes" :list="[this.blog]" />
 							</div>
 							<!-- comments -->
 							<div class="item m-common-black" >
@@ -117,39 +116,28 @@
 <script>
 	import {getBlogById} from "@/api/blog";
 	import CommentList from "@/components/comment/CommentList";
-	import {likeMoment} from "@/api/moment";
+	import LikeBlog from "@/components/blog/LikeBlog";
 	import {mapState} from "vuex";
 	import {SET_IS_BLOG_RENDER_COMPLETE,SET_BLOGGER} from '@/store/mutations-types';
 
 	export default {
 		name: "Blog",
-		components: {CommentList},
+		components: {CommentList,LikeBlog},
 		data() {
 			return {
 				blog: {},
 				// 因为是层级关系，请求先相应的blog，user列表的username会报一个错误 如果不转换一下的话
 				user:{},
 				bigFontSize: false,
-				//用localStorage本地存储已点赞的动态id数组
-				likeMomentIds: JSON.parse(window.localStorage.getItem('likeMomentIds') || '[]'),
 			}
 		},
 		computed: {
 			blogId() {
 				return parseInt(this.$route.params.id)
 			},
-			isLike() {
-				return function (id) {
-					return this.likeMomentIds.indexOf(id) > -1
-				}
-			},
 			...mapState(['siteInfo', 'focusMode','allComment'])
 		},
 		watch: {
-			likeMomentIds(newValue) {
-				//将likeMomentIds最新值的json数据保存到localStorage
-				window.localStorage.setItem('likeMomentIds', JSON.stringify(newValue))
-			}
 		},
 		beforeRouteEnter(to, from, next) {
 			//路由到博客文章页面之前，应将文章的渲染完成状态置为 false
@@ -192,6 +180,7 @@
 				getBlogById(token, id).then(res => {
 					if (res.code === 200) {
 						this.blog = res.data
+						console.log([this.blog])
 						// 因为是层级关系，请求先相应的blog，还没有请求到数据的时候user.username会报一个错误 如果不转换一下的话
 						this.user =this.blog.user	
 						// 将博主信息保存到vuex中
@@ -208,35 +197,6 @@
 					}
 				}).catch(() => {
 					this.msgError("请求失败")
-				})
-			},
-			like(id) {
-				if (this.likeMomentIds.indexOf(id) > -1) {
-					this.$notify({
-						title: '不可以重复点赞哦',
-						type: 'warning'
-					})
-					return
-				}
-				likeMoment(id).then(res => {
-					if (res.code === 200) {
-						this.$notify({
-							title: res.msg,
-							type: 'success'
-						})
-						this.likeMomentIds.push(id)
-						this.blog.likes++
-					} else {
-						this.$notify({
-							title: res.msg,
-							type: 'warning'
-						})
-					}
-				}).catch(() => {
-					this.$notify({
-						title: '异常错误',
-						type: 'error'
-					})
 				})
 			},
 		},

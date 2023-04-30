@@ -30,11 +30,10 @@
 						<a class="content typo" @click="toBlog(moment.id)" >{{ moment.title}} </a>
 						<!-- 点赞 -->
 						<!-- 点击like，传入当前的blogId，后端进行点赞校验，进行前端的点赞校验，监听当前的点赞BlogId 暂存到window.localStore中 -->
-						<div class="extra content">
-							<a class="left floated">
-								<a  @click="like(moment.id)">
-								<i class="heart icon" :class="isLike(moment.id)?'like-color':'outline'" ></i>{{ moment.likes === 0?' ':moment.likes }}</a>
-								<span v-if="blogger.id === user.id">
+						<div class="extra content" >
+							<a class="left floated" style="display: flex;">
+								<LikeBlog class="likeBlog" :id="moment.id" :likes="moment.likes" :list="momentList"  />
+								<span v-if="blogger.id === user.id" style="margin-left: 5px;">
 								<el-button type="text" size="mini"   icon="el-icon-edit"  @click="editBlog(moment.id)" ></el-button>
 								<el-button type="text" size="mini"   icon="el-icon-delete" @click="deleteBlog(moment.id)"   ></el-button>	
 								</span>
@@ -53,16 +52,16 @@
 </template>
 
 <script>
-	import {getMomentListByPageNum, likeMoment,deleteBlogById,getBolgListAnonymous,getBlogger} from "@/api/moment";
+	import {getMomentListByPageNum,deleteBlogById,getBolgListAnonymous,getBlogger} from "@/api/moment";
 	import {mapState} from "vuex";
 	import {SET_BLOGGER} from '@/store/mutations-types';
+	import LikeBlog from "@/components/blog/LikeBlog";
 
 	export default {
 		name: "Moments",
+		components: {LikeBlog},
 		data() {
 			return {
-				//用localStorage本地存储已点赞的动态id数组
-				likeMomentIds: JSON.parse(window.localStorage.getItem('likeMomentIds') || '[]'),
 				momentList: [],
 				pageNum: 1,
 				totalPage: 0
@@ -72,20 +71,9 @@
 			this.getMomentList()
 		},
 		computed: {
-			isLike() {
-				return function (id) {
-					return this.likeMomentIds.indexOf(id) > -1
-				}
-			},
 			...mapState(['user','blogger']),
 			bloggerId() {
 				return parseInt(this.$route.params.id)
-			}
-		},
-		watch: {
-			likeMomentIds(newValue) {
-				//将likeMomentIds最新值的json数据保存到localStorage
-				window.localStorage.setItem('likeMomentIds', JSON.stringify(newValue))
 			}
 		},
 		beforeRouteLeave(to, from, next) {
@@ -140,39 +128,6 @@
 				this.scrollToTop()
 				this.pageNum = newPage
 				this.getMomentList()
-			},
-			like(id) {
-				if (this.likeMomentIds.indexOf(id) > -1) {
-					this.$notify({
-						title: '不可以重复点赞哦',
-						type: 'warning'
-					})
-					return
-				}
-				likeMoment(id).then(res => {
-					if (res.code === 200) {
-						this.$notify({
-							title: res.msg,
-							type: 'success'
-						})
-						this.likeMomentIds.push(id)
-						this.momentList.forEach(item => {
-							if (item.id === id) {
-								return item.likes++
-							}
-						})
-					} else {
-						this.$notify({
-							title: res.msg,
-							type: 'warning'
-						})
-					}
-				}).catch(() => {
-					this.$notify({
-						title: '异常错误',
-						type: 'error'
-					})
-				})
 			},
 			deleteBlog(id){
 				this.$confirm('此操作将永久删除该动态, 是否继续?', '提示', {
@@ -307,5 +262,12 @@
 
 	.privacy {
 		background: repeating-linear-gradient(145deg, #f2f2f2, #f2f2f2 15px, #fff 0, #fff 30px) !important;
+	}
+	.likeBlog{
+		margin-left: 10px;
+		display:flex;
+		align-items: center;
+		justify-content: center;
+		margin-left: 0;
 	}
 </style>

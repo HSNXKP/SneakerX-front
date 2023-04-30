@@ -54,10 +54,6 @@
 					</a>
 					<!--阅读全文按钮-->
 					<div class="row m-padded-tb-small m-margin-top">
-						<!-- <a href="javascript:;" @click.prevent="toBlog(item)" >
-						<div class="typo m-padded-tb-small line-numbers match-braces rainbow-braces" v-html="item.description"></div>
-					</a> -->
-						<!-- <a href="javascript:;" @click.prevent="toBlog(item)" class="color-btn">阅读全文</a> -->
 					</div>
 					<!--横线-->
 					<div class="ui section divider m-margin-lr-no"></div>
@@ -68,7 +64,8 @@
 							<div  class="column ">
 								<span class="ui horizontal link list m-padding-left-no" style="margin-top: 4px;">
 									<span class="item m-common-grey">
-									<i class="small red heart  icon" ></i><span>{{ item.likes === 0 ? '' : item.likes }}</span>
+									<!-- <i class="small red heart  icon" ></i><span>{{ item.likes === 0 ? '' : item.likes }}</span> -->
+									<LikeBlog class="likeBlog" :id="item.id" :likes="item.likes" :list="blogList" />
 								</span>
 								<span class="item m-common-black">
 									<i class="small comment alternate  icon"></i><span>{{ item.comments === 0 ? '' : item.comments }}</span>
@@ -90,8 +87,11 @@
 </template>
 
 <script>
+	import LikeBlog from "@/components/blog/LikeBlog";
+
 	export default {
 		name: "BlogItem",
+		components: {LikeBlog},
 		props: {
 			blogList: {
 				type: Array,
@@ -123,7 +123,8 @@ color: #999;
 	padding: 0 0 0 0 !important;
 	height: 25px !important;
 }
-
-
+.likeBlog{
+	margin-top: 0 0 0 0 ;
+}
 
 </style>
