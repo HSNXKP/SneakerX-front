@@ -71,7 +71,7 @@ export function changeproductCategoryIdChecked(token,id,type,userId,checked) {
 	})
 }
 
-export function changeCaetIdChecked(token,id,type,userId,checked) {
+export function changeCartIdChecked(token,id,type,userId,checked) {
 	return axios({
 		url: 'user/changeChecked',
 		method: 'GET',

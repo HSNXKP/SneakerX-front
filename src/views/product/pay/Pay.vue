@@ -43,7 +43,7 @@
             创建时间 : {{ order.createTime | dateFormat('YYYY-MM-DD HH:mm') }}（下单后30分钟内可支付）
         </div>
         <div shadow="always" class="orderDetailInfo">
-          收货方式 : {{ order.address.name +'，' + order.address.phone +'，'+ order.address.address +'，' + order.address.addressDetail }}
+          收货方式 : {{ order.address}}
         </div>
         <div class="orderDetailInfo">
             订单备注 : {{ order.orderRemarks}}
@@ -87,7 +87,7 @@
             创建时间 : {{ order.createTime | dateFormat('YYYY-MM-DD HH:mm') }}（下单后30分钟内可支付）
         </div>
         <div shadow="always" class="orderDetailInfo">
-          收货方式 : {{ order.address.name +'，' + order.address.phone +'，'+ order.address.address +'，' + order.address.addressDetail }}
+          收货方式 : {{ order.address}}
         </div>
         <div class="orderDetailInfo">
             订单备注 : {{ order.orderRemarks}}

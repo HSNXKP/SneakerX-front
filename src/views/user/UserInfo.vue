@@ -14,7 +14,6 @@
 				userId: user.id
 			 }"
 			 >
-			
 			 <a href="javascript:;" ><img  class="avatar"  :src="user.avatar" /></a>
 			</el-upload>
 			<div> 
@@ -106,9 +105,9 @@ export default {
 		{label: '灰色', value: 'grey'},
 		{label: '黑色', value: 'black'},
 		],
-		base: 'http://localhost:8090/',
+		base: 'http://localhost:8090/admin/',
 		// base:'http://43.138.9.213:8090/',
-		apiUrl : 'user/uploadAvatarImage',
+		apiUrl : 'uploadProductImage',
 		headers: {
 			Authorization: window.localStorage.getItem('adminToken')
 		},
@@ -156,7 +155,6 @@ export default {
 				this.getUser()
 			}
       	},
-	
       	beforeAvatarUpload(file) {
 			if(this.user === ''){
 				this.$message.error('请先登录!');

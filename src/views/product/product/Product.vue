@@ -13,6 +13,7 @@
               <!-- 异步处理 判断进入哪个router  href="#" 表示不跳转页面 仍在在本页面请求-->
               <a href="javascript:void(0)" @click="toProduct(item.id,item.productCategoryId)" >
                 <img :src="item.image" class="image">
+                <!-- 测试http://43.138.9.213/image/product/12/6.webp -->
               </a>
                <div style="padding: 10px;">
                 <span class="nameProductCategory" v-if="item.price === undefined">{{item.name}}</span>

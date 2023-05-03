@@ -45,7 +45,7 @@
         >
           <el-checkbox
             v-model="cart.checked"
-            @change="changeCaetIdChecked(cart)"
+            @change="changeCartIdChecked(cart)"
           ></el-checkbox>
           <i
             class="el-icon-remove"
@@ -109,7 +109,7 @@ import {
   addQuantity,
   downQuantity,
   changeproductCategoryIdChecked,
-  changeCaetIdChecked,
+  changeCartIdChecked,
 } from "@/api/cart";
 import Address from "@/components/address/Address";
 
@@ -215,13 +215,13 @@ export default {
       );
     },
     // 方法不同 接口相同 通过当前的type来判断 cartId单个商品
-    changeCaetIdChecked(data) {
+    changeCartIdChecked(data) {
       const id = data.id;
       const token = window.localStorage.getItem("adminToken");
       const userId = this.user.id;
       const type = "cartId";
       const checked = data.checked;
-      changeCaetIdChecked(token, id, type, userId, checked).then((res) => {
+      changeCartIdChecked(token, id, type, userId, checked).then((res) => {
         if (res.code == 200) {
           this.cart();
         } else {
