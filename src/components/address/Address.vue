@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-select v-model="orderForm.address"  size="mini" @change="exportAddress" placeholder="请选择收获地址">
+        <el-select v-model="orderForm.address"  size="small" @change="exportAddress" placeholder="请选择收获地址">
             <el-option v-for="item in address" :key="item.id" :label="item.name + item.addressDetail" :value="item.id">
                 <span style="float: left">{{ item.name + item.phone }}</span>
                 <span style="float: right; color: #8492a6; font-size: 13px">{{ item.addressDetail }}</span>

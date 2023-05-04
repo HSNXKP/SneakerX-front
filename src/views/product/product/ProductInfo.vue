@@ -17,7 +17,7 @@
          <!-- 订单表 -->
         <el-form ref="orderFormRef" :model="orderForm"  label-width="90px">
           <el-form-item label="选择尺码">
-            <el-select v-model="orderForm.sizeWithPrice" placeholder="请选择您的尺码">
+            <el-select v-model="orderForm.sizeWithPrice" placeholder="请选择您的尺码" size="small">
               <el-option v-for="item in sizeWithPrice" :key="item.id" :label="item.name" :value="item.id">
                 <span style="float: left">{{ item.name }}</span>
                 <span style="float: right; color: red; font-size: 13px">{{ '￥' + item.productPrice }}</span>
