@@ -2,8 +2,11 @@
     <div>
         <el-select v-model="orderForm.address"  size="small" @change="exportAddress" placeholder="请选择收获地址">
             <el-option v-for="item in address" :key="item.id" :label="item.name + item.addressDetail" :value="item.id">
-                <span style="float: left">{{ item.name + item.phone }}</span>
-                <span style="float: right; color: #8492a6; font-size: 13px">{{ item.addressDetail }}</span>
+                <span style="float: left">{{ item.name + item.phone + ','}}</span>
+                <span style="float: left; color: #8492a6; font-size: 13px">{{ item.addressDetail }}</span>
+                <el-button style="float: right;margin-left: 10px;" size="mini" icon="el-icon-delete" @click.prevent="deleteAddress(item.id)">删除</el-button>
+                <el-switch style="float: right;margin-left: 10px;" v-model="item.isDefaultAddress"  @change="changeDefaultAddress(item.id)" inactive-text="默认"></el-switch>
+
             </el-option>
             <el-option :key="''" :value="''" v-if="address.length == 0">
                 <span style="float: left">没有收货地址</span>
@@ -14,7 +17,7 @@
             @click="addAddressDialg"></el-button>
               <!--添加地址框-->
           <el-dialog title="添加新的收货地址" width="50%" :visible.sync="addAddressDialgVisible"
-            :before-close="dialogVisibleClosed">
+            :before-close="dialogVisibleClosed" :close-on-click-modal="false">
             <!--内容主体-->
             <el-form label-width="80px"  ref="formRef" :model="form" :rules="formRules">
               <el-form-item label="收货姓名" prop="name" style="margin-bottom: 20px;" >
@@ -46,7 +49,7 @@
 <script>
 import { regionData, CodeToText } from 'element-china-area-data'
 import { mapState } from "vuex";
-import { saveAddress ,getAddressList } from '@/api/address' 
+import { saveAddress ,getAddressList,deleteAddress,changeDefaultAddress} from '@/api/address' 
 import { checkPhone } from '@/common/reg';
 
 export default {
@@ -99,6 +102,9 @@ export default {
         },
         dialogVisibleClosed() {
          this.addAddressDialgVisible = false;
+         this.form = {}
+         this.$refs.formRef.resetFields()
+         this.selectedAddress = []
         },
           // 省市区联动
       addressChange (arr) {
@@ -119,6 +125,7 @@ export default {
           this.msgSuccess(res.msg)
           // 清空表单 因为没有ref 所以只能这样清空
           this.form = {}
+          this.selectedAddress = []
           // 关闭弹窗
           this.dialogVisibleClosed()
           // 更新收货地址
@@ -159,13 +166,91 @@ export default {
     exportAddress(){
       this.$emit('backAddress',this.orderForm.address)
     },
-    // 回显数据
-    
-
+    deleteAddress(id){
+      // 二次确认
+      this.$confirm('此操作将永久删除该地址, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => { 
+          const token = window.localStorage.getItem('adminToken') 
+          const userId = this.user.id
+          deleteAddress(token,id,userId).then(res=>{
+            if(res.code==200){
+              this.msgSuccess(res.msg)
+              this.getAddressList()
+            }else{
+              this.msgError(res.msg)
+            }
+          })
+      }).catch(() => {
+        // 取消删除
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });          
+      });
+    },
+    changeDefaultAddress(id){
+      const token = window.localStorage.getItem('adminToken')
+      const userId = this.user.id
+      changeDefaultAddress(token,id,userId).then(res=>{
+        if(res.code==200){
+          this.msgSuccess(res.msg)
+          this.getAddressList()
+        }
+      })
+    }
     },
 }
 </script>
 
 <style scoped>
+
+.el-switch {
+    height: 25px !important;
+}
+
+::v-deep .el-switch__core {
+    width: 60px !important;
+    height: 20px;
+    border-radius: 100px;
+    border: none;
+}
+
+::v-deep .el-switch__core::after {
+    width: 15px;
+    height: 15px;
+    top: 2px;
+}
+
+::v-deep .el-switch.is-checked .el-switch__core::after {
+    margin-left: -21px;
+}
+
+/*关闭时文字位置设置*/
+::v-deep .el-switch__label--right {
+    position: absolute;
+    z-index: 1;
+    right: 6px;
+    margin-left: 0px;
+    color: rgba(255, 255, 255, 0.9019607843137255);
+}
+
+/* 激活时另一个文字消失 */
+::v-deep .el-switch__label.is-active {
+    display: none;
+}
+
+/*开启时文字位置设置*/
+::v-deep .el-switch__label--left {
+    position: absolute;
+    z-index: 1;
+    left: 5px;
+    margin-right: 0px;
+    color: rgba(255, 255, 255, 0.9019607843137255);
+}
+
+
 
 </style>

@@ -31,3 +31,33 @@ export function getAddressList(token,id) {
         }
 	})
 }
+
+
+export function deleteAddress(token,id,userId) {
+	return axios({
+		url: 'user/deleteAddress',
+		method: 'GET',
+		headers: {
+			Authorization: token,
+		},
+		params: {
+            id,
+			userId
+        }
+	})
+}
+
+export function changeDefaultAddress(token,id,userId) {
+	return axios({
+		url: 'user/changeDefaultAddress',
+		method: 'GET',
+		headers: {
+			Authorization: token,
+		},
+		params: {
+            id,
+			userId
+        }
+	})
+}
+
