@@ -17,6 +17,7 @@
 					<div class="ui stackable grid">
 						<!--左侧随机推荐商品-->
 						<div class="three wide column m-mobile-hide"  style="margin-left:30px">
+							<GoodsCategory  :randomBlogList="randomBlogList"   v-if="this.$route.name === 'productInfo' || this.$route.name === 'product'" />
 							<Introduction :class="{'m-display-none':userInfo}"  v-if="(user != '' && (this.blogger.id === this.user.id)?this.$route.name === 'blog' || this.$route.name === 'moments' :this.$route.name != 'blog' && this.$route.name != 'moments' )"/>
 							<BloggerInfo :class="{'m-display-none':bloggerInfo}" v-if="(this.$route.name === 'blog' || this.$route.name === 'moments' ) && this.blogger.id != this.user.id  "/>
 							<RandomSneaker :randomProductList="randomProductList" :class="{'m-display-none':randomSneaker}" v-if="this.$route.name === 'blog'"/>
@@ -101,12 +102,13 @@
 	import UpdatePasswordDialog from "@/components/index/UpdatePasswordDialog"
 	import AddTagDialog from "@/components/tag/AddTagDialog"
 	import RandomSneaker from '../components/sidebar/RandomSneaker.vue'
+	import GoodsCategory from '../components/sidebar/GoodsCategory.vue'
 	import {mapState} from 'vuex'
 	import {SAVE_CLIENT_SIZE, SAVE_INTRODUCTION, SAVE_SITE_INFO, RESTORE_COMMENT_FORM} from "@/store/mutations-types";
 
 	export default {
 		name: "Index",
-		components: {Header, BlogPasswordDialog, BloggerInfo, RandomBlog, Tags, Nav, Footer, Introduction,UpdatePasswordDialog,AddTagDialog,RandomSneaker},
+		components: {Header, BlogPasswordDialog, BloggerInfo, RandomBlog, Tags, Nav, Footer, Introduction,UpdatePasswordDialog,AddTagDialog,RandomSneaker,GoodsCategory},
 		data() {
 			return {
 				siteInfo: {

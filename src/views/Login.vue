@@ -2,12 +2,7 @@
 	<div class="login_container">
 		<div class="login_box" v-show="loginWithRegister">
 			<!--头像-->
-			<a class="avatar_box" >
-				<img src="/img/avatar.jpg" @click="goHome" alt="">		
-			</a>
-			<a class="ui large red right corner label"   @click="toRegister">
-				<i class="arrow alternate circle up icon"></i>
-			</a>
+			<h3 class="title">用户登录</h3>
 			<!--登录表单-->
 			<el-form ref="loginFormRef" :model="loginForm" :rules="loginFormRules" class="login_form">
 				<el-form-item prop="username">
@@ -18,20 +13,20 @@
 					<el-input v-model="loginForm.password" prefix-icon="el-icon-lock" show-password
 						@keyup.native.enter="login" placeholder="请输入密码"></el-input>
 				</el-form-item>
-				<el-form-item class="btns">
-					<el-button type="primary" @click="login">登录</el-button>
-					<el-button type="info" @click="resetLoginForm">重置</el-button>
-				</el-form-item>
+				<div class="btns">
+					<div class="registerAndLogin">
+						<a  href="javascript:;" type="primary"  @click="toRegister" ><i class="el-icon-d-arrow-left"></i>注册</a>
+					</div>
+					<div>
+						<el-button type="primary"  size="mini" @click="login">登录</el-button>
+					</div>
+				</div>
+				
 			</el-form>
 		</div>
 		<div class="register_box"  v-show="!loginWithRegister">
 			<!--头像-->
-			<a class="avatar_box" @click="goHome">
-				<img src="/img/avatar.jpg" alt="">
-			</a>
-			<a class="ui large red right corner label"   @click="toLogin">
-				<i class="arrow alternate circle down icon"></i>
-			</a>
+			<h3 class="title">账户注册</h3>
 			<!--注册表单-->
 			<el-form ref="registerFormRef" :model="registerForm" :rules="registerFormRules" class="register_form">
 				<el-form-item prop="username">
@@ -50,10 +45,14 @@
 					<el-input v-model="registerForm.password" prefix-icon="el-icon-lock" show-password
 						@keyup.native.enter="register" placeholder="请输入密码"></el-input>
 				</el-form-item>
-				<el-form-item class="btns">
-					<el-button type="primary" @click="register">注册</el-button>
-					<el-button type="info" @click="resetRegisterForm">重置</el-button>
-				</el-form-item>
+				<div class="btns">
+					<div  class="registerAndLogin">
+						<a  href="javascript:;" type="primary"  @click="toLogin" ><i class="el-icon-d-arrow-left"></i>登录</a>
+					</div>
+					<div>
+						<el-button type="primary" size="mini" @click="register">注册</el-button>
+					</div>
+				</div>
 			</el-form>
 		</div>
 	</div>
@@ -63,6 +62,8 @@
 import {checkEmail} from "@/common/reg";
 import { login,register } from "@/api/login";
 import { mapState } from 'vuex'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 
 export default {
 	name: "Login",
@@ -73,10 +74,10 @@ export default {
 				password: '123456'
 			},
 			registerForm: {
-				username: 'user1',
-				nickname: 'user1',
-				email: '2979554858@qq.com',
-				password: '123456',
+				username: '',
+				nickname: '',
+				email: '',
+				password: '',
 			},
 			loginFormRules: {
 				username: [
@@ -109,12 +110,6 @@ export default {
 		...mapState(['user'])
 	},
 	methods: {
-		resetLoginForm() {
-			this.$refs.loginFormRef.resetFields();
-		},
-		resetRegisterForm() {
-			this.$refs.registerFormRef.resetFields();
-		},
 		login() {
 			this.$refs.loginFormRef.validate(valid => {
 				if (valid) {
@@ -134,7 +129,7 @@ export default {
 				}
 			})
 		},
-		register(){
+		register(){	
 			this.$refs.registerFormRef.validate(valid =>{
 				if(valid){
 					register(this.registerForm).then(res =>{
@@ -152,13 +147,17 @@ export default {
 			})
 		},
 		toRegister(){
+			NProgress.start()
 			this.loginWithRegister = false,
+			NProgress.done()
 			this.$nextTick(() => {
                 this.$refs.registerFormRef.resetFields();
             });
 		},
 		toLogin(){
+			NProgress.start()
 			this.loginWithRegister = true,
+			NProgress.done()
 			this.$nextTick(() => {
                 this.$refs.loginFormRef.resetFields();
             });
@@ -186,6 +185,8 @@ export default {
 	left: 50%;
 	top: 50%;
 	transform: translate(-50%, -50%);
+	box-shadow: 0 0 10px #cacaca;
+	border-radius: 8px;
 }
 
 .register_box {
@@ -197,6 +198,8 @@ export default {
 	left: 50%;
 	top: 50%;
 	transform: translate(-50%, -50%);
+	box-shadow: 0 0 10px #cacaca;
+	border-radius: 8px;
 }
 
 .login_box .avatar_box {
@@ -255,8 +258,21 @@ export default {
 	box-sizing: border-box;
 }
 
-.btns {
+.btns { 
 	display: flex;
-	justify-content: flex-end;
+	margin-bottom: 20px;
+	justify-content: space-between;
 }
+
+/* 将a标签居底 */
+.registerAndLogin{
+	align-self: flex-end;
+}
+
+.title {
+    margin: 40px auto 40px auto;
+    text-align: center
+}
+
+
 </style>

@@ -3,7 +3,7 @@
 	<div class="ui segments  m-box no-segments" style="margin-top:0px; margin-bottom:10px">
 		<div class="ui  segment"><i class="bookmark blue icon"></i>
 			<span style="color:blue">
-				本文关联球鞋
+				推荐球鞋
 			</span>
 			</div>
 		<div class="ui blue segment">
@@ -11,11 +11,9 @@
 				<div class="m-item" v-for="product in randomProductList" :key="product.id" @click.prevent="toProduct(product.id)">
 					<div class="img" :style="{'background-image':'url(' + product.image + ')'}"></div>
 					<!-- <div class="img" :style="{'background-image':'url(http://43.138.9.213/image/product/12/6.webp)'}"></div> -->
-					
 					<div class="info">
 						<div class="date">{{ product.name }}</div>
 						<div class="title" style="color:red">￥{{ product.price }}</div>
-						
 					</div>
 				</div>
 			</div>

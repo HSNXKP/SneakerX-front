@@ -30,37 +30,9 @@
     :options="productCategoryList"
     :props="props"
     ></el-cascader>  -->
-
-    <!-- 选择productCateporyRoute 和 selectProductCatepory 本质一样 传id进入product路由-->
-      <el-dropdown trigger="click"  @command="productCateporyRoute" >
-              <span class="el-dropdown-link item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'product' }">
-                <i class="comment basketball ball icon"></i> 球鞋<i class="el-icon-arrow-down el-icon--right"></i>
-       </span>
-      <el-dropdown-menu slot="dropdown" >
-        <el-dropdown-item  :command="product.id" 
-          v-for="(product, index) in productCategoryList" :key="index">
-             <!-- 手动控制hover显示，解决鼠标移入三级菜单时二级菜单消失问题 -->
-          <el-dropdown trigger="hover" placement="right-start" :show-timeout="0"  >
-           <span>{{ product.name }}</span>
-          <!-- 一级菜单 -->
-               <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item  @click.native="selectProductCatepory(item.id)" v-for="(item, index) in product.children" :key="index" >
-                      <!-- 二级菜单 -->
-                    	<el-dropdown trigger="hover" :show-timeout="0" placement="right-start">
-                     <span>{{ item.name }}</span>
-                     <el-dropdown-menu>
-                      <el-dropdown-item>
-                      </el-dropdown-item>
-                     </el-dropdown-menu>
-       		        </el-dropdown>
-                  </el-dropdown-item>
-                </el-dropdown-menu>
-               </el-dropdown>
-           </el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-
-
+      <router-link to="/product/6" class="item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'brandSettled' }">
+        <i class="comment basketball ball icon"></i>球鞋商城
+      </router-link>
 
       <router-link to="/brandSettled" class="item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'brandSettled' }">
         <i class="calendar check icon"></i>品牌入驻
@@ -117,7 +89,6 @@
 
 <script>
 import { getSearchBlogList } from "@/api/blog";
-import { getProductCategories } from "@/api/productCategory";
 import { logOut } from "@/api/login";
 import { mapState } from 'vuex'
 import NProgress from 'nprogress'
@@ -141,7 +112,6 @@ export default {
       queryString: '',
       queryResult: [],
       timer: null,
-      productCategoryList: [],
       props: {
         expandTrigger: 'hover',
         value: 'id',
@@ -159,7 +129,6 @@ export default {
     }
   },
   created() {
-    this.getProductCategories()
   },
   mounted() {
     //监听页面滚动位置，改变导航栏的显示
@@ -192,12 +161,6 @@ export default {
     },
     categoryRoute(name) {
       this.$router.push(`/category/${name}`)
-    },
-    productCateporyRoute(id){
-      this.$router.push(`/product/${id}`)
-    },
-    selectProductCatepory(id){
-      this.$router.push(`/product/${id}`)
     },
     debounceQuery(queryString, callback) {
       this.timer && clearTimeout(this.timer)
@@ -263,27 +226,6 @@ export default {
     },
     updatePassword(){
       this.$store.commit('updatePasswordDialogVisible',true)
-    },
-    getProductCategories() {
-      getProductCategories().then(res => {
-        if (res.code === 200) {
-          // 递归处理数据，将没有子节点的节点的children属性设置为undefined 否则级联会出问题
-          this.productCategoryList = this.formatData(res.data)
-        }
-      }).catch(() => {
-        this.msgError("请求失败")
-      })
-    },
-    // 递归处理数据，将没有子节点的节点的children属性设置为undefined 否则级联会出问题
-    formatData(data) {
-      for (var i = 0; i < data.length; i++) {
-        if (data[i].children.length < 1) {
-          data[i].children = undefined
-        } else {
-          this.formatData(data[i].children)
-        }
-      }
-      return data
     },
   }
 }

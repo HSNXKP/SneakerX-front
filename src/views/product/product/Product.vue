@@ -70,7 +70,6 @@ export default {
           // 递归处理数据，将没有子节点的节点的children属性设置为undefined 否则级联会出问题
           this.productCategoryListWithProduct = res.data.productCategoryListWithProduct
           this.productCategoryName = res.data.productCategoryName
-          console.log(this.productCategoryListWithProduct)
         }
       }).catch(() => {
         this.msgError("请求失败")
