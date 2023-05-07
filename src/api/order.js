@@ -13,7 +13,7 @@ export function order(token, orderForm) {
 	})
 }
 
-export function cancelOrder(token, orderNumber) {
+export function cancelOrder(token, orderNumber,userId) {
 	return axios({
 		url: 'user/cancelOrder',
 		method: 'GET',
@@ -21,12 +21,13 @@ export function cancelOrder(token, orderNumber) {
 			Authorization: token,
 		},
 		params: {
-			orderNumber
+			orderNumber,
+			userId
 		}
 	})
 }
 
-export function getOrder(token, orderNumber) {
+export function getOrder(token, orderNumber,userId) {
 	return axios({
 		url: `user/order/${orderNumber}`,
 		method: 'POST',
@@ -34,12 +35,13 @@ export function getOrder(token, orderNumber) {
 			Authorization: token,
 		},
 		params: {
-			orderNumber
+			orderNumber,
+			userId
 		}
 	})
 }
 
-export function getOrderList(token, id) {
+export function getOrderList(token, queryInfo) {
 	return axios({
 		url: `user/getOrder`,
 		method: 'GET',
@@ -47,7 +49,7 @@ export function getOrderList(token, id) {
 			Authorization: token,
 		},
 		params: {
-			id
+			...queryInfo
 		}
 	})
 }
@@ -66,5 +68,50 @@ export function deleteOrderByOrderNumber(token, orderNumber,userId) {
 	})
 }
 
+
+
+
+export function confirmReceipt(token,orderNumber,userId) {
+	return axios({
+		url: 'user/confirmReceipt',
+		method: 'GET',
+		headers: {
+			Authorization: token,
+		},
+		params: {
+			orderNumber,
+			userId
+		}
+	})
+}
+
+export function requestRefund(token,orderNumber,userId) {
+	return axios({
+		url: 'user/requestRefund',
+		method: 'GET',
+		headers: {
+			Authorization: token,
+		},
+		params: {
+			orderNumber,
+			userId
+		}
+	})
+}
+
+
+export function cancelRefund(token,orderNumber,userId) {
+	return axios({
+		url: 'user/cancelRefund',
+		method: 'GET',
+		headers: {
+			Authorization: token,
+		},
+		params: {
+			orderNumber,
+			userId
+		}
+	})
+}
 
 

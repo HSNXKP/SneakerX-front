@@ -3,14 +3,30 @@
     <el-card>
       <h2 class="m-text-500" style="text-align: center">订单管理</h2>
     <div class="ui  divider "></div>
-      <el-empty description="暂无订单，快去下单吧！" v-if="orderList.length === 0"></el-empty>
-      <div v-else>
+      
+      <div>
       <div style="margin-bottom:  10px;" >
-        <el-button  size="mini" @click="deleteOrder" >管理</el-button>
-        <el-button type="danger" size="mini" v-if="this.value" @click="cancelDelete">取消</el-button>
+        <el-select   placeholder="选择订单状态" v-model="queryInfo.status" @change="search()"    size="mini" style="width: 160px">
+            <!-- 0:未支付 1:已支付 2:已发货 3:已完成 4:已取消 '':全部 -->
+            <el-option value="" label="全部"></el-option>
+            <el-option value="0" label="待付款"></el-option>
+            <el-option value="1" label="已支付"></el-option>
+            <el-option value="2" label="已发货"></el-option>
+            <el-option value="3" label="已完成"></el-option>
+            <el-option value="4" label="已取消"></el-option>
+            <el-option value="5" label="退款中"></el-option>
+            <el-option value="6" label="退款成功"></el-option>
+					</el-select>  
+          <span style="margin-left: 10px;">
+            <el-button  size="mini" @click="deleteOrder" >管理</el-button>
+            <el-button type="danger" size="mini" v-if="this.value" @click="cancelDelete">取消</el-button>
+          </span>
+            
       </div>
+      
       <div class="ui  divider "></div>
-      <div v-for="(item, index) in orderList" :key="index">
+      <el-empty description="暂无订单，快去下单吧！" v-if="orderList.length === 0"></el-empty>
+      <div v-for="(item, index) in orderList" :key="index"  v-else>
         <i
             class="el-icon-remove"
             style="color: red; padding-top: 4px; margin-left: 4px"
@@ -53,7 +69,8 @@
                 商品尺码：{{ item.size }}
               </div>
             <div class="orderDetail">
-                商品数量：x{{ item.quantity }}
+                商品数量：x
+                {{ item.quantity }}
               </div>
               <div class="orderDetail" style="color: red">
                 商品单价：{{ item.price }}
@@ -86,7 +103,6 @@
               <div class="orderDetail" style="color: red">
                 商品总价：{{ children.amount }}
               </div>
-
           </div>
         </div>
         <div class="ui  divider"></div>
@@ -107,6 +123,10 @@ export default {
     return {
       value:false,
       orderList:[],
+      queryInfo:{
+        id:'',
+        status:''
+      }
     };
   },
   created() {
@@ -116,10 +136,10 @@ export default {
     ...mapState(['user'])
   },
   methods: {
-    getOrderList(id = this.user.id){
+    getOrderList(){
+      this.queryInfo.id = this.user.id
       const token = window.localStorage.getItem('adminToken') 
-      console.log(token)
-      getOrderList(token,id).then(res => {
+      getOrderList(token,this.queryInfo).then(res => {
         if (res.code === 200) {
           this.orderList=res.data
         }else{
@@ -157,8 +177,10 @@ export default {
     },
     cancelDelete(){
       this.value = false
-    }
-  },
+    },
+    search(){
+      this.getOrderList()
+    }},
 };
 </script>
 

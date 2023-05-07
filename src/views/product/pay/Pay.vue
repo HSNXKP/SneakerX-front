@@ -45,6 +45,9 @@
         <div shadow="always" class="orderDetailInfo">
           收货方式 : {{ order.address}}
         </div>
+        <div shadow="always" class="orderDetailInfo" v-if="order.status === 1 || order.status === 2 || order.status === 3">
+          快递单号 : {{ order.express}}
+        </div>
         <div class="orderDetailInfo">
             订单备注 : {{ order.orderRemarks}}
           <el-input v-if="order.status === 0" type="textarea" placeholder="订单备注:给个鞋包呗！(当然肯定不会给)" v-model="orderRemarks"></el-input>
@@ -89,24 +92,27 @@
         <div shadow="always" class="orderDetailInfo">
           收货方式 : {{ order.address}}
         </div>
+        <div shadow="always" class="orderDetailInfo" v-if="order.status === 1 || order.status === 2 || order.status === 3">
+          快递单号 : {{ order.express}}
+        </div>
         <div class="orderDetailInfo">
             订单备注 : {{ order.orderRemarks}}
           <el-input v-if="order.status === 0" type="textarea" placeholder="订单备注:给个鞋包呗！(当然肯定不会给)" v-model="orderRemarks"></el-input>
         </div>
         
       </div>
-     
-
-
       <div class="orderInfo" v-show="order.status == 0">
           <el-button type="success" @click="toPay">支付订单</el-button>
           <el-button type="danger" @click="cancelOrder">取消订单</el-button>
         </div>
         <div class="orderInfo" v-show="order.status == 1">
           <el-button type="success"  disabled>订单已支付</el-button>
+          <el-button type="danger"  @click="requestRefund" >申请退款</el-button>
         </div>
         <div class="orderInfo" v-show="order.status == 2">
           <el-button type="success"  disabled>订单已发货</el-button>
+          <el-button type="danger"  @click="requestRefund" >申请退款</el-button>
+          <el-button type="success" @click="confirmReceipt" >确认收货</el-button>
         </div>
         <div class="orderInfo" v-show="order.status == 3">
           <el-button type="success"  disabled>订单已完成</el-button>
@@ -114,6 +120,14 @@
         <div class="orderInfo" v-show="order.status == 4">
           <el-button type="success"  disabled>订单已取消</el-button>
         </div>
+        <div class="orderInfo" v-show="order.status == 5">
+          <el-button type="danger"  disabled>订单退款中</el-button>
+          <el-button type="success" @click="cancelRefund" >取消退款</el-button>
+        </div>
+        <div class="orderInfo" v-show="order.status == 6">
+          <el-button type="success"  disabled>退款成功</el-button>
+        </div>
+        
       <!-- 支付宝前端响应界面 -->
       <div ref="alipayWap" v-html="alipay"> </div>
     </div>
@@ -125,7 +139,8 @@
 <script>
 
 import { payOrder } from '@/api/pay';
-import { getOrder , cancelOrder } from '@/api/order';
+import { getOrder , cancelOrder ,confirmReceipt,requestRefund,cancelRefund} from '@/api/order';
+import { mapState } from "vuex";
 
 export default {
   name: "Pay",
@@ -163,12 +178,14 @@ export default {
   computed: {
     orderNumber() {
       return this.$route.params.orderNumber
-    }
+    },
+    ...mapState(['user']),
   },
   methods: {
     getOrder(orderNumber = this.orderNumber) {
       const token = window.localStorage.getItem('adminToken') 
-      getOrder(token,orderNumber).then(res => {
+      const userId = this.user.id
+      getOrder(token,orderNumber,userId).then(res => {
         if (res.code === 200) {
           this.order = res.data
           
@@ -190,7 +207,8 @@ export default {
       }).then(() => {
         const token = window.localStorage.getItem('adminToken')
         const orderNumber = this.orderNumber
-        cancelOrder(token,orderNumber).then(res => {
+        const userId = this.user.id
+        cancelOrder(token,orderNumber,userId).then(res => {
           if (res.code === 200) {
             this.$notify({
               title:  res.msg,
@@ -230,6 +248,84 @@ export default {
           this.msgError(res.msg)
         }
       })
+    },
+    confirmReceipt(){
+      // 二次确认
+      this.$confirm('您确定收到货物，将确认收货, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        const token = window.localStorage.getItem('adminToken')
+        const orderNumber = this.orderNumber
+        const userId = this.user.id
+        confirmReceipt(token,orderNumber,userId).then(res => {
+          if (res.code === 200) {
+            this.msgSuccess(res.msg)
+            this.getOrder()
+          }else{
+            this.msgError(res.msg)
+          }
+        })
+      }).catch((e) => {
+        console.log(e)
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+    },
+    requestRefund(){
+      // 二次确认
+      this.$confirm('您确定申请退款吗？, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        const token = window.localStorage.getItem('adminToken')
+        const orderNumber = this.orderNumber
+        const userId = this.user.id
+        requestRefund(token,orderNumber,userId).then(res => {
+          if (res.code === 200) {
+            this.msgSuccess(res.msg)
+            this.getOrder()
+          }else{
+            this.msgError(res.msg)
+          }
+        })
+      }).catch((e) => {
+        console.log(e)
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+    },
+    cancelRefund(){
+      // 二次确认
+      this.$confirm('您确定取消退款吗？, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        const token = window.localStorage.getItem('adminToken')
+        const orderNumber = this.orderNumber
+        const userId = this.user.id
+        cancelRefund(token,orderNumber,userId).then(res => {
+          if (res.code === 200) {
+            this.msgSuccess(res.msg)
+            this.getOrder()
+          }else{
+            this.msgError(res.msg)
+          }
+        })
+      }).catch((e) => {
+        console.log(e)
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
     }
   }
 }
