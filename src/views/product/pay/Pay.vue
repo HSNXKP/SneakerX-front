@@ -107,11 +107,11 @@
         </div>
         <div class="orderInfo" v-show="order.status == 1">
           <el-button type="success"  disabled>订单已支付</el-button>
-          <el-button type="danger"  @click="requestRefund" >申请退款</el-button>
+          <el-button type="danger"  @click="goRequestRefund" >申请退款</el-button>
         </div>
         <div class="orderInfo" v-show="order.status == 2">
           <el-button type="success"  disabled>订单已发货</el-button>
-          <el-button type="danger"  @click="requestRefund" >申请退款</el-button>
+          <el-button type="danger"  @click="goRequestRefund" >申请退款</el-button>
           <el-button type="success" @click="confirmReceipt" >确认收货</el-button>
         </div>
         <div class="orderInfo" v-show="order.status == 3">
@@ -127,7 +127,27 @@
         <div class="orderInfo" v-show="order.status == 6">
           <el-button type="success"  disabled>退款成功</el-button>
         </div>
-        
+
+        <el-dialog title="申请退款" width="50%" :visible.sync="refundDialogVisible"
+            :close-on-click-modal="false" @close="cancelRefundVisble">
+            <!--内容主体-->
+            <el-form   v-model="visForm" label-width="80px">
+                <el-form-item label="退款原因" prop="refundReason">
+                    <el-input v-model="visForm.refundReason"></el-input>
+                </el-form-item>
+                <el-form-item label="退款金额" prop="refundAmount">
+                    <el-input v-model="visForm.refundAmount" disabled></el-input>
+                </el-form-item>
+                <el-form-item label="退款备注" prop="refundRemarks">
+                    <el-input v-model="visForm.refundRemarks" type="textarea"></el-input>
+                </el-form-item>
+            </el-form>
+           <!--底部-->
+           <span slot="footer">
+                <el-button @click="cancelRefundVisble">取 消</el-button>
+                <el-button type="danger" @click="requestRefund">申请退款</el-button>
+            </span>
+    </el-dialog>
       <!-- 支付宝前端响应界面 -->
       <div ref="alipayWap" v-html="alipay"> </div>
     </div>
@@ -151,12 +171,6 @@ export default {
           name:'',
           image:''
         },
-        address:{
-          name:'',
-          phone:'',
-          address:'',
-          addressDetail:''
-        },
         size:'',
         quantity:'',
         amount:'',
@@ -166,9 +180,15 @@ export default {
         children:[]
       },
       alipay: '',
-      value: 1,
       orderRemarks: '',
-      value: true
+      refundDialogVisible:false,
+      visForm:{
+        orderNumber:'',
+        userId:'',
+        refundReason:'',
+        refundAmount:'',
+        refundRemarks:''
+      }
     }
   },
   created() {
@@ -251,7 +271,7 @@ export default {
     },
     confirmReceipt(){
       // 二次确认
-      this.$confirm('您确定收到货物，将确认收货, 是否继续?', '提示', {
+      this.$confirm('您确定收到货物,将确认收货, 是否继续?','提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -277,17 +297,18 @@ export default {
     },
     requestRefund(){
       // 二次确认
-      this.$confirm('您确定申请退款吗？, 是否继续?', '提示', {
+      this.$confirm('您确定申请退款吗？是否继续？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
         const token = window.localStorage.getItem('adminToken')
-        const orderNumber = this.orderNumber
-        const userId = this.user.id
-        requestRefund(token,orderNumber,userId).then(res => {
+        this.visForm.orderNumber = this.orderNumber
+        this.visForm.userId = this.user.id
+        requestRefund(token,this.visForm).then(res => {
           if (res.code === 200) {
             this.msgSuccess(res.msg)
+            this.cancelRefundVisble()
             this.getOrder()
           }else{
             this.msgError(res.msg)
@@ -326,6 +347,13 @@ export default {
           message: '已取消删除'
         });
       });
+    },
+    cancelRefundVisble(){
+      this.refundDialogVisible = false
+    },
+    goRequestRefund(){
+      this.visForm.refundAmount = this.order.amount
+      this.refundDialogVisible = true
     }
   }
 }

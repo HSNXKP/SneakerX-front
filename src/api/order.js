@@ -85,16 +85,15 @@ export function confirmReceipt(token,orderNumber,userId) {
 	})
 }
 
-export function requestRefund(token,orderNumber,userId) {
+export function requestRefund(token,visForm) {
 	return axios({
 		url: 'user/requestRefund',
-		method: 'GET',
+		method: 'POST',
 		headers: {
 			Authorization: token,
 		},
-		params: {
-			orderNumber,
-			userId
+		data: {
+			...visForm
 		}
 	})
 }
