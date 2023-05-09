@@ -7,6 +7,8 @@
 			<div class="typo content m-margin-top-large" v-viewer v-html="about.content"></div>
 		</div>
 		<el-divider ></el-divider>
+		<span >
+		</span>
 		<!--评论-->
 	</el-card>
 	<el-card>
@@ -43,6 +45,7 @@
 				getAbout().then(res => {
 					if (res.code === 200) {
 						this.about = res.data
+						console.log(this.about)
 					} else {
 						this.msgError(res.msg)
 					}
