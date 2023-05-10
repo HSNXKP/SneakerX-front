@@ -54,7 +54,7 @@
       <el-autocomplete v-model="queryString" :fetch-suggestions="debounceQuery" placeholder=" Search...."
         class="right item m-search" :class="{ 'm-mobile-hide': mobileHide }" popper-class="m-search-item"
         @select="handleSelect">
-        <i class="search icon el-input__icon" style="margin-left: 5px" slot="prefix"></i>
+        <i class="search icon el-input__icon" style="margin-left: 10px" slot="prefix"></i>
         <template slot-scope="{ item }">
           <div class="title">{{ item.title }}</div>
           <span class="content">{{ item.content }}</span>
@@ -69,13 +69,13 @@
           <el-dropdown-item @click.native="updatePassword">修改密码</el-dropdown-item>
           <el-dropdown-item @click.native="toLogOut">退出登录</el-dropdown-item>
         </el-dropdown-menu>
-        <!--        已登录状态-->
-        <a class=" right item " v-if="!user == ''">
-          <img :src="user.avatar">
-        </a>
         <!--        未登录状态-->
-        <a class="right item m-blue-dark"  @click="toLogin" v-else >
+        <a class="right item m-blue-dark"  @click="toLogin" v-if="user == ''" >
           <i class="user icon "></i>Log in
+        </a>
+          <!--        已登录状态-->
+          <a class=" right item " v-else>
+          <img :src="user.avatar">
         </a>
       </el-dropdown>
 
