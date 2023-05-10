@@ -63,14 +63,14 @@
 
       <!--      登录按钮-->
       <el-dropdown class="item m-avatar" :class="{ 'm-mobile-hide': mobileHide }"
-        :disabled="user == '' ? true : false">
+        :disabled="this.userId == '' ? true : false">
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item @click.native="toUserInfo">个人中心</el-dropdown-item>
           <el-dropdown-item @click.native="updatePassword">修改密码</el-dropdown-item>
           <el-dropdown-item @click.native="toLogOut">退出登录</el-dropdown-item>
         </el-dropdown-menu>
          <!--        已登录状态-->
-         <a class=" right item " v-if="user != ''">
+         <a class=" right item " v-if="this.userId != ''">
           <img :src="user.avatar">
         </a>
         <!--        未登录状态-->
@@ -117,7 +117,8 @@ export default {
         expandTrigger: 'hover',
         value: 'id',
         label: 'name',
-      }
+      },
+      userId:''
     }
   },
   computed: {
@@ -127,11 +128,15 @@ export default {
     //路由改变时，收起导航栏
     '$route.path'() {
       this.mobileHide = true
+    },
+    //监听userId，vuex中的user.id改变时，重新获取用户信息
+    'user'(){
+      this.userId = user.id
     }
   },
   created() {
-
     console.log('user:' + this.user + 1)
+    console.log('userId:' + this.userId)
   },
   mounted() {
     //监听页面滚动位置，改变导航栏的显示
