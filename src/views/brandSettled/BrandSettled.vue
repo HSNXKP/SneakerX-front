@@ -67,6 +67,7 @@ export default {
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     color: #999999;
+	margin-bottom: auto;
 }
 .qq{
 	font-size: 14px;
