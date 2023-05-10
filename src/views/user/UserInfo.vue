@@ -105,9 +105,9 @@ export default {
 		{label: '灰色', value: 'grey'},
 		{label: '黑色', value: 'black'},
 		],
-		base: 'http://localhost:8090/admin/',
-		// base:'http://43.138.9.213:8090/',
-		apiUrl : 'uploadProductImage',
+		// base: 'http://localhost:8090/admin/',
+		base:'/api',
+		apiUrl : '/user/uploadAvatarImage',
 		headers: {
 			Authorization: window.localStorage.getItem('adminToken')
 		},

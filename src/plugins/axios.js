@@ -3,9 +3,9 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
 const request = axios.create({
-	baseURL: 'http://localhost:8090/',
-	// baseURL:'http://43.138.9.213:8090/',
-	// baseURL:'/api',
+	// baseURL: 'http://localhost:8090',
+	// baseURL:'http://43.138.9.213:8090',
+	baseURL: '/api'
 })
 
 // 请求拦截
