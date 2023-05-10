@@ -69,14 +69,15 @@
           <el-dropdown-item @click.native="updatePassword">修改密码</el-dropdown-item>
           <el-dropdown-item @click.native="toLogOut">退出登录</el-dropdown-item>
         </el-dropdown-menu>
-        <!--        未登录状态-->
-        <a class="right item m-blue-dark"  @click="toLogin" v-if="user == ''" >
-          <i class="user icon "></i>Log in
-        </a>
-          <!--        已登录状态-->
-          <a class=" right item " v-else>
+         <!--        已登录状态-->
+         <a class=" right item " v-if="user != ''">
           <img :src="user.avatar">
         </a>
+        <!--        未登录状态-->
+        <a class="right item m-blue-dark"  @click="toLogin"  v-else>
+          <i class="user icon "></i>Log in
+        </a>
+         
       </el-dropdown>
 
       <!--      手机端按钮-->
@@ -129,6 +130,8 @@ export default {
     }
   },
   created() {
+
+    console.log('user:' + this.user + 1)
   },
   mounted() {
     //监听页面滚动位置，改变导航栏的显示
