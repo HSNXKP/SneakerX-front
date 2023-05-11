@@ -58,9 +58,6 @@
 		computed: {
 			...mapState(['allComment', 'closeComment', 'comments', 'parentCommentId'])
 		},
-		created() {
-			console.log(this.comments)
-		},
 		methods: {
 			setReply(id) {
 				this.$store.commit(SET_PARENT_COMMENT_ID, id)

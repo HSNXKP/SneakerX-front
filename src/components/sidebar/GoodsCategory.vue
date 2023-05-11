@@ -58,7 +58,6 @@ export default {
           if (res.code === 200) {
             // 递归处理数据，将没有子节点的节点的children属性设置为undefined 否则级联会出问题
             this.productCategoryList = this.formatData(res.data);
-            console.log(this.productCategoryList);
           }
         })
         .catch(() => {

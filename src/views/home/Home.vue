@@ -40,7 +40,6 @@
 			getBlogList(pageNum) {
 				getBlogList(pageNum).then(res => {
 					if (res.code === 200) {
-						console.log(res.data)
 						this.blogList = res.data.list
 						this.totalPage = res.data.totalPage
 						this.$nextTick(() => {

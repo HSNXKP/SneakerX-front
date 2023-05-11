@@ -198,7 +198,6 @@ export default {
     },
     // 方法不同 接口相同 通过当前的type来判断 productCategoryId是分类下的所有商品
     changeproductCategoryIdChecked(data) {
-      console.log(data);
       const id = data.productCategoryId;
       const token = window.localStorage.getItem("adminToken");
       const userId = this.user.id;
@@ -278,13 +277,11 @@ export default {
             }
           });
         }).catch((e) => {
-          console.console(e)
           this.$message({
             type: "info",
             message: "已取消删除",
           });
         });
-      console.log(this.cartList);
     },
     settleAccount(){
       if(this.checked == false){

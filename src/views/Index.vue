@@ -161,8 +161,6 @@
 						this.tagList = res.data.tagList
 						this.randomBlogList = res.data.randomBlogList
 						this.randomProductList = res.data.randomProductList
-						console.log(this.randomProductList)	
-						console.log(res.data.randomProductList)
 						this.$store.commit(SAVE_SITE_INFO, this.siteInfo)
 						this.$store.commit(SAVE_INTRODUCTION, res.data.introduction)
 						document.title = this.$route.meta.title + this.siteInfo.webTitleSuffix

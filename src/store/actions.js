@@ -101,7 +101,6 @@ export default {
 	goBlogPage({commit}, blog) {
 		if (blog.privacy) {
 			const user = JSON.parse(window.localStorage.getItem('userInfo'))
-			console.log(user)
 			if(user != null){
 				if(blog.user.id == user.id){
 					return router.push(`/blog/${blog.id}`)

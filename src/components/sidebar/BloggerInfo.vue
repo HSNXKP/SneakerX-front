@@ -70,18 +70,12 @@
 			},
 			// 判断是否为粉丝
 			isFans() {
-				console.log(this.blogger.id)
-				console.log(this.blogger)
-				console.log(this.user)
 				const token = window.localStorage.getItem('adminToken')
 				const userId = this.user.id;
 				const bloggerId = this.blogger.id;
 				isFans(token,userId,bloggerId).then(res => {
 					if (res.code === 200) {
-						console.log(res.data)
-						console.log(this.isFan)
 						this.$store.commit(SET_IS_FAN,res.data)
-						console.log(this.isFan)
 					}
 				})
 			},

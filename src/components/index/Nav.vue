@@ -63,21 +63,23 @@
 
       <!--      登录按钮-->
       <el-dropdown class="item m-avatar" :class="{ 'm-mobile-hide': mobileHide }"
-        :disabled="this.userId == '' ? true : false">
+        :disabled="this.token == ''? true : false">
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item @click.native="toUserInfo">个人中心</el-dropdown-item>
           <el-dropdown-item @click.native="updatePassword">修改密码</el-dropdown-item>
           <el-dropdown-item @click.native="toLogOut">退出登录</el-dropdown-item>
         </el-dropdown-menu>
-         <!--        已登录状态-->
-         <a class=" right item " v-if="this.userId != ''">
-          <img :src="user.avatar">
-        </a>
-        <!--        未登录状态-->
-        <a class="right item m-blue-dark"  @click="toLogin"  v-else>
+
+          <!--        未登录状态-->
+          <a class="right item m-blue-dark"  @click="toLogin"  v-if="this.token == ''">
           <i class="user icon "></i>Log in
         </a>
          
+         <!--        已登录状态-->
+         <a class=" right item " v-else>
+          <img :src="user.avatar">
+        </a>
+      
       </el-dropdown>
 
       <!--      手机端按钮-->
@@ -118,7 +120,7 @@ export default {
         value: 'id',
         label: 'name',
       },
-      userId:''
+      token: window.localStorage.getItem('adminToken') ? window.localStorage.getItem('adminToken') : '',
     }
   },
   computed: {
@@ -129,14 +131,6 @@ export default {
     '$route.path'() {
       this.mobileHide = true
     },
-    //监听userId，vuex中的user.id改变时，重新获取用户信息
-    'user'(){
-      this.userId = user.id
-    }
-  },
-  created() {
-    console.log('user:' + this.user + 1)
-    console.log('userId:' + this.userId)
   },
   mounted() {
     //监听页面滚动位置，改变导航栏的显示
@@ -161,7 +155,7 @@ export default {
       }
     })
     }
-    
+    console.log('token:'+this.token)
   },
   methods: {
     toggle() {
@@ -213,6 +207,8 @@ export default {
           this.$store.commit('user', '')
           window.localStorage.removeItem('userInfo')
           window.localStorage.removeItem('adminToken')
+          // 清空token 并初始化data数据
+          Object.assign(this.$data, this.$options.data())
           // 如果不是在首页，跳转到首页
           if (!this.$route.name === 'home') {
             this.$router.push('/home')

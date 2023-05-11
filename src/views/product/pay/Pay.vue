@@ -210,7 +210,6 @@ export default {
           this.order = res.data
           
         }else{
-          console.log(this.order)
           this.msgError(res.msg)
         }
       })
@@ -255,7 +254,6 @@ export default {
       const orderRemarks = this.orderRemarks
       payOrder(token,orderNumber,orderRemarks).then(res => {
         if (res.code === 200) {
-          console.log(res)
         this.alipay = res.data
         this.$nextTick(() => {
           // 提交支付表单

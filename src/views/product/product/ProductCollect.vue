@@ -85,7 +85,6 @@
         const userId = this.user.id;
         getProductCollect(token,userId).then(res => {
           if (res.code == 200) {
-            console.log(res.data);
             this.productCollectList = res.data
           }else{
             this.msgError(res.msg);

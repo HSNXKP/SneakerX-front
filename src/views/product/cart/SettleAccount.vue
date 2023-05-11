@@ -149,7 +149,6 @@ export default {
           // 购物车和单个商品公用一个接口 order：单个订单 cartOrder:购物车订单
           this.orderForm.type = 'cartOrder'
           const token = window.localStorage.getItem('adminToken') 
-          console.log(this.orderForm)
           if(this.orderForm.address == ''){
               return  this.msgError('请选择收货地址')
           }

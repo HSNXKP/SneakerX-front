@@ -180,7 +180,6 @@
 				getBlogById(token, id).then(res => {
 					if (res.code === 200) {
 						this.blog = res.data
-						console.log([this.blog])
 						// 因为是层级关系，请求先相应的blog，还没有请求到数据的时候user.username会报一个错误 如果不转换一下的话
 						this.user =this.blog.user	
 						// 将博主信息保存到vuex中
