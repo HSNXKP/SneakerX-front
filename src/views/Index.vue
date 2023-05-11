@@ -17,9 +17,9 @@
 					<div class="ui stackable grid">
 						<!--左侧随机推荐商品-->
 						<div class="three wide column m-mobile-hide"  style="margin-left:30px">
-							<GoodsCategory  :randomBlogList="randomBlogList"   v-if="this.$route.name === 'productInfo' || this.$route.name === 'product'" />
-							<Introduction :class="{'m-display-none':userInfo}"  v-if="(user != '' && (this.blogger.id === this.user.id)?this.$route.name === 'blog' || this.$route.name === 'moments' :this.$route.name != 'blog' && this.$route.name != 'moments' )"/>
-							<BloggerInfo :class="{'m-display-none':bloggerInfo}" v-if="(this.$route.name === 'blog' || this.$route.name === 'moments' ) && this.blogger.id != this.user.id  "/>
+							<GoodsCategory  :randomBlogList="randomBlogList"   v-if="(this.$route.name === 'productInfo' || this.$route.name === 'product') === true" />
+							<Introduction :class="{'m-display-none':userInfo}"  v-if="(user != '' && (this.blogger.id === this.user.id)?this.$route.name === 'blog' || this.$route.name === 'moments' :this.$route.name != 'blog' && this.$route.name != 'moments') === true"/>
+							<BloggerInfo :class="{'m-display-none':bloggerInfo}" v-if="((this.$route.name === 'blog' || this.$route.name === 'moments' ) && this.blogger.id != this.user.id) === true"/>
 							<RandomSneaker :randomProductList="randomProductList" :class="{'m-display-none':randomSneaker}" v-if="this.$route.name === 'blog'"/>
 							<RandomBlog :randomBlogList="randomBlogList" :class="{'m-display-none':randomBlog}" v-if="this.$route.name === 'home'"/>
 							<Tags :tagList="tagList" :class="{'m-display-none':tagCard}" v-if="this.$route.name === 'home'"/>
@@ -142,6 +142,9 @@
 			//从localStorage恢复之前的评论信息
 			this.$store.commit(RESTORE_COMMENT_FORM)
 			this.isUserInfoVisble()
+			console.log(this.user.id)
+			console.log(this.blogger.id)
+			console.log(this.user != '' && (this.blogger.id === this.user.id)?this.$route.name === 'blog' || this.$route.name === 'moments' :this.$route.name != 'blog' && this.$route.name != 'moments' )
 		},
 		mounted() {
 			//保存可视窗口大小

@@ -79,6 +79,7 @@
 		beforeRouteLeave(to, from, next) {
 			// 将vuex中的博主信息删除
 			this.$store.commit(SET_BLOGGER, '')
+			this.momentList = []
 			next()
 		},
 		methods: {
@@ -90,6 +91,20 @@
 				console.log(this.pageNum)
 				getMomentListByPageNum(token,id, this.pageNum).then(res => {
 					if (res.code === 200) {
+						console.log(res.data)
+						this.momentList = res.data.list
+						this.totalPage = res.data.totalPage
+					} else {
+						this.msgError(res.msg)
+					}
+				}).catch(() => {
+					this.msgError("请求失败")
+				})
+				}else{
+				// 当前的bloggerId和userId不相等 或者未登录 访问的是bloggerId
+				var id = this.bloggerId
+				getBolgListAnonymous(id, this.pageNum).then(res => {
+					if (res.code === 200) {
 						this.momentList = res.data.list
 						this.totalPage = res.data.totalPage
 					} else {
@@ -99,20 +114,6 @@
 					this.msgError("请求失败")
 				})
 				}
-				
-				// 当前的bloggerId和userId不相等 或者未登录 访问的是bloggerId
-				var id = this.bloggerId
-				getBolgListAnonymous(id, this.pageNum).then(res => {
-					if (res.code === 200) {
-						this.momentList = res.data.list
-						this.totalPage = res.data.totalPage
-						console.log(this.momentList)
-					} else {
-						this.msgError(res.msg)
-					}
-				}).catch(() => {
-					this.msgError("请求失败")
-				})
 				// 通过bloggerId获取博主信息
 				getBlogger(id).then(res => {
 					if (res.code === 200) {

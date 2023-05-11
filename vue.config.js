@@ -2,8 +2,8 @@ let proxyObj={};
 
 
 proxyObj['/']={
-	target:'http://43.138.9.213:8090', 
-	// target:'http://localhost:8090', 
+	// target:'http://43.138.9.213:8090', 
+	target:'http://localhost:8090', 
 	chageOrigin:true,
 	pathRewrite:{
 	  '^/api':'/'

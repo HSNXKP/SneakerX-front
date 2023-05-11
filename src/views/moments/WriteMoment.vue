@@ -6,49 +6,26 @@
 		<h2 class="m-text-500">发布动态 </h2>
 		<div class="ui divider"></div>
         <el-form :model="form" :rules="formRules" ref="formRef" label-position="top">
-			<el-row :gutter="10">
-				<el-col :span="12">
-					<!-- 动态标题 -->
+				<!-- 动态标题 -->
 					<el-form-item align="left"  label="动态标题" prop="title">
 						<el-input v-model="form.title" placeholder="请输入标题"></el-input>
 					</el-form-item>
-				</el-col>
-				<el-col :span="12">
-					<!--用于动态随机展示图片  -->
-					<el-form-item  align="left" label="用于动态随机展示图片" prop="firstPicture">
-						<el-input v-model="form.firstPicture" placeholder="请输入图片的URL"></el-input>
-					</el-form-item>
-				</el-col>
-			</el-row>
-
 			<!-- 动态描述 -->
 			<el-form-item  align="left" label="动态描述" prop="description">
 				<mavon-editor ref="md1" @imgAdd="imgAddDescription"  @change="changeDescription" @imgDel="imgDel" style="z-index :1" v-model="form.description"/>
 			</el-form-item>
 
 			<!-- 动态正文 -->
-			<el-form-item align="left" label="动态正文" prop="content">
+			<el-form-item align="left" label="动态内容" prop="content">
 				<mavon-editor  ref="md2" @imgAdd="imgAddContent"  @change="changeContent" @imgDel="imgDel"  style="z-index :1" v-model="form.content"/>
 			</el-form-item>
-			<el-row :gutter="20">
-				<el-col :span="12">
-					<!-- 动态分类 -->
-					<el-form-item align="left" label="动态分类" prop="cate">
-						<el-select v-model="form.cate" placeholder="请选择动态的分类" :allow-create="true" :filterable="true"  style="width: 100%;">
-							<el-option :label="item.name" :value="item.id" v-for="item in categoryList" :key="item.id"></el-option>
-						</el-select>
-					</el-form-item>
-				</el-col>
-				<el-col :span="12">	
-					<!--选择你的动态标签  -->
-					<el-form-item  align="left" label="请选择发布动态的标签"   prop="tagList">
+				<!--选择你的动态标签  -->
+				<el-form-item  align="left" label="请选择发布动态的标签"   prop="tagList">
 						<el-select v-model="form.tagList" placeholder="请选择动态标签" :allow-create="true" :filterable="true" :multiple="true" style="width: 100%;">
 							<!-- 标签前端做#处理 -->
 							<el-option :label="'#'+item.name" :value="item.id" v-for="item in tagList" :key="item.id"></el-option>
 						</el-select>
 					</el-form-item>
-				</el-col>
-			</el-row>
 		
 			<el-form-item style="text-align: right;">
 					<!-- 请选择可见范围 下拉框 -->
@@ -99,11 +76,11 @@ export default {
           categoryList: [],
 				tagList: [],
 				dialogVisible: false,
-				radio: '',
+				radio: 1,
 				form: {
 					id:'',
 					title: '',
-					firstPicture: '',
+					firstPicture: 'null',
 					description: '',
 					content: '',
 					cate: null,
@@ -115,14 +92,12 @@ export default {
 					recommend: false,
 					commentEnabled: true,
 					top: false,
-					published: false,
+					published: true,
 					password: '',
 					likes:''
 				},
 				formRules: {
 					title: [{required: true, message: '请输入标题'}],
-					firstPicture: [{required: true, message: '请输入首图链接'}],
-					cate: [{required: true, message: '请选择分类'}],
 					tagList: [{required: true, message: '请选择标签'}],
 				},
 				token: window.localStorage.getItem('adminToken'),
@@ -153,7 +128,6 @@ export default {
 			},
 			getData() {
 				getCategoryAndTag(this.token).then(res => {
-					this.categoryList = res.data.categories
 					this.tagList = res.data.tags
 				})
 			},
