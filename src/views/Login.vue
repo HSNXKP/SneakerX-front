@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import {checkEmail} from "@/common/reg";
+import {checkEmail,checkElevenNumber} from "@/common/reg";
 import { login,register } from "@/api/login";
 import { mapState } from 'vuex'
 import NProgress from 'nprogress'
@@ -90,6 +90,7 @@ export default {
 			registerFormRules: {
 				username: [
 					{ required: true, message: '请输入用户名', trigger: 'blur' },
+					{validator:checkElevenNumber}
 				],
 				nickname: [
 					{ required: true, message: '请输入昵称', trigger: 'blur' },

@@ -34,7 +34,7 @@
 		<h3  class="m-text-500">个人资料卡</h3>
         <el-form label-width="80px">
           <el-form-item label="用户姓名">
-            <el-input v-model="form.username" size="mini"></el-input>
+            <el-input v-model="form.username"  disabled size="mini"></el-input>
           </el-form-item>
 		  <el-form-item label="用户昵称">
             <el-input v-model="form.nickname" size="mini"></el-input>

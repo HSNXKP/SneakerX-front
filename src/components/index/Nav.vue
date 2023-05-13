@@ -155,7 +155,6 @@ export default {
       }
     })
     }
-    console.log('token:'+this.token)
   },
   methods: {
     toggle() {

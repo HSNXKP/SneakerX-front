@@ -20,4 +20,12 @@ export function checkPhone(rule, value,callback) {
 		return callback()
 	}
 	callback(new Error('请输入正确的电话号码'))
+}
+
+export function checkElevenNumber(rule, value,callback) {
+	const reg =/^\d{11}$/
+	if (reg.test(value)) {
+		return callback()
+	}
+	callback(new Error('请输入11位纯数字为您的用户名'))
   }
