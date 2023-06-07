@@ -26,3 +26,13 @@ export function register(registerForm) {
 		}
 	})
 }
+
+export function sendCode(registerForm) {
+	return axios({
+		url: 'sendCode',
+		method: 'POST',
+		data: {
+			...registerForm
+		}
+	})
+}

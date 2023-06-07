@@ -38,8 +38,21 @@
 					placeholder="请输入昵称"></el-input>
 				</el-form-item>
 				<el-form-item prop="email">
+					<!-- <el-input v-model="registerForm.email" prefix-icon="el-icon-message" 
+					placeholder="请输入邮箱"></el-input> -->
 					<el-input v-model="registerForm.email" prefix-icon="el-icon-message" 
-					placeholder="请输入邮箱"></el-input>
+					placeholder="请输入邮箱">
+    				<!-- <template slot="append">发送验证码</template> -->
+					<el-button slot="append" @click="sendCode" v-if="codeStatus" >发送验证码</el-button>
+					<el-button  slot="append" v-else>
+						<el-statistic    @finish="hilarity" class="deadline"  :value="deadline" time-indices format="ss"></el-statistic>
+					</el-button>
+  					</el-input>
+				
+				</el-form-item>
+				<el-form-item prop="code">
+					<el-input v-model="registerForm.code" 
+					placeholder="请输入验证码"></el-input>
 				</el-form-item>
 				<el-form-item prop="password">
 					<el-input v-model="registerForm.password" prefix-icon="el-icon-lock" show-password
@@ -60,7 +73,7 @@
 
 <script>
 import {checkEmail,checkElevenNumber} from "@/common/reg";
-import { login,register } from "@/api/login";
+import { login,register,sendCode } from "@/api/login";
 import { mapState } from 'vuex'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -78,6 +91,7 @@ export default {
 				nickname: '',
 				email: '',
 				password: '',
+				code:''
 			},
 			loginFormRules: {
 				username: [
@@ -99,12 +113,17 @@ export default {
 					{ required: true, message: '请输入邮箱', trigger: 'blur' },
 					{validator:checkEmail}
 				],
+				code: [
+					{ required: true, message: '请输入验证码', trigger: 'blur' },
+				],
 				password: [
 					{ required: true, message: '请输入密码', trigger: 'blur' },
 				],
 			
 			},
-			loginWithRegister: true
+			loginWithRegister: true,
+			deadline: '',
+			codeStatus:true
 		}
 	},
 	computed: {
@@ -162,6 +181,27 @@ export default {
 			this.$nextTick(() => {
                 this.$refs.loginFormRef.resetFields();
             });
+		},
+		// 发送验证码
+		sendCode(){
+			if(this.registerForm.email === ''){
+				this.msgError('邮箱不能为空')
+				return
+			}
+			this.deadline = Date.now() + 1000 * 60
+			this.codeStatus = false
+			sendCode(this.registerForm).then(res =>{
+				if(res.code === 200){
+					this.msgSuccess(res.msg)
+				}else{
+					this.msgError(res.msg)
+				}
+			}).catch(() =>{
+				this.msgError("请求失败")
+			})
+		},
+		hilarity(){
+			this.codeStatus = true
 		},
 		goHome(){
 			this.$router.push('/home')
@@ -273,6 +313,10 @@ export default {
 .title {
     margin: 40px auto 40px auto;
     text-align: center
+}
+/deep/.deadline{
+	color: #999;
+	font-size: 12px;
 }
 
 

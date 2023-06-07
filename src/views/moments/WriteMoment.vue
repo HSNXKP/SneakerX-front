@@ -103,7 +103,11 @@ export default {
 				token: window.localStorage.getItem('adminToken'),
 				// base: 'http://localhost:8090/', 
 				base:'/api',
-				apiUrl : '/user/blog/upload',
+				// 服务器环境加/
+                apiUrl : '/user/blog/upload',
+                // 本都环境不加/
+				// apiUrl : 'user/blog/upload',
+
         }
     },
 	computed: {

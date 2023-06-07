@@ -107,7 +107,10 @@ export default {
 		],
 		// base: 'http://localhost:8090/admin/',
 		base:'/api',
+		// 服务器环境加/
 		apiUrl : '/user/uploadAvatarImage',
+		// 本都环境不加/
+		// apiUrl : 'user/uploadAvatarImage',
 		headers: {
 			Authorization: window.localStorage.getItem('adminToken')
 		},
