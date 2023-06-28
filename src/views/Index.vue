@@ -5,7 +5,7 @@
 		<!-- 点击修改密码框 -->
 		<UpdatePasswordDialog/>
 		<!-- 点击添加标签框 -->
-		<AddTagDialog/>
+		<!-- <AddTagDialog/> -->
 		<!--首页大图 只在首页且pc端时显示-->
 		<div class="m-mobile-hide">
 			<Header v-if="$route.name==='home'"/>
@@ -100,7 +100,7 @@
 	import BloggerInfo from "@/components/sidebar/BloggerInfo";
 	import BlogPasswordDialog from "@/components/index/BlogPasswordDialog";
 	import UpdatePasswordDialog from "@/components/index/UpdatePasswordDialog"
-	import AddTagDialog from "@/components/tag/AddTagDialog"
+	// import AddTagDialog from "@/components/tag/AddTagDialog"
 	import RandomSneaker from '../components/sidebar/RandomSneaker.vue'
 	import GoodsCategory from '../components/sidebar/GoodsCategory.vue'
 	import {mapState} from 'vuex'
@@ -108,7 +108,7 @@
 
 	export default {
 		name: "Index",
-		components: {Header, BlogPasswordDialog, BloggerInfo, RandomBlog, Tags, Nav, Footer, Introduction,UpdatePasswordDialog,AddTagDialog,RandomSneaker,GoodsCategory},
+		components: {Header, BlogPasswordDialog, BloggerInfo, RandomBlog, Tags, Nav, Footer, Introduction,UpdatePasswordDialog,RandomSneaker,GoodsCategory},
 		data() {
 			return {
 				siteInfo: {

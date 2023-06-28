@@ -58,6 +58,8 @@
         		<el-button @click="dialogVisibleClosed" >取 消</el-button>
 			</span>
 		</el-dialog>
+		<!-- 标签回显数据 -->
+		<AddTagDialog @successChange="getChangeData($event)"/>
     </div>
 	</el-card>
 	</div>
@@ -68,9 +70,11 @@ import {mapState} from "vuex";
 import axios from "axios";
 import {getCategoryAndTag} from "@/api/user";
 import {saveBlog,getBlogById,updateBlog} from "@/api/moment";
+import AddTagDialog from "@/components/tag/AddTagDialog";
 
 export default {	
     name:'WriteMoment',
+	components: {AddTagDialog},
     data(){
         return{
           categoryList: [],
@@ -124,11 +128,7 @@ export default {
 		},
 		methods: {
 			addTagDialog(){
-				this.$store.commit('addTagDialogVisible',true).then(res=>{
-					if(res){
-						this.getData()
-					}
-				})
+				this.$store.commit('addTagDialogVisible',true)
 			},
 			getData() {
 				getCategoryAndTag(this.token).then(res => {
@@ -253,6 +253,11 @@ export default {
 			changeContent(value,render){
 				this.form.content= render
 			},
+			getChangeData(data){
+				if(data === 'success'){
+					this.getData()
+				}
+			}
 
 		}
     

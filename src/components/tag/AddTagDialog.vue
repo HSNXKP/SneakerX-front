@@ -70,7 +70,7 @@ export default {
                     if (res.code === 200) {
 						this.cancelDialogVisible()
 						this.msgSuccess(res.msg)
-						
+						this.exportChange()
                     }else{
                         this.msgError(res.msg)
                     }
@@ -79,6 +79,10 @@ export default {
 				})
             }
         }) 
+	},
+			// 返回父组件成功信息 更新tag的数据
+			exportChange(){
+				this.$emit('successChange','success')
 			}
 	}
 	
