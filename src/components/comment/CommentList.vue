@@ -46,7 +46,7 @@
 				// 跳转到blog的时候会携带Blogid
 				this.$store.commit(SET_COMMENT_QUERY_BLOG_ID, this.blogId)
 				// 私密作品需要携带userId查看评论
-				this.$store.commit(SET_COMMENT_QUERY_USER_ID, this.userId)
+				this.$store.commit(SET_COMMENT_QUERY_USER_ID, this.userId ? this.userId : null)
 				// 当前页数：1
 				this.$store.commit(SET_COMMENT_QUERY_PAGE_NUM, 1)
 				// 异步获取评论列表
