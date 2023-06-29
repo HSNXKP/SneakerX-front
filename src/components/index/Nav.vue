@@ -11,7 +11,7 @@
       <!-- 分类 -->
       <el-dropdown trigger="click" @command="categoryRoute">
         <span class="el-dropdown-link item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'category' }">
-          <i class="paperclip icon"></i>球鞋社区<i class="el-icon-arrow-down el-icon--right"></i>
+          <i class="paperclip icon"></i>频道<i class="el-icon-arrow-down el-icon--right"></i>
         </span>
 
         <el-dropdown-menu slot="dropdown">
@@ -31,7 +31,7 @@
     :props="props"
     ></el-cascader>  -->
       <router-link to="/product/6" class="item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'brandSettled' }">
-        <i class="comment basketball ball icon"></i>球鞋商城
+        <i class="comment basketball ball icon"></i>商城
       </router-link>
 
       <router-link to="/brandSettled" class="item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'brandSettled' }">

@@ -8,6 +8,7 @@ import {
 	RESTORE_COMMENT_FORM,
 	SET_COMMENT_QUERY_PAGE,
 	SET_COMMENT_QUERY_BLOG_ID,
+	SET_COMMENT_QUERY_USER_ID,
 	SET_IS_BLOG_RENDER_COMPLETE,
 	SET_BLOG_PASSWORD_DIALOG_VISIBLE,
 	SET_BLOG_PASSWORD_FORM,
@@ -50,6 +51,9 @@ export default {
 	},
 	[SET_PARENT_COMMENT_ID](state, parentCommentId) {
 		state.parentCommentId = parentCommentId
+	},
+	[SET_COMMENT_QUERY_USER_ID](state, userId) {
+		state.commentQuery.userId = userId
 	},
 	[RESET_COMMENT_FORM](state) {
 		const commentForm = {

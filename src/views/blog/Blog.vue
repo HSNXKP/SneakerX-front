@@ -103,7 +103,7 @@
 		<!--评论-->
 			<el-card  >
 				<div class="ui bottom   attached  segment    threaded comments no-segments" >
-					<CommentList :page="0" :blogId="blogId" v-if="blog.commentEnabled"/>
+					<CommentList :page="0" :blogId="blogId" :userId="userId" v-if="blog.commentEnabled"/>
 					<h3 class="ui header" v-else>评论已关闭</h3>
 			</div>
 		</el-card>
@@ -134,6 +134,9 @@
 		computed: {
 			blogId() {
 				return parseInt(this.$route.params.id)
+			},
+			userId() {
+				return parseInt(this.$store.state.user.id)
 			},
 			...mapState(['siteInfo', 'focusMode','allComment'])
 		},
