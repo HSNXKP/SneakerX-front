@@ -3,9 +3,9 @@ module.exports = {
 	 * @type {string}
 	 * @description 首页三张背景图
 	 */
-	bg1: 'https://cdn.staticaly.com/gh/HSNXKP/imgSnkers@master/img/SneakerBlog-1-1200x800.jpg',
-	bg2: 'https://cdn.staticaly.com/gh/HSNXKP/imgSnkers@master/img/COllectiblesblog-1-1200x800.jpeg',
-	bg3: 'https://cdn.staticaly.com/gh/HSNXKP/imgSnkers@master/img/swblog-1-1200x800.png',
+	bg1: 'http://43.138.9.213/image/navImage/SneakerBlog-1.jpg',
+	bg2: 'http://43.138.9.213/image/navImage/SneakerBlog-2.png',
+	bg3: 'http://43.138.9.213/image/navImage/SneakerBlog-3.jpeg',
 
 	/**
 	 * @type {string}

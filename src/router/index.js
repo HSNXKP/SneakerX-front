@@ -31,7 +31,7 @@ const routes = [
 			},
 			{
 				path: '/brandSettled',
-				name: 'BrandSettled',
+				name: 'brandSettled',
 				component: () => import('@/views/brandSettled/BrandSettled'),
 				meta: {title: '品牌入驻'}
 			},
@@ -51,7 +51,7 @@ const routes = [
 				path: '/category/:name',
 				name: 'category',
 				component: () => import('@/views/category/Category'),
-				meta: {title: '球鞋社区'}
+				meta: {title: '频道'}
 			},
 			{
 				path: '/moments/:id',
@@ -63,7 +63,7 @@ const routes = [
 				path: '/product/:id',
 				name: 'product',
 				component: () => import('@/views/product/product/Product'),
-				meta: {title: '商品分类'}
+				meta: {title: '商城'}
 
 			},
 			{

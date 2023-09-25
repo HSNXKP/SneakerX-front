@@ -30,7 +30,7 @@
     :options="productCategoryList"
     :props="props"
     ></el-cascader>  -->
-      <router-link to="/product/6" class="item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'brandSettled' }">
+      <router-link to="/product/6" class="item" :class="{ 'm-mobile-hide': mobileHide, 'active': $route.name === 'product' }">
         <i class="comment basketball ball icon"></i>商城
       </router-link>
 
@@ -134,7 +134,7 @@ export default {
   },
   mounted() {
     //监听页面滚动位置，改变导航栏的显示
-    if(!this.$route.name === 'login'){
+
       window.addEventListener('scroll', () => {
       //首页且不是移动端
       if (this.$route.name === 'home' && this.clientSize.clientWidth > 768) {
@@ -154,7 +154,7 @@ export default {
         this.mobileHide = true
       }
     })
-    }
+    
   },
   methods: {
     toggle() {
